@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.28803.156
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Deribit.S4KTNET", "Deribit.S4KTNET\Deribit.S4KTNET.csproj", "{1FF805E0-908D-4531-9408-374B0886773E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Deribit.S4KTNET.Core", "Deribit.S4KTNET.Core\Deribit.S4KTNET.Core.csproj", "{1FF805E0-908D-4531-9408-374B0886773E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Deribit.S4KTNET.Test", "Deribit.S4KTNET.Test\Deribit.S4KTNET.Test.csproj", "{94CBBEEF-71E3-475C-B01A-8688CB6C0B61}"
 EndProject
