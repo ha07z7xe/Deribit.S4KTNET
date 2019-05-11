@@ -1,0 +1,6 @@
+{
+    "editor.renderWhitespace": "boundary",
+    "bracketPairColorizer.showBracketsInGutter": true,
+    "bracketPairColorizer.showBracketsInRuler": true,
+    "editor.find.addExtraSpaceOnTop": false
+}
