@@ -1,10 +1,8 @@
 using FluentValidation;
-using FluentValidation.Results;
-using System;
 
 namespace Deribit.S4KTNET.Core.Supporting
 {
-    // https://docs.deribit.com/v2/#public-auth
+    // https://docs.deribit.com/v2/#public-hello
 
     public class HelloRequest : RequestBase
     {
@@ -12,13 +10,7 @@ namespace Deribit.S4KTNET.Core.Supporting
 
         public string client_version { get; set; }
 
-        public override void Validate()
-        {
-            base.Validate();
-            new Validator().ValidateAndThrow(this);
-        }
-
-        private class Validator : AbstractValidator<HelloRequest>
+        internal class Validator : AbstractValidator<HelloRequest>
         {
             public Validator()
             {
@@ -26,5 +18,20 @@ namespace Deribit.S4KTNET.Core.Supporting
                 this.RuleFor(x => x.client_version).NotEmpty();
             }
         }
+
+        internal class Profile : AutoMapper.Profile
+        {
+            public Profile()
+            {
+                this.CreateMap<HelloRequest, HelloRequestDto>();
+            }
+        }
+    }
+
+    public class HelloRequestDto
+    {
+        public string client_name { get; set; }
+
+        public string client_version { get; set; }
     }
 }

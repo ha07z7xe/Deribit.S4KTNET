@@ -15,6 +15,58 @@
                 "cwd": "${workspaceFolder}/Deribit.S4KTNET.Core/"
             },
             "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "[Deribit.S4KTNET.Test] [test all]",
+            "command": "dotnet test",
+            "type": "shell",
+            "group": "test",
+            "presentation": {
+                "reveal": "always"
+            },
+            "options": {
+                "cwd": "${workspaceFolder}/Deribit.S4KTNET.Test/"
+            },
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "[Deribit.S4KTNET.Test] [test unit]",
+            "command": "dotnet test --filter='category=unit'",
+            "type": "shell",
+            "group": "test",
+            "presentation": {
+                "reveal": "always"
+            },
+            "options": {
+                "cwd": "${workspaceFolder}/Deribit.S4KTNET.Test/"
+            },
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "[Deribit.S4KTNET.Test] [test mappings]",
+            "command": "dotnet test --filter='category=mapping'",
+            "type": "shell",
+            "group": "test",
+            "presentation": {
+                "reveal": "always"
+            },
+            "options": {
+                "cwd": "${workspaceFolder}/Deribit.S4KTNET.Test/"
+            },
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "[Deribit.S4KTNET.Test] [test integration]",
+            "command": "dotnet test --filter='category=integration'",
+            "type": "shell",
+            "group": "test",
+            "presentation": {
+                "reveal": "always"
+            },
+            "options": {
+                "cwd": "${workspaceFolder}/Deribit.S4KTNET.Test/"
+            },
+            "problemMatcher": "$msCompile"
         }
     ]
 }

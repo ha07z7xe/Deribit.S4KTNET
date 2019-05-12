@@ -30,13 +30,7 @@ namespace Deribit.S4KTNET.Core.Authentication
 
         public string scope { get; set; }
 
-        public override void Validate()
-        {
-            base.Validate();
-            new Validator().ValidateAndThrow(this);
-        }
-
-        private class Validator : AbstractValidator<AuthRequest>
+        internal class Validator : AbstractValidator<AuthRequest>
         {
             public Validator()
             {
@@ -51,6 +45,42 @@ namespace Deribit.S4KTNET.Core.Authentication
                 // this.RuleFor(x => x.nonce).NotEmpty().When(x => x.grant_type == GrantType.client_signature);
             }
         }
+
+        internal class Profile : AutoMapper.Profile
+        {
+            public Profile()
+            {
+                this.CreateMap<AuthRequest, AuthRequestDto>()
+                    .ForMember(x => x.grant_type, o => o.MapFrom(x => x.grant_type.ToString()))
+                    // is this unix seconds ? not sure
+                    .ForMember(x => x.timestamp, o => o.Ignore());
+            }
+        }
+    }
+
+    public class AuthRequestDto
+    {
+        public string grant_type { get; set; }
+
+        public string username { get; set; }
+
+        public string password { get; set; }
+
+        public string client_id { get; set; }
+
+        public string client_secret { get; set; }
+
+        public string refresh_token { get; set; }
+
+        public string timestamp { get; set; }
+
+        public string signature { get; set; }
+
+        public string nonce { get; set; }
+
+        public string state { get; set; }
+
+        public string scope { get; set; }
     }
 
     public enum GrantType

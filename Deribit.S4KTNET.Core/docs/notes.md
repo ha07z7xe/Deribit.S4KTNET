@@ -15,3 +15,6 @@ Design
     * client_credentials
     * client_signature
     * + refresh tokens
+* Automapper
+* Serilog
+* FluentValidation

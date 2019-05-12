@@ -8,6 +8,17 @@ namespace Deribit.S4KTNET.Core.Authentication
 
     public class LogoutRequest : RequestBase
     {
+        internal class Profile : AutoMapper.Profile
+        {
+            public Profile()
+            {
+                this.CreateMap<LogoutRequest, LogoutRequestDto>();
+            }
+        }
+    }
+
+    public class LogoutRequestDto
+    {
 
     }
 }
