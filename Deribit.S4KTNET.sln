@@ -7,7 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Deribit.S4KTNET.Core", "Der
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Deribit.S4KTNET.Test", "Deribit.S4KTNET.Test\Deribit.S4KTNET.Test.csproj", "{94CBBEEF-71E3-475C-B01A-8688CB6C0B61}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Deribit.S4KTNET.Sample", "Deribit.S4KTNET.Sample\Deribit.S4KTNET.Sample.csproj", "{0FAAB2A6-6A44-4A94-A0C3-7F9850F3AD7A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Deribit.S4KTNET.Sample", "Deribit.S4KTNET.Sample\Deribit.S4KTNET.Sample.csproj", "{0FAAB2A6-6A44-4A94-A0C3-7F9850F3AD7A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StreamJsonRpc", "..\vs-streamjsonrpc\src\StreamJsonRpc\StreamJsonRpc.csproj", "{FAE44A80-C527-4415-83A0-41B4DD66C376}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{0FAAB2A6-6A44-4A94-A0C3-7F9850F3AD7A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0FAAB2A6-6A44-4A94-A0C3-7F9850F3AD7A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0FAAB2A6-6A44-4A94-A0C3-7F9850F3AD7A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FAE44A80-C527-4415-83A0-41B4DD66C376}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FAE44A80-C527-4415-83A0-41B4DD66C376}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FAE44A80-C527-4415-83A0-41B4DD66C376}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FAE44A80-C527-4415-83A0-41B4DD66C376}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
