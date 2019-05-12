@@ -18,3 +18,7 @@ Design
 * Automapper
 * Serilog
 * FluentValidation
+
+todo
+======================
+* check Dispose methods are called on DeribitService disposal

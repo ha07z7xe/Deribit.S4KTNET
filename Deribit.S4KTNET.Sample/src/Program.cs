@@ -2,12 +2,16 @@
 using System;
 using Serilog;
 using Serilog.Sinks.SystemConsole.Themes;
+using Deribit.S4KTNET.Core.Supporting;
+using System.Threading.Tasks;
 
 namespace Deribit.S4KTNET.Sample
 {
     class Program
     {
-        static void Main(string[] args)
+        static DeribitService deribit;
+
+        static async Task Main(string[] args)
         {
             // configure serilog
             ConfigureSerilog();
@@ -19,10 +23,13 @@ namespace Deribit.S4KTNET.Sample
             };
 
             // construct services
-            DeribitService deribit = new DeribitService(deribitconfig);
+            deribit = new DeribitService(deribitconfig);
 
             // connect
-            deribit.Connect(default).Wait();
+            await deribit.Connect(default);
+
+            // test supporting
+            await TestSupportingApiAsync();
 
             // wait for input
             Console.ReadKey();
@@ -42,6 +49,24 @@ namespace Deribit.S4KTNET.Sample
                     "[{SourceContext:l}] {Message:lj}{NewLine}{Exception}"
                 )
                 .CreateLogger();
+        }
+
+        private static async Task TestSupportingApiAsync()
+        {
+            // public/test
+            {
+                TestResponse testresponse = await deribit.Supporting.test(new TestRequest()
+                {
+                    expected_result = null,
+                });
+                Log.Information($"/public/test | version:{{version}}", testresponse.version);
+            }
+
+            // public/get_time
+            {
+                long timems = await deribit.Supporting.get_time();
+                Log.Information($"/public/get_time | time:{{time}}", timems);
+            }
         }
     }
 }

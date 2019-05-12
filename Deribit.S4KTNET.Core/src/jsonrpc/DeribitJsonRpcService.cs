@@ -1,33 +1,33 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net.WebSockets;
-using System.Text;
+﻿using Autofac;
+using Deribit.S4KTNET.Core.WebSocket;
+using StreamJsonRpc;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Deribit.S4KTNET.Core.Websocket
+namespace Deribit.S4KTNET.Core.JsonRpc
 {
     //------------------------------------------------------------------------------------------------
     // documentation
     //------------------------------------------------------------------------------------------------
 
-    // handles web socket connectivity
+    // handles heartbeats
+    // handles json rpc request execution
 
     //------------------------------------------------------------------------------------------------
 
-    public interface IDeribitWebSocketService
+    public interface IDeribitJsonRpcService
     {
+        IDeribitJsonRpcProxy RpcProxy { get; }
+        StreamJsonRpc.JsonRpc JsonRpc { get; }
         Task Connect(CancellationToken ct);
     }
 
-    internal class DeribitWebSocketService : IDeribitWebSocketService, IDisposable
+    internal class DeribitJsonRpcService : IDeribitJsonRpcService, IDisposable
     {
         //------------------------------------------------------------------------------------------------
         // configuration
         //------------------------------------------------------------------------------------------------
-
-        private readonly string websocketurl_live_v2 = "wss://www.deribit.com/ws/api/v2/";
-        private readonly string websocketurl_test_v2 = "wss://test.deribit.com/ws/api/v2/";
 
         private readonly DeribitConfig deribitconfig;
 
@@ -35,7 +35,8 @@ namespace Deribit.S4KTNET.Core.Websocket
         // fields
         //------------------------------------------------------------------------------------------------
 
-        private readonly ClientWebSocket websocket;
+        public IDeribitJsonRpcProxy RpcProxy { get; }
+        public StreamJsonRpc.JsonRpc JsonRpc { get; }
 
         //------------------------------------------------------------------------------------------------
         // components
@@ -48,17 +49,51 @@ namespace Deribit.S4KTNET.Core.Websocket
         //------------------------------------------------------------------------------------------------
 
         private readonly IDeribitService deribit;
+        private readonly IDeribitWebSocketService wsservice;
 
         //------------------------------------------------------------------------------------------------
         // construction
         //------------------------------------------------------------------------------------------------
 
-        public DeribitWebSocketService(IDeribitService deribit, DeribitConfig config)
+        public DeribitJsonRpcService
+        (
+            IDeribitService deribit, 
+            IDeribitWebSocketService wsservice, 
+            DeribitConfig config
+        )
         {
+            // dependencies
             this.deribit = deribit;
             this.deribitconfig = config;
-            this.websocket = new ClientWebSocket();
-            this.logger = Serilog.Log.ForContext<DeribitWebSocketService>();
+            this.wsservice = wsservice;
+            // logger
+            this.logger = Serilog.Log.ForContext<DeribitJsonRpcService>();
+            // attach json rpc to websocket
+            WebSocketMessageHandler wsmh = new WebSocketMessageHandler(wsservice.ClientWebSocket);
+            this.JsonRpc = new StreamJsonRpc.JsonRpc(wsmh);
+            // build proxy // https://github.com/microsoft/vs-streamjsonrpc/blob/master/doc/dynamicproxy.md
+            this.RpcProxy = this.JsonRpc.Attach<IDeribitJsonRpcProxy>(new JsonRpcProxyOptions
+            {
+                ServerRequiresNamedArguments = true,
+            });
+        }
+
+        //------------------------------------------------------------------------------------------------
+        // module
+        //------------------------------------------------------------------------------------------------
+
+        internal class Module : Autofac.Module
+        {
+            protected override void Load(ContainerBuilder builder)
+            {
+                builder.RegisterType<DeribitJsonRpcService>()
+                    .AsSelf()
+                    .As<IDeribitJsonRpcService>()
+                    .SingleInstance();
+
+                builder.Register<IDeribitJsonRpcProxy>(ctx => ctx.Resolve<IDeribitJsonRpcService>().RpcProxy);
+                builder.Register<StreamJsonRpc.JsonRpc>(ctx => ctx.Resolve<IDeribitJsonRpcService>().JsonRpc);
+            }
         }
 
         //------------------------------------------------------------------------------------------------
@@ -67,31 +102,18 @@ namespace Deribit.S4KTNET.Core.Websocket
 
         public void Dispose()
         {
-            this.websocket.Dispose();
+            this.JsonRpc.Dispose();
         }
 
         //------------------------------------------------------------------------------------------------
         // connection
         //------------------------------------------------------------------------------------------------
+
         public async Task Connect(CancellationToken ct)
         {
-            // determine url
-            string wssurl;
-            switch (this.deribitconfig.Environment)
-            {
-                case DeribitEnvironment.Live:
-                    wssurl = this.websocketurl_live_v2;
-                    break;
-                case DeribitEnvironment.Test:
-                    wssurl = this.websocketurl_test_v2;
-                    break;
-                default:
-                    throw new Exception();
-            }
-            // connect
-            this.logger.Information($"connecting to {wssurl}");
-            await this.websocket.ConnectAsync(new Uri(wssurl), ct);
+            this.JsonRpc.StartListening();
         }
+
         //------------------------------------------------------------------------------------------------
     }
 }

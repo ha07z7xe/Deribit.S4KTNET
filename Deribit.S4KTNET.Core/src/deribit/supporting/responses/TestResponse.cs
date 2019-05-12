@@ -15,6 +15,10 @@ namespace Deribit.S4KTNET.Core.Supporting
             }
         }
 
+        public override string ToString()
+        {
+            return $"version:{version}";
+        }
     }
 
     public class TestResponseDto

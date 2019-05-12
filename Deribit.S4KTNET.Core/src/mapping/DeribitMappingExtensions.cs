@@ -1,6 +1,6 @@
 using System;
 
-namespace Deribit.S4KTNET.Core
+namespace Deribit.S4KTNET.Core.Mapping
 {
     internal static class DeribitMappingExtensions
     {
