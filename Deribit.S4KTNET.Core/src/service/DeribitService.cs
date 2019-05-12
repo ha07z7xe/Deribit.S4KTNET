@@ -71,6 +71,10 @@ namespace Deribit.S4KTNET.Core
             this.Authentication = new DeribitAuthenticationService(this);
             this.SessionManagement = new DeribitSessionManagementService(this);
             this.Supporting = new DeribitSupportingService(this);
+            if (config.ConnectOnConstruction)
+            {
+                this.Connect(default).Wait();
+            }
         }
 
         //------------------------------------------------------------------------

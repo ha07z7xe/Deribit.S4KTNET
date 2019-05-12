@@ -7,5 +7,7 @@ namespace Deribit.S4KTNET.Core
     public class DeribitConfig
     {
         public DeribitEnvironment Environment { get; set; }
+
+        public bool ConnectOnConstruction { get; set; }
     }
 }
