@@ -4,5 +4,17 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
+        {
+            "name": "Deribit.S4KTNET.Sample [launch]",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "Deribit.S4KTNET.Sample [build]",
+            "program": "${workspaceFolder}/Deribit.S4KTNET.Sample/bin/Debug/netcoreapp2.2/Deribit.S4KTNET.Sample.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}",
+            "stopAtEntry": false,
+            "env": {
+            },
+        }
     ]
 }

@@ -4,7 +4,7 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "[Deribit.S4KTNET.Core] [build]",
+            "label": "Deribit.S4KTNET.Core [build]",
             "command": "dotnet build",
             "type": "shell",
             "group": "build",
@@ -17,7 +17,7 @@
             "problemMatcher": "$msCompile"
         },
         {
-            "label": "[Deribit.S4KTNET.Sample] [build]",
+            "label": "Deribit.S4KTNET.Sample [build]",
             "command": "dotnet build",
             "type": "shell",
             "group": "build",
@@ -30,7 +30,7 @@
             "problemMatcher": "$msCompile"
         },
         {
-            "label": "[Deribit.S4KTNET.Test] [build]",
+            "label": "Deribit.S4KTNET.Test [build]",
             "command": "dotnet build",
             "type": "shell",
             "group": "build",
@@ -43,7 +43,7 @@
             "problemMatcher": "$msCompile"
         },
         {
-            "label": "[Deribit.S4KTNET.Test] [test all]",
+            "label": "Deribit.S4KTNET.Test [test all]",
             "command": "dotnet test",
             "type": "shell",
             "group": "test",
@@ -56,7 +56,7 @@
             "problemMatcher": "$msCompile"
         },
         {
-            "label": "[Deribit.S4KTNET.Test] [test unit]",
+            "label": "Deribit.S4KTNET.Test [test unit]",
             "command": "dotnet test --filter='category=unit'",
             "type": "shell",
             "group": "test",
@@ -69,7 +69,7 @@
             "problemMatcher": "$msCompile"
         },
         {
-            "label": "[Deribit.S4KTNET.Test] [test mappings]",
+            "label": "Deribit.S4KTNET.Test [test mappings]",
             "command": "dotnet test --filter='category=mapping'",
             "type": "shell",
             "group": "test",
@@ -82,7 +82,7 @@
             "problemMatcher": "$msCompile"
         },
         {
-            "label": "[Deribit.S4KTNET.Test] [test integration]",
+            "label": "Deribit.S4KTNET.Test [test integration]",
             "command": "dotnet test --filter='category=integration'",
             "type": "shell",
             "group": "test",
