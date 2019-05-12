@@ -17,6 +17,19 @@
             "problemMatcher": "$msCompile"
         },
         {
+            "label": "[Deribit.S4KTNET.Test] [build]",
+            "command": "dotnet build",
+            "type": "shell",
+            "group": "test",
+            "presentation": {
+                "reveal": "always"
+            },
+            "options": {
+                "cwd": "${workspaceFolder}/Deribit.S4KTNET.Test/"
+            },
+            "problemMatcher": "$msCompile"
+        },
+        {
             "label": "[Deribit.S4KTNET.Test] [test all]",
             "command": "dotnet test",
             "type": "shell",

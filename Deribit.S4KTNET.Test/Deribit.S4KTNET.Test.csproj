@@ -11,4 +11,8 @@
     <PackageReference Include="NUnit3TestAdapter" Version="3.13.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Deribit.S4KTNET.Core\Deribit.S4KTNET.Core.csproj" />
+  </ItemGroup>
+
 </Project>
