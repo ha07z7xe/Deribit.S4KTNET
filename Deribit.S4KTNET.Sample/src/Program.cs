@@ -60,13 +60,23 @@ namespace Deribit.S4KTNET.Sample
                 {
                     expected_result = null,
                 });
-                Log.Information($"/public/test | version:{{version}}", testresponse.version);
+                Log.Information($"public/test | version:{{version}}", testresponse.version);
             }
 
             // public/get_time
             {
-                long timems = await deribit.Supporting.get_time();
-                Log.Information($"/public/get_time | time:{{time}}", timems);
+                GetTimeResponse timeresponse = await deribit.Supporting.get_time();
+                Log.Information($"public/get_time | time:{{time:u}}", timeresponse.server_time);
+            }
+
+            // public/hello
+            {
+                HelloResponse helloresponse = await deribit.Supporting.hello(new HelloRequest
+                {
+                    client_name = "clientname",
+                    client_version = "1",
+                });
+                Log.Information($"public/hello | version:{{version}}", helloresponse.version);
             }
         }
     }

@@ -4,6 +4,9 @@ namespace Deribit.S4KTNET.Core.Mapping
 {
     internal static class DeribitMappingExtensions
     {
+        private static readonly DateTime unixepoch 
+            = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
+
         public static string ToDeribitString(this OrderbookGrouping group)
         {
             switch (group)
@@ -43,6 +46,11 @@ namespace Deribit.S4KTNET.Core.Mapping
                 default:
                     throw new Exception();
             }
+        }
+
+        public static DateTime UnixTimeStampMillisToDateTimeUtc(this long unixTimeStampMillis)
+        {
+            return unixepoch.AddMilliseconds(unixTimeStampMillis);
         }
     }
 }

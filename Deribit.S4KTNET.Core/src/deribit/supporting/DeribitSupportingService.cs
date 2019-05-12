@@ -9,7 +9,7 @@ namespace Deribit.S4KTNET.Core.Supporting
 {
     public interface IDeribitSupportingService
     {
-        Task<long> get_time(CancellationToken ct = default);
+        Task<GetTimeResponse> get_time(CancellationToken ct = default);
 
         Task<HelloResponse> hello(HelloRequest request, CancellationToken ct = default);
 
@@ -58,9 +58,14 @@ namespace Deribit.S4KTNET.Core.Supporting
         //------------------------------------------------------------------------------------------------
 
 
-        public Task<long> get_time(CancellationToken ct)
+        public async Task<GetTimeResponse> get_time(CancellationToken ct)
         {
-            return this.deribit.JsonRpc2.RpcProxy.get_time(ct);
+            // execute request
+            var responsedto = await this.rpcproxy.get_time(ct);
+            // map response
+            GetTimeResponse response = mapper.Map<GetTimeResponse>(responsedto);
+            // return
+            return response;
         }
 
         public async Task<HelloResponse> hello(HelloRequest request, CancellationToken ct)

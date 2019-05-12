@@ -81,6 +81,7 @@ namespace Deribit.S4KTNET.Core.JsonRpc
             {
                 var listener = new global::SerilogTraceListener.SerilogTraceListener();
                 this.JsonRpc.TraceSource.Listeners.Add(listener);
+                this.JsonRpc.TraceSource.Switch.Level = System.Diagnostics.SourceLevels.All;
                 this.logger.Verbose("JsonRpc tracing enabled");
             }
         }

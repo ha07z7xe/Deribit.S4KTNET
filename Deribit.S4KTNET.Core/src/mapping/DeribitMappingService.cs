@@ -26,12 +26,12 @@ namespace Deribit.S4KTNET.Core.Mapping
                 {
                     cfg.AddMaps(GetType());
                 });
-                automapperconfig.CompileMappings();
                 automapperconfig.AssertConfigurationIsValid();
+                automapperconfig.CompileMappings();
 
                 // build mapper
                 var mapper = automapperconfig.CreateMapper();
-
+                
                 // register
                 builder.RegisterInstance(automapperconfig);
                 builder.RegisterInstance(mapper);

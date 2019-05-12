@@ -1,3 +1,4 @@
+using Deribit.S4KTNET.Core.Mapping;
 using System;
 
 namespace Deribit.S4KTNET.Core.Supporting
@@ -8,21 +9,19 @@ namespace Deribit.S4KTNET.Core.Supporting
     {
         public DateTime server_time { get; set; }
 
+        public long server_time_millis { get; set; }
+
 
         internal class Profile : AutoMapper.Profile
         {
             public Profile()
             {
-                this.CreateMap<GetTimeResponseDto, GetTimeResponse>()
-                    // todo
-                    .ForMember(x => x.server_time, o => o.Ignore());
+                this.CreateMap<long, GetTimeResponse>()
+                    .ForMember(x => x.server_time_millis, o => o.MapFrom(x => x))
+                    .ForMember(x => x.server_time, 
+                        o => o.ConvertUsing<UnixTimestampMillisValueResolver, long>(x => x));
             }
         }
 
-    }
-
-    public class GetTimeResponseDto
-    {
-        public long result { get; set; }
     }
 }
