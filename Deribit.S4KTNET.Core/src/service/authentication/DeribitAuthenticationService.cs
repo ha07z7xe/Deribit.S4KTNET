@@ -11,12 +11,24 @@ namespace Deribit.S4KTNET.Core.Authentication
 
     public class DeribitAuthenticationService : IDeribitAuthenticationService
     {
-        //----------------------------------------------------------
-        public DeribitAuthenticationService()
-        {
+        //------------------------------------------------------------------------
+        // dependencies
+        //------------------------------------------------------------------------
 
+        private readonly IDeribitService deribit;
+
+        //------------------------------------------------------------------------
+        // construction
+        //------------------------------------------------------------------------
+        public DeribitAuthenticationService(IDeribitService deribit)
+        {
+            this.deribit = deribit;
         }
-        //----------------------------------------------------------
+
+        //------------------------------------------------------------------------
+        // api
+        //------------------------------------------------------------------------
+
         public Task<AuthResponse> Auth(AuthRequest request)
         {
             throw new NotImplementedException();
@@ -26,6 +38,7 @@ namespace Deribit.S4KTNET.Core.Authentication
         {
             throw new NotImplementedException();
         }
-        //----------------------------------------------------------
+
+        //------------------------------------------------------------------------
     }
 }

@@ -1,14 +1,16 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace Deribit.S4KTNET.Core.Supporting
+namespace Deribit.S4KTNET.Core.SessionManagement
 {
-    public interface IDeribitSupportingService
+    public interface IDeribitSessionManagementService
     {
-        Task<long> GetTime();
+        Task SetHeartbeat(SetHeartbeatRequest request);
+
+        Task DisableHeartbeat(DisableHeartbeatRequest request);
     }
 
-    public class DeribitSupportingService : IDeribitSupportingService
+    public class DeribitSessionManagementService : IDeribitSessionManagementService
     {
         //------------------------------------------------------------------------
         // dependencies
@@ -20,7 +22,7 @@ namespace Deribit.S4KTNET.Core.Supporting
         // construction
         //------------------------------------------------------------------------
 
-        public DeribitSupportingService(IDeribitService deribit)
+        public DeribitSessionManagementService(IDeribitService deribit)
         {
             this.deribit = deribit;
         }
@@ -29,11 +31,16 @@ namespace Deribit.S4KTNET.Core.Supporting
         // api
         //------------------------------------------------------------------------
 
-
-        public Task<long> GetTime()
+        public Task DisableHeartbeat(DisableHeartbeatRequest request)
         {
             throw new NotImplementedException();
         }
+
+        public Task SetHeartbeat(SetHeartbeatRequest request)
+        {
+            throw new NotImplementedException();
+        }
+
         //------------------------------------------------------------------------
 
     }

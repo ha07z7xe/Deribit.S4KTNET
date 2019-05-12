@@ -1,11 +1,17 @@
 ﻿using System;
 using Deribit.S4KTNET.Core.Authentication;
+using Deribit.S4KTNET.Core.SessionManagement;
+using Deribit.S4KTNET.Core.Supporting;
 
 namespace Deribit.S4KTNET.Core
 {
     public interface IDeribitService : IDisposable
     {
-        IDeribitAuthenticationService AuthenticationService { get; }
+        IDeribitAuthenticationService Authentication { get; }
+
+        IDeribitSessionManagementService SessionManagement { get; }
+
+        IDeribitSupportingService Supporting { get; }
     }
 
     public class DeribitService : IDeribitService
@@ -14,7 +20,17 @@ namespace Deribit.S4KTNET.Core
         // sub services
         //------------------------------------------------------------------------
 
-        public IDeribitAuthenticationService AuthenticationService { get; }
+        public IDeribitAuthenticationService Authentication { get; }
+
+        public IDeribitSessionManagementService SessionManagement { get; }
+
+        public IDeribitSupportingService Supporting { get; }
+
+        //------------------------------------------------------------------------
+        // components
+        //------------------------------------------------------------------------
+
+        private readonly Serilog.ILogger logger;
 
         //------------------------------------------------------------------------
         // construction
@@ -22,7 +38,10 @@ namespace Deribit.S4KTNET.Core
 
         public DeribitService()
         {
-
+            this.logger = Serilog.Log.ForContext<DeribitService>();
+            this.Authentication = new DeribitAuthenticationService(this);
+            this.SessionManagement = new DeribitSessionManagementService(this);
+            this.Supporting = new DeribitSupportingService(this);
         }
 
         //------------------------------------------------------------------------
