@@ -25,9 +25,9 @@ namespace Deribit.S4KTNET.Core.JsonRpc
         Task<long> get_time(CancellationToken ct);
 
         [JsonRpcMethod("public/hello")]
-        Task<HelloResponseDto> hello(HelloRequestDto request, CancellationToken ct);
+        Task<HelloResponseDto> hello(string client_name, string client_version, CancellationToken ct);
 
         [JsonRpcMethod("public/test")]
-        Task<TestResponseDto> test(TestRequestDto request, CancellationToken ct);
+        Task<TestResponseDto> test(string expected_result, CancellationToken ct);
     }
 }

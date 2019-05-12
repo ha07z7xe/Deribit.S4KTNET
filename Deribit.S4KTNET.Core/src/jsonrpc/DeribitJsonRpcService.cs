@@ -2,6 +2,7 @@
 using Deribit.S4KTNET.Core.WebSocket;
 using StreamJsonRpc;
 using System;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -68,6 +69,12 @@ namespace Deribit.S4KTNET.Core.JsonRpc
             this.wsservice = wsservice;
             // logger
             this.logger = Serilog.Log.ForContext<DeribitJsonRpcService>();
+            // message formatter
+            JsonMessageFormatter messageformatter = new JsonMessageFormatter()
+            {
+                Encoding = Encoding.UTF8,
+                ProtocolVersion = new Version(2, 0),
+            };
             // attach json rpc to websocket
             WebSocketMessageHandler wsmh = new WebSocketMessageHandler(wsservice.ClientWebSocket);
             this.JsonRpc = new StreamJsonRpc.JsonRpc(wsmh);
@@ -81,7 +88,7 @@ namespace Deribit.S4KTNET.Core.JsonRpc
             {
                 var listener = new global::SerilogTraceListener.SerilogTraceListener();
                 this.JsonRpc.TraceSource.Listeners.Add(listener);
-                this.JsonRpc.TraceSource.Switch.Level = System.Diagnostics.SourceLevels.All;
+                this.JsonRpc.TraceSource.Switch.Level = System.Diagnostics.SourceLevels.Information;
                 this.logger.Verbose("JsonRpc tracing enabled");
             }
         }
