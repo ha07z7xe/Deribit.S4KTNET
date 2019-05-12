@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
 using Deribit.S4KTNET.Core.Authentication;
 using Deribit.S4KTNET.Core.JsonRpc;
 using Deribit.S4KTNET.Core.SessionManagement;
@@ -18,6 +20,14 @@ namespace Deribit.S4KTNET.Core
         IDeribitSessionManagementService SessionManagement { get; }
 
         IDeribitSupportingService Supporting { get; }
+
+        //------------------------------------------------------------------------
+        // connection
+        //------------------------------------------------------------------------
+
+        Task Connect(CancellationToken ct);
+        
+        //------------------------------------------------------------------------
     }
 
     public class DeribitService : IDeribitService, IDisposable
@@ -72,6 +82,17 @@ namespace Deribit.S4KTNET.Core
             (this.WebSocket as DeribitWebSocketService).Dispose();
             (this.JsonRpc as DeribitJsonRpcService).Dispose();
         }
+
+        //------------------------------------------------------------------------
+        // connection
+        //------------------------------------------------------------------------
+
+        public async Task Connect(CancellationToken ct)
+        {
+            await this.WebSocket.Connect(ct);
+        }
+
+        //------------------------------------------------------------------------
 
         //------------------------------------------------------------------------
     }
