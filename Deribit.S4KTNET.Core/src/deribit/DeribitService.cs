@@ -5,6 +5,7 @@ using Autofac;
 using Deribit.S4KTNET.Core.Authentication;
 using Deribit.S4KTNET.Core.JsonRpc;
 using Deribit.S4KTNET.Core.SessionManagement;
+using Deribit.S4KTNET.Core.SubscriptionManagement;
 using Deribit.S4KTNET.Core.Supporting;
 using Deribit.S4KTNET.Core.WebSocket;
 
@@ -60,6 +61,9 @@ namespace Deribit.S4KTNET.Core
         public IDeribitSupportingService Supporting => this.Supporting2;
         internal DeribitSupportingService Supporting2 { get; }
 
+        public IDeribitSubscriptionManagementService SubscriptionManagement => this.SubscriptionManagement2;
+        internal DeribitSubscriptionManagementService SubscriptionManagement2 { get; }
+
         //------------------------------------------------------------------------------------------------
         // configuration
         //------------------------------------------------------------------------------------------------
@@ -94,6 +98,7 @@ namespace Deribit.S4KTNET.Core
             this.Authentication2 = container.Resolve<DeribitAuthenticationService>();
             this.SessionManagement2 = container.Resolve<DeribitSessionManagementService>();
             this.Supporting2 = container.Resolve<DeribitSupportingService>();
+            this.SubscriptionManagement2 = container.Resolve<DeribitSubscriptionManagementService>();
             // connect
             if (config.ConnectOnConstruction)
             {

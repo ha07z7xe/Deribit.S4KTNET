@@ -7,6 +7,10 @@ namespace Deribit.S4KTNET.Core
             // BTC-DMMMYY
             public const string BTC25MAR16 = "BTC-25MAR16";
             public const string BTC5AUG16 = "BTC-25MAR16";
+            public const string BTC17MAY19 = "BTC-17MAY19";
+
+            public const string ETH17MAY19 = "ETH-17MAY19";
+            public const string ETH28JUN19 = "ETH-28JUN19";
         }
 
         public static class Perpetual

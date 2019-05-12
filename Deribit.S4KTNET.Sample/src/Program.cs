@@ -4,6 +4,7 @@ using Serilog;
 using Serilog.Sinks.SystemConsole.Themes;
 using Deribit.S4KTNET.Core.Supporting;
 using System.Threading.Tasks;
+using Deribit.S4KTNET.Core.SubscriptionManagement;
 
 namespace Deribit.S4KTNET.Sample
 {
@@ -31,6 +32,9 @@ namespace Deribit.S4KTNET.Sample
 
             // test supporting
             await TestSupportingApiAsync();
+
+            // test subscription management
+            await TestSubscriptionManagementApiAsync();
 
             // wait for input
             Console.ReadKey();
@@ -77,6 +81,42 @@ namespace Deribit.S4KTNET.Sample
                     client_version = "1",
                 });
                 Log.Information($"public/hello | version:{{version}}", helloresponse.version);
+            }
+        }
+
+        private static async Task TestSubscriptionManagementApiAsync()
+        {
+            // public/subscribe
+            {
+                SubscribeResponse subscriberesponse = await deribit.SubscriptionManagement
+                    .subscribe_public(new SubscribeRequest
+                {
+                        channels = new string[] 
+                        {
+                            DeribitSubscriptions.trades(DeribitInstruments.Perpetual.BTCPERPETRUAL, Interval.raw),
+                            DeribitSubscriptions.book(DeribitInstruments.Perpetual.BTCPERPETRUAL, Interval._100ms),
+                        },
+                });
+                Log.Information($"public/subscribe | channels:{{channels}}", 
+                    string.Join(',', subscriberesponse.subscribed_channels));
+            }
+
+            // wait
+            await Task.Delay(5000);
+
+            // public/unsubscribe
+            {
+                UnsubscribeResponse unsubscriberesponse = await deribit.SubscriptionManagement
+                    .unsubscribe_public(new UnsubscribeRequest
+                    {
+                        channels = new string[]
+                        {
+                            DeribitSubscriptions.trades(DeribitInstruments.Perpetual.BTCPERPETRUAL, Interval.raw),
+                            DeribitSubscriptions.book(DeribitInstruments.Perpetual.BTCPERPETRUAL, Interval._100ms),
+                        },
+                    });
+                Log.Information($"public/unsubscribe | channels:{{channels}}", 
+                    string.Join(',', unsubscriberesponse.subscribed_channels));
             }
         }
     }
