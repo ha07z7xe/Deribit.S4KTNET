@@ -7,3 +7,9 @@ Deribit Rest and Websocket library
 
 
 https://docs.deribit.com/v2/#user-portfolio-currency
+
+Security
+=============
+* Do NOT trust the binaries with your keys
+* compiling from source
+* binary signatures

@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="FluentValidation" Version="8.5.0-preview1" />
     <PackageReference Include="StreamJsonRpc" Version="2.1.6-alpha" />
   </ItemGroup>
 

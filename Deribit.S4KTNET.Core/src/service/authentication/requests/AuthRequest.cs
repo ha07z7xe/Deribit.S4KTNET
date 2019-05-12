@@ -1,3 +1,5 @@
+using FluentValidation;
+using FluentValidation.Results;
 using System;
 
 namespace Deribit.S4KTNET.Core.Authentication
@@ -20,43 +22,35 @@ namespace Deribit.S4KTNET.Core.Authentication
 
         public DateTime timestamp { get; set; }
 
+        public string signature { get; set; }
+
+        public string nonce { get; set; }
+
+        public string state { get; set; }
+
+        public string scope { get; set; }
 
         public override void Validate()
         {
             base.Validate();
-            switch (this.grant_type)
-            {
-                case GrantType.password:
-                    {
-                        if (string.IsNullOrEmpty(this.username) || string.IsNullOrEmpty(this.password))
-                            throw new Exception($"username/password not provided");
-                        break;
-                    }
-                case GrantType.client_credentials:
-                    {
-                        if (string.IsNullOrEmpty(this.client_id))
-                            throw new Exception($"client_id not provided");
-                        if (string.IsNullOrEmpty(this.client_secret))
-                            throw new Exception($"client_secret not provided");
-                        break;
-                    }
-                case GrantType.client_signature:
-                    {
-                        if (string.IsNullOrEmpty(this.client_id))
-                            throw new Exception($"client_id not provided");
-                        if (this.timestamp == default)
-                            throw new Exception("timestamp not provided");
-                        break;
-                    }
-                case GrantType.refresh_token:
-                    {
-                        if (string.IsNullOrEmpty(this.refresh_token))
-                            throw new Exception($"refresh_token not provided");
-                        break;
-                    }
-            }
+            new Validator().ValidateAndThrow(this);
         }
 
+        private class Validator : AbstractValidator<AuthRequest>
+        {
+            public Validator()
+            {
+                this.RuleFor(x => x.username).NotEmpty().When(x => x.grant_type == GrantType.password);
+                this.RuleFor(x => x.password).NotEmpty().When(x => x.grant_type == GrantType.password);
+                this.RuleFor(x => x.client_id).NotEmpty().When(x => x.grant_type == GrantType.client_credentials);
+                this.RuleFor(x => x.client_id).NotEmpty().When(x => x.grant_type == GrantType.client_signature);
+                this.RuleFor(x => x.client_secret).NotEmpty().When(x => x.grant_type == GrantType.client_credentials);
+                this.RuleFor(x => x.refresh_token).NotEmpty().When(x => x.grant_type == GrantType.refresh_token);
+                this.RuleFor(x => x.timestamp).NotEmpty().When(x => x.grant_type == GrantType.client_signature);
+                this.RuleFor(x => x.signature).NotEmpty().When(x => x.grant_type == GrantType.client_signature);
+                // this.RuleFor(x => x.nonce).NotEmpty().When(x => x.grant_type == GrantType.client_signature);
+            }
+        }
     }
 
     public enum GrantType
@@ -65,5 +59,32 @@ namespace Deribit.S4KTNET.Core.Authentication
         client_credentials,
         client_signature,
         refresh_token,
+    }
+
+    public static class AccessScopes
+    {
+        public const string connection = "connection";
+        public static string session() => "session";
+        public static string session(string name) => $"session:{name}";
+        public static class trade
+        {
+            public const string read = "trade:read";
+            public const string read_write = "trade:read_write";
+            public const string none = "trade:none";
+        }
+        public static class wallet
+        {
+            public const string read = "wallet:read";
+            public const string read_write = "wallet:read_write";
+            public const string none = "wallet:none";
+        }
+        public static class account
+        {
+            public const string read = "account:read";
+            public const string read_write = "account:read_write";
+            public const string none = "account:none";
+        }
+        public static string expires(int n) => $"expires:{n}";
+        public static string ip(string addr) => $"ip:{addr}";
     }
 }
