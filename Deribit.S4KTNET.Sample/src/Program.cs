@@ -20,6 +20,7 @@ namespace Deribit.S4KTNET.Sample
             DeribitConfig deribitconfig = new DeribitConfig
             {
                 Environment = DeribitEnvironment.Test,
+                EnableJsonRpcTracing = true,
             };
 
             // construct services

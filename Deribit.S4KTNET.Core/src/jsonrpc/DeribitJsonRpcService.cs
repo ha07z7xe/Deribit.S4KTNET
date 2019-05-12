@@ -76,6 +76,13 @@ namespace Deribit.S4KTNET.Core.JsonRpc
             {
                 ServerRequiresNamedArguments = true,
             });
+            // tracing
+            if (config.EnableJsonRpcTracing)
+            {
+                var listener = new global::SerilogTraceListener.SerilogTraceListener();
+                this.JsonRpc.TraceSource.Listeners.Add(listener);
+                this.logger.Verbose("JsonRpc tracing enabled");
+            }
         }
 
         //------------------------------------------------------------------------------------------------

@@ -9,5 +9,7 @@ namespace Deribit.S4KTNET.Core
         public DeribitEnvironment Environment { get; set; }
 
         public bool ConnectOnConstruction { get; set; }
+
+        public bool EnableJsonRpcTracing { get; set; }
     }
 }
