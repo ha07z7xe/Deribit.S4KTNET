@@ -8,7 +8,7 @@ namespace Deribit.S4KTNET.Core.Supporting
         Task<long> GetTime();
     }
 
-    public class DeribitSupportingService : IDeribitSupportingService
+    internal class DeribitSupportingService : IDeribitSupportingService
     {
         //------------------------------------------------------------------------
         // dependencies

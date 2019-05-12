@@ -1,9 +1,9 @@
 ﻿using System;
 using Deribit.S4KTNET.Core.Authentication;
 
-namespace Deribit.S4KTNET.Core
+namespace Deribit.S4KTNET.Core.JsonRpc
 {
-    public partial interface IJsonRpcProxy
+    partial interface IDeribitJsonRpcProxy
     {
         
     }

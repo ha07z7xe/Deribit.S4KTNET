@@ -10,7 +10,7 @@ namespace Deribit.S4KTNET.Core.SessionManagement
         Task DisableHeartbeat(DisableHeartbeatRequest request);
     }
 
-    public class DeribitSessionManagementService : IDeribitSessionManagementService
+    internal class DeribitSessionManagementService : IDeribitSessionManagementService
     {
         //------------------------------------------------------------------------
         // dependencies

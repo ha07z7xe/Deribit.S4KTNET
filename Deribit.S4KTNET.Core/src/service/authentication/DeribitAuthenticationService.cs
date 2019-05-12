@@ -9,7 +9,7 @@ namespace Deribit.S4KTNET.Core.Authentication
         Task Logout(LogoutRequest request);
     }
 
-    public class DeribitAuthenticationService : IDeribitAuthenticationService
+    internal class DeribitAuthenticationService : IDeribitAuthenticationService
     {
         //------------------------------------------------------------------------
         // dependencies

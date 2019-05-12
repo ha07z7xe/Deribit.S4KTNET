@@ -1,12 +1,18 @@
 ﻿using System;
 using Deribit.S4KTNET.Core.Authentication;
+using Deribit.S4KTNET.Core.JsonRpc;
 using Deribit.S4KTNET.Core.SessionManagement;
 using Deribit.S4KTNET.Core.Supporting;
+using Deribit.S4KTNET.Core.Websocket;
 
 namespace Deribit.S4KTNET.Core
 {
-    public interface IDeribitService : IDisposable
+    public interface IDeribitService
     {
+        IDeribitWebSocketService WebSocket { get; }
+
+        IDeribitJsonRpcService JsonRpc { get; }
+
         IDeribitAuthenticationService Authentication { get; }
 
         IDeribitSessionManagementService SessionManagement { get; }
@@ -14,17 +20,27 @@ namespace Deribit.S4KTNET.Core
         IDeribitSupportingService Supporting { get; }
     }
 
-    public class DeribitService : IDeribitService
+    public class DeribitService : IDeribitService, IDisposable
     {
         //------------------------------------------------------------------------
         // sub services
         //------------------------------------------------------------------------
+
+        public IDeribitWebSocketService WebSocket { get; }
+
+        public IDeribitJsonRpcService JsonRpc { get; }
 
         public IDeribitAuthenticationService Authentication { get; }
 
         public IDeribitSessionManagementService SessionManagement { get; }
 
         public IDeribitSupportingService Supporting { get; }
+
+        //------------------------------------------------------------------------
+        // configuration
+        //------------------------------------------------------------------------
+
+        private readonly DeribitConfig deribitconfig;
 
         //------------------------------------------------------------------------
         // components
@@ -36,9 +52,12 @@ namespace Deribit.S4KTNET.Core
         // construction
         //------------------------------------------------------------------------
 
-        public DeribitService()
+        public DeribitService(DeribitConfig config)
         {
+            this.deribitconfig = config;
             this.logger = Serilog.Log.ForContext<DeribitService>();
+            this.WebSocket = new DeribitWebSocketService(this, config);
+            this.JsonRpc = new DeribitJsonRpcService(this, WebSocket, config);
             this.Authentication = new DeribitAuthenticationService(this);
             this.SessionManagement = new DeribitSessionManagementService(this);
             this.Supporting = new DeribitSupportingService(this);
@@ -50,7 +69,8 @@ namespace Deribit.S4KTNET.Core
 
         public void Dispose()
         {
-
+            (this.WebSocket as DeribitWebSocketService).Dispose();
+            (this.JsonRpc as DeribitJsonRpcService).Dispose();
         }
 
         //------------------------------------------------------------------------
