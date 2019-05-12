@@ -1,5 +1,7 @@
 ﻿using Deribit.S4KTNET.Core;
 using System;
+using Serilog;
+using Serilog.Sinks.SystemConsole.Themes;
 
 namespace Deribit.S4KTNET.Sample
 {
@@ -7,6 +9,9 @@ namespace Deribit.S4KTNET.Sample
     {
         static void Main(string[] args)
         {
+            // configure serilog
+            ConfigureSerilog();
+
             // create config
             DeribitConfig deribitconfig = new DeribitConfig
             {
@@ -19,8 +24,24 @@ namespace Deribit.S4KTNET.Sample
             // connect
             deribit.Connect(default).Wait();
 
+            // wait for input
+            Console.ReadKey();
+
             // dispose
             deribit.Dispose();
+        }
+
+        private static void ConfigureSerilog()
+        {
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Verbose()
+                .WriteTo.Console
+                (
+                    theme: AnsiConsoleTheme.Code,
+                    outputTemplate: "[{Timestamp:HH:mm:ss}] [{Level:u3}] " +
+                    "[{SourceContext:l}] {Message:lj}{NewLine}{Exception}"
+                )
+                .CreateLogger();
         }
     }
 }
