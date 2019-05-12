@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.28803.156
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Deribit.S4KTNET.Core", "Deribit.S4KTNET.Core\Deribit.S4KTNET.Core.csproj", "{1FF805E0-908D-4531-9408-374B0886773E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Deribit.S4KTNET.Core", "Deribit.S4KTNET.Core\Deribit.S4KTNET.Core.csproj", "{1FF805E0-908D-4531-9408-374B0886773E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Deribit.S4KTNET.Test", "Deribit.S4KTNET.Test\Deribit.S4KTNET.Test.csproj", "{94CBBEEF-71E3-475C-B01A-8688CB6C0B61}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Deribit.S4KTNET.Test", "Deribit.S4KTNET.Test\Deribit.S4KTNET.Test.csproj", "{94CBBEEF-71E3-475C-B01A-8688CB6C0B61}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Deribit.S4KTNET.Sample", "Deribit.S4KTNET.Sample\Deribit.S4KTNET.Sample.csproj", "{0FAAB2A6-6A44-4A94-A0C3-7F9850F3AD7A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{94CBBEEF-71E3-475C-B01A-8688CB6C0B61}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{94CBBEEF-71E3-475C-B01A-8688CB6C0B61}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{94CBBEEF-71E3-475C-B01A-8688CB6C0B61}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0FAAB2A6-6A44-4A94-A0C3-7F9850F3AD7A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0FAAB2A6-6A44-4A94-A0C3-7F9850F3AD7A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0FAAB2A6-6A44-4A94-A0C3-7F9850F3AD7A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0FAAB2A6-6A44-4A94-A0C3-7F9850F3AD7A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

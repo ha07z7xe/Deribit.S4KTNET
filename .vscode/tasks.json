@@ -17,10 +17,23 @@
             "problemMatcher": "$msCompile"
         },
         {
+            "label": "[Deribit.S4KTNET.Sample] [build]",
+            "command": "dotnet build",
+            "type": "shell",
+            "group": "build",
+            "presentation": {
+                "reveal": "always"
+            },
+            "options": {
+                "cwd": "${workspaceFolder}/Deribit.S4KTNET.Sample/"
+            },
+            "problemMatcher": "$msCompile"
+        },
+        {
             "label": "[Deribit.S4KTNET.Test] [build]",
             "command": "dotnet build",
             "type": "shell",
-            "group": "test",
+            "group": "build",
             "presentation": {
                 "reveal": "always"
             },
