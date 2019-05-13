@@ -1,3 +1,5 @@
+**This library is a work in progress and will be force-pushed**
+
 # Deribit.S4KTNET
 Deribit Rest and Websocket library
 
