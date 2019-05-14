@@ -22,3 +22,11 @@ Design
 todo
 ======================
 * check Dispose methods are called on DeribitService disposal
+
+
+Subscriptions
+==========================
+* accept JToken
+* deserialize to strongly typed object based off channel type
+* Create dtos, and model types
+* emit both events and observables from SubscriptionManagementService

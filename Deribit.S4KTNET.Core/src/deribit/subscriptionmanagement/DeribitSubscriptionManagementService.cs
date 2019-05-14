@@ -2,6 +2,7 @@
 using AutoMapper;
 using Deribit.S4KTNET.Core.JsonRpc;
 using FluentValidation;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -53,7 +54,15 @@ namespace Deribit.S4KTNET.Core.SubscriptionManagement
             this.rpcproxy = rpcproxy;
             this.jsonrpc = jsonrpc;
             this.rpcproxy.subscription += this.handle_notification;
+
+            //this.jsonrpc.AddLocalRpcMethod("subscription", (Action<object, object>) subscription2);
+            
         }
+
+        //public void subscription2(object channel, object data)
+        //{
+
+        //}
 
         //------------------------------------------------------------------------------------------------
         // module
@@ -160,7 +169,7 @@ namespace Deribit.S4KTNET.Core.SubscriptionManagement
         // notification handling
         //------------------------------------------------------------------------------------------------
 
-        private void handle_notification(object sender, SubscriptionNotificationDto e)
+        private void handle_notification(object sender, JToken e)
         {
             ;
         }
