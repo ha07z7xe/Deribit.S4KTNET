@@ -1,5 +1,6 @@
 ﻿using Deribit.S4KTNET.Core.SubscriptionManagement;
 using Deribit.S4KTNET.Core.Supporting;
+using Newtonsoft.Json.Linq;
 using StreamJsonRpc;
 using System;
 using System.Threading;
@@ -22,7 +23,7 @@ namespace Deribit.S4KTNET.Core.JsonRpc
 
         */
 
-        event EventHandler<SubscriptionNotificationDto> subscription;
+        event EventHandler<JToken> subscription;
 
         [JsonRpcMethod("public/subscribe")]
         Task<string[]> subscribe_public(string[] channels, CancellationToken ct);
