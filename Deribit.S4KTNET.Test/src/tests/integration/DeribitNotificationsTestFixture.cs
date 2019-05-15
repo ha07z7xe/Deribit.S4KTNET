@@ -14,7 +14,8 @@ namespace Deribit.S4KTNET.Test.Integration
     class NotificationsTestFixture : DeribitIntegrationTestFixtureBase,
         IObserver<AnnouncementsNotification>,
         IObserver<BookDepthLimitedNotification>,
-        IObserver<BookFullNotification>
+        IObserver<BookFullNotification>,
+        IObserver<DeribitPriceIndexNotification>
     {
         //----------------------------------------------------------------------------
         // configuration
@@ -41,6 +42,7 @@ namespace Deribit.S4KTNET.Test.Integration
         private int announcementnotificationcount = 0;
         private int bookdepthlimitednotificationcount = 0;
         private int bookfullnotificationcount = 0;
+        private int deribitpriceindexnotificationcount = 0;
 
         //----------------------------------------------------------------------------
         // lifecycle
@@ -129,6 +131,26 @@ namespace Deribit.S4KTNET.Test.Integration
         }
 
         //----------------------------------------------------------------------------
+        // deribit price index
+        //----------------------------------------------------------------------------
+
+        [Test]
+        public async Task DeribitPriceIndexStream()
+        {
+            using (var sub = this.deribit.SubscriptionManagement.DeribitPriceIndexStream.Subscribe(this))
+            {
+                await Task.Delay(mediumwait);
+            }
+            //Assert.That(this.deribitpriceindexnotificationcount, Is.GreaterThan(0));
+        }
+
+        public void OnNext(DeribitPriceIndexNotification value)
+        {
+            Log.Information($"{value.channel} | Received {nameof(DeribitPriceIndexNotification)} {value.sequencenumber}");
+            Interlocked.Increment(ref this.deribitpriceindexnotificationcount);
+        }
+
+        //----------------------------------------------------------------------------
 
         public void OnCompleted()
         {
@@ -139,6 +161,7 @@ namespace Deribit.S4KTNET.Test.Integration
         {
             throw error;
         }
+
 
         //----------------------------------------------------------------------------
     }
