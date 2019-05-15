@@ -6,6 +6,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using System.Threading;
 
 namespace Deribit.S4KTNET.Core.SubscriptionManagement
 {
@@ -22,14 +23,16 @@ namespace Deribit.S4KTNET.Core.SubscriptionManagement
 
         internal class Profile : AutoMapper.Profile
         {
+            private int sequencenumber = 1 << 10;
             public Profile()
             {
                 this.CreateMap<BookDepthLimitedNotificationDto, BookDepthLimitedNotification>()
                     .ForMember(d => d.channelprefix, o => o.MapFrom(s => DeribitChannelPrefix.book))
+                    .ForMember(d => d.sequencenumber, o => o.MapFrom(s => Interlocked.Increment(ref sequencenumber)))
                     .ForMember(d => d.group, o => o.Ignore())
                     .ForMember(d => d.depth, o => o.Ignore())
                     .ForMember(d => d.interval, o => o.Ignore())
-                    .IncludeBase(typeof(SubscriptionNotificationDto<>), typeof(SubscriptionNotification<>))
+                    .IncludeBase(typeof(SubscriptionNotificationDto<BookDepthLimitedDataDto>), typeof(SubscriptionNotification<BookDepthLimitedData>))
                     .AfterMap((s, d) =>
                     {
                         var channelpieces = d.channel.Split('.');

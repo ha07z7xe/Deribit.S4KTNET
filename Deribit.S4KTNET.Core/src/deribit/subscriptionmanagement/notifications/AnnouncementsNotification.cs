@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using Deribit.S4KTNET.Core.Mapping;
 
 namespace Deribit.S4KTNET.Core.SubscriptionManagement
@@ -9,11 +10,13 @@ namespace Deribit.S4KTNET.Core.SubscriptionManagement
     {
         internal class Profile : AutoMapper.Profile
         {
+            private int sequencenumber = 1 << 10;
             public Profile()
             {
                 this.CreateMap<AnnouncementsNotificationDto, AnnouncementsNotification>()
                     .ForMember(d => d.channelprefix, o => o.MapFrom(s => DeribitChannelPrefix.announcements))
-                    .IncludeBase(typeof(SubscriptionNotificationDto<>), typeof(SubscriptionNotification<>));
+                    .ForMember(d => d.sequencenumber, o => o.MapFrom(s => Interlocked.Increment(ref sequencenumber)))
+                    .IncludeBase(typeof(SubscriptionNotificationDto<AnnouncementsDataDto>), typeof(SubscriptionNotification<AnnouncementsData>));
             }
         }
 

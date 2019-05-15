@@ -32,18 +32,6 @@ namespace Deribit.S4KTNET.Test.Integration
             Log.CloseAndFlush();
         }
 
-
-        [SetUp]
-        public void SetUp()
-        {
-
-        }
-
-        [TearDown]
-        public void TearDown()
-        {
-
-        }
         //----------------------------------------------------------------------------
     }
 }

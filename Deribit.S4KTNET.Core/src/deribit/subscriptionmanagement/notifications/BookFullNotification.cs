@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace Deribit.S4KTNET.Core.SubscriptionManagement
 {
@@ -17,12 +18,14 @@ namespace Deribit.S4KTNET.Core.SubscriptionManagement
 
         internal class Profile : AutoMapper.Profile
         {
+            private int sequencenumber = 1 << 10;
             public Profile()
             {
                 this.CreateMap<BookFullNotificationDto, BookFullNotification>()
                     .ForMember(d => d.channelprefix, o => o.MapFrom(s => DeribitChannelPrefix.book))
+                    .ForMember(d => d.sequencenumber, o => o.MapFrom(s => Interlocked.Increment(ref sequencenumber)))
                     .ForMember(d => d.interval, o => o.Ignore())
-                    .IncludeBase(typeof(SubscriptionNotificationDto<>), typeof(SubscriptionNotification<>))
+                    .IncludeBase(typeof(SubscriptionNotificationDto<BookFullDataDto>), typeof(SubscriptionNotification<BookFullData>))
                     .AfterMap((s, d) =>
                     {
                         var channelpieces = d.channel.Split('.');
