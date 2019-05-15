@@ -34,6 +34,14 @@ namespace Deribit.S4KTNET.Core.SubscriptionManagement
                     });
             }
         }
+
+        internal class Validator : AbstractValidator<BookFullNotification>
+        {
+            public Validator()
+            {
+                this.RuleFor(x => x.data).SetValidator(new BookFullData.Validator());
+            }
+        }
     }
 
     public class BookFullNotificationDto : SubscriptionNotificationDto<BookFullDataDto>
@@ -65,6 +73,16 @@ namespace Deribit.S4KTNET.Core.SubscriptionManagement
                 this.CreateMap<BookFullDataDto, BookFullData>()
                     .ForMember(d => d.timestamp, 
                         o => o.ConvertUsing<UnixTimestampMillisValueConverter, long>(s => s.timestamp));
+            }
+        }
+
+        internal class Validator : AbstractValidator<BookFullData>
+        {
+            public Validator()
+            {
+                var v2 = new BookFullOrder.Validator();
+                this.RuleForEach(x => x.asks).SetValidator(v2);
+                this.RuleForEach(x => x.bids).SetValidator(v2);
             }
         }
     }
@@ -125,14 +143,4 @@ namespace Deribit.S4KTNET.Core.SubscriptionManagement
         change,
         delete,
     }
-
-    //public class BookFullOrderDto
-    //{
-    //    // "new" | "change" | "delete"
-    //    public string action { get; set; }
-
-    //    public decimal price { get; set; }
-
-    //    public decimal amount { get; set; }
-    //}
 }

@@ -43,6 +43,14 @@ namespace Deribit.S4KTNET.Core.SubscriptionManagement
                     });
             }
         }
+
+        internal class Validator : FluentValidation.AbstractValidator<BookDepthLimitedNotification>
+        {
+            public Validator()
+            {
+                this.RuleFor(x => x.data).SetValidator(new BookDepthLimitedData.Validator());
+            }
+        }
     }
 
     public class BookDepthLimitedNotificationDto : SubscriptionNotificationDto<BookDepthLimitedDataDto>
@@ -69,6 +77,16 @@ namespace Deribit.S4KTNET.Core.SubscriptionManagement
                 this.CreateMap<BookDepthLimitedDataDto, BookDepthLimitedData>()
                     .ForMember(d => d.timestamp, 
                         o => o.ConvertUsing<UnixTimestampMillisValueConverter, long>(s => s.timestamp));
+            }
+        }
+
+        internal class Validator : FluentValidation.AbstractValidator<BookDepthLimitedData>
+        {
+            public Validator()
+            {
+                var v2 = new BookDepthLimitedOrder.Validator();
+                this.RuleForEach(x => x.asks).SetValidator(v2);
+                this.RuleForEach(x => x.bids).SetValidator(v2);
             }
         }
     }
@@ -112,11 +130,4 @@ namespace Deribit.S4KTNET.Core.SubscriptionManagement
             }
         }
     }
-
-    //public class BookDepthLimitedOrderDto
-    //{
-    //    public decimal price { get; set; }
-
-    //    public decimal amount { get; set; }
-    //}
 }

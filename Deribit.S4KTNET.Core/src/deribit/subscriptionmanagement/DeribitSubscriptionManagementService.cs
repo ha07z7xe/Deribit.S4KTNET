@@ -196,6 +196,8 @@ namespace Deribit.S4KTNET.Core.SubscriptionManagement
                     var dto = e.ToObject<AnnouncementsNotificationDto>(jsonser);
                     // map
                     var noti = this.mapper.Map<AnnouncementsNotification>(dto);
+                    // validate
+                    new AnnouncementsNotification.Validator().ValidateAndThrow(noti);
                     // raise
                     this.AnnouncementsSubject.OnNext(noti);
                 }
@@ -208,6 +210,8 @@ namespace Deribit.S4KTNET.Core.SubscriptionManagement
                         var dto = e.ToObject<BookDepthLimitedNotificationDto>(jsonser);
                         // map
                         var noti = this.mapper.Map<BookDepthLimitedNotification>(dto);
+                        // validate
+                        new BookDepthLimitedNotification.Validator().ValidateAndThrow(noti);
                         // raise
                         this.BookDepthLimitedSubject.OnNext(noti);
                     }
@@ -218,6 +222,8 @@ namespace Deribit.S4KTNET.Core.SubscriptionManagement
                         var dto = e.ToObject<BookFullNotificationDto>(jsonser);
                         // map
                         var noti = this.mapper.Map<BookFullNotification>(dto);
+                        // validate
+                        new BookFullNotification.Validator().ValidateAndThrow(noti);
                         // raise
                         this.BookFullSubject.OnNext(noti);
                     }

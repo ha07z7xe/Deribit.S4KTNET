@@ -16,6 +16,11 @@ namespace Deribit.S4KTNET.Core.SubscriptionManagement
                     .IncludeBase(typeof(SubscriptionNotificationDto<>), typeof(SubscriptionNotification<>));
             }
         }
+
+        internal class Validator : FluentValidation.AbstractValidator<AnnouncementsNotification>
+        {
+
+        }
     }
 
     public class AnnouncementsNotificationDto : SubscriptionNotificationDto<AnnouncementsDataDto>
