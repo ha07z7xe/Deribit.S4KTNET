@@ -3,6 +3,7 @@ using Deribit.S4KTNET.Core.SubscriptionManagement;
 using NUnit.Framework;
 using Serilog;
 using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -31,8 +32,10 @@ namespace Deribit.S4KTNET.Test.Integration
 
         private static readonly string[] channels = new string[]
         {
-            DeribitSubscriptions.trades(DeribitInstruments.Perpetual.BTCPERPETRUAL, Interval.raw),
+            //DeribitSubscriptions.announcements,
+            //DeribitSubscriptions.book(DeribitInstruments.Perpetual.BTCPERPETRUAL, OrderbookGrouping._5, OrderbookDepth._10, Interval._100ms),
             DeribitSubscriptions.book(DeribitInstruments.Perpetual.BTCPERPETRUAL, Interval._100ms),
+            DeribitSubscriptions.deribit_price_index(DeribitIndices.btc_usd),
         };
 
         //----------------------------------------------------------------------------
@@ -75,8 +78,10 @@ namespace Deribit.S4KTNET.Test.Integration
         //----------------------------------------------------------------------------
 
         [Test]
+        [Ignore("unauthorized")]
         public async Task TestAnnouncementsStream()
         {
+            Assert.That(channels.Any(c => c.StartsWith(DeribitChannelPrefix.announcements)));
             using (var sub = this.deribit.SubscriptionManagement.AnnouncementsStream.Subscribe(this))
             {
                 await Task.Delay(shortwait);
@@ -95,8 +100,10 @@ namespace Deribit.S4KTNET.Test.Integration
         //----------------------------------------------------------------------------
 
         [Test]
+        [Ignore("unauthorized")]
         public async Task BookDepthLimitedStream()
         {
+            Assert.That(channels.Any(c => c.StartsWith(DeribitChannelPrefix.book)));
             using (var sub = this.deribit.SubscriptionManagement.BookDepthLimitedStream.Subscribe(this))
             {
                 await Task.Delay(mediumwait);
@@ -117,6 +124,7 @@ namespace Deribit.S4KTNET.Test.Integration
         [Test]
         public async Task BookFullStream()
         {
+            Assert.That(channels.Any(c => c.StartsWith(DeribitChannelPrefix.book)));
             using (var sub = this.deribit.SubscriptionManagement.BookFullStream.Subscribe(this))
             {
                 await Task.Delay(mediumwait);
@@ -137,11 +145,12 @@ namespace Deribit.S4KTNET.Test.Integration
         [Test]
         public async Task DeribitPriceIndexStream()
         {
+            Assert.That(channels.Any(c => c.StartsWith(DeribitChannelPrefix.deribit_price_index)));
             using (var sub = this.deribit.SubscriptionManagement.DeribitPriceIndexStream.Subscribe(this))
             {
                 await Task.Delay(mediumwait);
             }
-            //Assert.That(this.deribitpriceindexnotificationcount, Is.GreaterThan(0));
+            Assert.That(this.deribitpriceindexnotificationcount, Is.GreaterThan(0));
         }
 
         public void OnNext(DeribitPriceIndexNotification value)
