@@ -185,7 +185,7 @@ namespace Deribit.S4KTNET.Core.SubscriptionManagement
             lock (this) // REMOVE THIS!
             {
                 // get channel name
-                string channel = e["channel"].ToString();
+                string channel = (string) e["channel"];
                 // validate
                 if (string.IsNullOrEmpty(channel))
                     throw new Exception();
