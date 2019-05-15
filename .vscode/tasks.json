@@ -82,6 +82,19 @@
             "problemMatcher": "$msCompile"
         },
         {
+            "label": "Deribit.S4KTNET.Test [test validation]",
+            "command": "dotnet test --filter='category=validation'",
+            "type": "shell",
+            "group": "test",
+            "presentation": {
+                "reveal": "always"
+            },
+            "options": {
+                "cwd": "${workspaceFolder}/Deribit.S4KTNET.Test/"
+            },
+            "problemMatcher": "$msCompile"
+        },
+        {
             "label": "Deribit.S4KTNET.Test [test integration]",
             "command": "dotnet test --filter='category=integration'",
             "type": "shell",
