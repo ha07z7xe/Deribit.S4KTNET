@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Deribit.S4KTNET.Core.Mapping;
 using FluentValidation;
+using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -12,13 +13,25 @@ namespace Deribit.S4KTNET.Core.SubscriptionManagement
 
     public class BookFullNotification : SubscriptionNotification<BookFullData>
     {
+        public Interval interval { get; set; }
+
         internal class Profile : AutoMapper.Profile
         {
             public Profile()
             {
                 this.CreateMap<BookFullNotificationDto, BookFullNotification>()
                     .ForMember(d => d.channelprefix, o => o.MapFrom(s => DeribitChannelPrefix.book))
-                    .IncludeBase(typeof(SubscriptionNotificationDto<>), typeof(SubscriptionNotification<>));
+                    .ForMember(d => d.interval, o => o.Ignore())
+                    .IncludeBase(typeof(SubscriptionNotificationDto<>), typeof(SubscriptionNotification<>))
+                    .AfterMap((s, d) =>
+                    {
+                        var channelpieces = d.channel.Split('.');
+                        if (channelpieces.Length != 3)
+                            throw new Exception();
+                        if (channelpieces[0] != DeribitChannelPrefix.book)
+                            throw new Exception();
+                        d.interval = channelpieces[2].ToInterval();
+                    });
             }
         }
     }
@@ -59,9 +72,9 @@ namespace Deribit.S4KTNET.Core.SubscriptionManagement
 
     public class BookFullDataDto
     {
-        public IList<BookFullOrderDto> asks { get; set; }
+        public IList<object[]> asks { get; set; }
 
-        public IList<BookFullOrderDto> bids { get; set; }
+        public IList<object[]> bids { get; set; }
 
         public long change_id { get; set; }
 
@@ -88,7 +101,10 @@ namespace Deribit.S4KTNET.Core.SubscriptionManagement
         {
             public Profile()
             {
-                this.CreateMap<BookFullOrderDto, BookFullOrder>();
+                this.CreateMap<object[], BookFullOrder>()
+                    .ForMember(d => d.action, o => o.MapFrom(s => Enum.Parse(typeof(BookFullOrderAction), (string) s[0])))
+                    .ForMember(d => d.price, o => o.MapFrom(s => s[1]))
+                    .ForMember(d => d.amount, o => o.MapFrom(s => s[2]));
             }
         }
 
@@ -110,13 +126,13 @@ namespace Deribit.S4KTNET.Core.SubscriptionManagement
         delete,
     }
 
-    public class BookFullOrderDto
-    {
-        // "new" | "change" | "delete"
-        public string action { get; set; }
+    //public class BookFullOrderDto
+    //{
+    //    // "new" | "change" | "delete"
+    //    public string action { get; set; }
 
-        public decimal price { get; set; }
+    //    public decimal price { get; set; }
 
-        public decimal amount { get; set; }
-    }
+    //    public decimal amount { get; set; }
+    //}
 }

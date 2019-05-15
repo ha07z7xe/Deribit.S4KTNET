@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using Newtonsoft.Json;
+using System.Linq;
 
 namespace Deribit.S4KTNET.Core.SubscriptionManagement
 {
@@ -18,7 +19,8 @@ namespace Deribit.S4KTNET.Core.SubscriptionManagement
         // subscription streams
         //------------------------------------------------------------------------------------------------
         IObservable<AnnouncementsNotification> AnnouncementsStream { get; }
-        IObservable<BookDepthLimitedNotification> BookStream { get; }
+        IObservable<BookDepthLimitedNotification> BookDepthLimitedStream { get; }
+        IObservable<BookFullNotification> BookFullStream { get; }
         //------------------------------------------------------------------------------------------------
         // subscribe / unsubscribe
         //------------------------------------------------------------------------------------------------
@@ -38,8 +40,11 @@ namespace Deribit.S4KTNET.Core.SubscriptionManagement
         public IObservable<AnnouncementsNotification> AnnouncementsStream => AnnouncementsSubject;
         private readonly ISubject<AnnouncementsNotification> AnnouncementsSubject = new Subject<AnnouncementsNotification>();
 
-        public IObservable<BookDepthLimitedNotification> BookStream => BookSubject;
-        private readonly ISubject<BookDepthLimitedNotification> BookSubject = new Subject<BookDepthLimitedNotification>();
+        public IObservable<BookDepthLimitedNotification> BookDepthLimitedStream => BookDepthLimitedSubject;
+        private readonly ISubject<BookDepthLimitedNotification> BookDepthLimitedSubject = new Subject<BookDepthLimitedNotification>();
+
+        public IObservable<BookFullNotification> BookFullStream => BookFullSubject;
+        private readonly ISubject<BookFullNotification> BookFullSubject = new Subject<BookFullNotification>();
 
         //------------------------------------------------------------------------------------------------
         // dependencies
@@ -177,33 +182,54 @@ namespace Deribit.S4KTNET.Core.SubscriptionManagement
 
         private void handle_notification(object sender, JToken e)
         {
-            // get channel name
-            string channel = e["channel"].ToString();
-            // validate
-            if (string.IsNullOrEmpty(channel))
-                throw new Exception();
-            // switch channel
-            if (channel.StartsWith(DeribitChannelPrefix.announcements))
+            lock (this) // REMOVE THIS!
             {
-                // deserialize
-                var dto = e.ToObject<AnnouncementsNotificationDto>(jsonser);
-                // map
-                var noti = this.mapper.Map<AnnouncementsNotification>(dto);
-                // resolve
-                this.AnnouncementsSubject.OnNext(noti);
-            }
-            else if (channel.StartsWith(DeribitChannelPrefix.book))
-            {
-                // deserialize
-                var dto = e.ToObject<BookDepthLimitedNotificationDto>(jsonser);
-                // map
-                var noti = this.mapper.Map<BookDepthLimitedNotification>(dto);
-                // resolve
-                this.BookSubject.OnNext(noti);
-            }
-            else
-            {
-                throw new NotImplementedException();
+                // get channel name
+                string channel = e["channel"].ToString();
+                // validate
+                if (string.IsNullOrEmpty(channel))
+                    throw new Exception();
+                // switch channel
+                if (channel.StartsWith(DeribitChannelPrefix.announcements))
+                {
+                    // deserialize
+                    var dto = e.ToObject<AnnouncementsNotificationDto>(jsonser);
+                    // map
+                    var noti = this.mapper.Map<AnnouncementsNotification>(dto);
+                    // raise
+                    this.AnnouncementsSubject.OnNext(noti);
+                }
+                else if (channel.StartsWith(DeribitChannelPrefix.book))
+                {
+                    // depth limited orderbook
+                    if (channel.Count(c => c == '.') == 4)
+                    {
+                        // deserialize
+                        var dto = e.ToObject<BookDepthLimitedNotificationDto>(jsonser);
+                        // map
+                        var noti = this.mapper.Map<BookDepthLimitedNotification>(dto);
+                        // raise
+                        this.BookDepthLimitedSubject.OnNext(noti);
+                    }
+                    // full orderbook
+                    else if (channel.Count(c => c == '.') == 2)
+                    {
+                        // deserialize
+                        var dto = e.ToObject<BookFullNotificationDto>(jsonser);
+                        // map
+                        var noti = this.mapper.Map<BookFullNotification>(dto);
+                        // raise
+                        this.BookFullSubject.OnNext(noti);
+                    }
+                    else
+                    {
+                        throw new Exception();
+                    }
+                }
+                else
+                {
+                    throw new NotImplementedException();
+                }
             }
         }
 

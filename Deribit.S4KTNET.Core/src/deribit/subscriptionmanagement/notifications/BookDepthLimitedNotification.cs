@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
 using Deribit.S4KTNET.Core.Mapping;
 using FluentValidation;
+using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 namespace Deribit.S4KTNET.Core.SubscriptionManagement
 {
@@ -12,13 +14,33 @@ namespace Deribit.S4KTNET.Core.SubscriptionManagement
 
     public class BookDepthLimitedNotification : SubscriptionNotification<BookDepthLimitedData>
     {
+        public OrderbookGrouping group { get; set; }
+
+        public OrderbookDepth depth { get; set; }
+
+        public Interval interval { get; set; }
+
         internal class Profile : AutoMapper.Profile
         {
             public Profile()
             {
                 this.CreateMap<BookDepthLimitedNotificationDto, BookDepthLimitedNotification>()
                     .ForMember(d => d.channelprefix, o => o.MapFrom(s => DeribitChannelPrefix.book))
-                    .IncludeBase(typeof(SubscriptionNotificationDto<>), typeof(SubscriptionNotification<>));
+                    .ForMember(d => d.group, o => o.Ignore())
+                    .ForMember(d => d.depth, o => o.Ignore())
+                    .ForMember(d => d.interval, o => o.Ignore())
+                    .IncludeBase(typeof(SubscriptionNotificationDto<>), typeof(SubscriptionNotification<>))
+                    .AfterMap((s, d) =>
+                    {
+                        var channelpieces = d.channel.Split('.');
+                        if (channelpieces.Length != 5)
+                            throw new Exception();
+                        if (channelpieces[0] != DeribitChannelPrefix.book)
+                            throw new Exception();
+                        d.group = channelpieces[2].ToOrderbookGrouping();
+                        d.depth = channelpieces[3].ToOrderbookDepth();
+                        d.interval = channelpieces[4].ToInterval();
+                    });
             }
         }
     }
@@ -54,9 +76,9 @@ namespace Deribit.S4KTNET.Core.SubscriptionManagement
 
     public class BookDepthLimitedDataDto
     {
-        public IList<BookDepthLimitedOrderDto> asks { get; set; }
+        public IList<object[]> asks { get; set; }
 
-        public IList<BookDepthLimitedOrderDto> bids { get; set; }
+        public IList<object[]> bids { get; set; }
 
         public long change_id { get; set; }
 
@@ -76,7 +98,9 @@ namespace Deribit.S4KTNET.Core.SubscriptionManagement
         {
             public Profile()
             {
-                this.CreateMap<BookDepthLimitedOrderDto, BookDepthLimitedOrder>();
+                this.CreateMap<object[], BookDepthLimitedOrder>()
+                    .ForMember(d => d.price, o => o.MapFrom(s => s[0]))
+                    .ForMember(d => d.amount, o => o.MapFrom(s => s[1]));
             }
         }
 
@@ -89,10 +113,10 @@ namespace Deribit.S4KTNET.Core.SubscriptionManagement
         }
     }
 
-    public class BookDepthLimitedOrderDto
-    {
-        public decimal price { get; set; }
+    //public class BookDepthLimitedOrderDto
+    //{
+    //    public decimal price { get; set; }
 
-        public decimal amount { get; set; }
-    }
+    //    public decimal amount { get; set; }
+    //}
 }

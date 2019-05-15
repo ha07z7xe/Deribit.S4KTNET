@@ -22,7 +22,7 @@ Design
 todo
 ======================
 * check Dispose methods are called on DeribitService disposal
-
+* string interning on deserialization / mapping of notification objects
 
 Subscriptions
 ==========================
