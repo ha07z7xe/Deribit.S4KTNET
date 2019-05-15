@@ -21,6 +21,7 @@ namespace Deribit.S4KTNET.Core.SubscriptionManagement
         IObservable<AnnouncementsNotification> AnnouncementsStream { get; }
         IObservable<BookDepthLimitedNotification> BookDepthLimitedStream { get; }
         IObservable<BookFullNotification> BookFullStream { get; }
+        IObservable<DeribitPriceIndexNotification> DeribitPriceIndexStream { get; }
         //------------------------------------------------------------------------------------------------
         // subscribe / unsubscribe
         //------------------------------------------------------------------------------------------------
@@ -45,6 +46,9 @@ namespace Deribit.S4KTNET.Core.SubscriptionManagement
 
         public IObservable<BookFullNotification> BookFullStream => BookFullSubject;
         private readonly ISubject<BookFullNotification> BookFullSubject = new Subject<BookFullNotification>();
+
+        public IObservable<DeribitPriceIndexNotification> DeribitPriceIndexStream => DeribitPriceIndexSubject;
+        private readonly ISubject<DeribitPriceIndexNotification> DeribitPriceIndexSubject = new Subject<DeribitPriceIndexNotification>();
 
         //------------------------------------------------------------------------------------------------
         // dependencies
@@ -231,6 +235,17 @@ namespace Deribit.S4KTNET.Core.SubscriptionManagement
                     {
                         throw new Exception();
                     }
+                }
+                else if (channel.StartsWith(DeribitChannelPrefix.deribit_price_index))
+                {
+                    // deserialize
+                    var dto = e.ToObject<DeribitPriceIndexNotificationDto>(jsonser);
+                    // map
+                    var noti = this.mapper.Map<DeribitPriceIndexNotification>(dto);
+                    // validate
+                    new DeribitPriceIndexNotification.Validator().ValidateAndThrow(noti);
+                    // raise
+                    this.DeribitPriceIndexSubject.OnNext(noti);
                 }
                 else
                 {
