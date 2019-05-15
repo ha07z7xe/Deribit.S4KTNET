@@ -6,6 +6,9 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Reactive.Linq;
+using System.Reactive.Subjects;
+using Newtonsoft.Json;
 
 namespace Deribit.S4KTNET.Core.SubscriptionManagement
 {
@@ -14,7 +17,8 @@ namespace Deribit.S4KTNET.Core.SubscriptionManagement
         //------------------------------------------------------------------------------------------------
         // subscription streams
         //------------------------------------------------------------------------------------------------
-        event EventHandler<SubscriptionNotificationDto> subscription;
+        IObservable<AnnouncementsNotification> AnnouncementsStream { get; }
+        IObservable<BookDepthLimitedNotification> BookStream { get; }
         //------------------------------------------------------------------------------------------------
         // subscribe / unsubscribe
         //------------------------------------------------------------------------------------------------
@@ -28,10 +32,14 @@ namespace Deribit.S4KTNET.Core.SubscriptionManagement
     internal class DeribitSubscriptionManagementService : IDeribitSubscriptionManagementService, IDisposable
     {
         //------------------------------------------------------------------------------------------------
-        // events
+        // streams
         //------------------------------------------------------------------------------------------------
 
-        public event EventHandler<SubscriptionNotificationDto> subscription;
+        public IObservable<AnnouncementsNotification> AnnouncementsStream => AnnouncementsSubject;
+        private readonly ISubject<AnnouncementsNotification> AnnouncementsSubject = new Subject<AnnouncementsNotification>();
+
+        public IObservable<BookDepthLimitedNotification> BookStream => BookSubject;
+        private readonly ISubject<BookDepthLimitedNotification> BookSubject = new Subject<BookDepthLimitedNotification>();
 
         //------------------------------------------------------------------------------------------------
         // dependencies
@@ -41,6 +49,12 @@ namespace Deribit.S4KTNET.Core.SubscriptionManagement
         private readonly IMapper mapper;
         private readonly IDeribitJsonRpcProxy rpcproxy;
         private readonly StreamJsonRpc.JsonRpc jsonrpc;
+
+        //------------------------------------------------------------------------------------------------
+        // fields
+        //------------------------------------------------------------------------------------------------
+
+        private readonly JsonSerializer jsonser = new JsonSerializer();
 
         //------------------------------------------------------------------------------------------------
         // construction
@@ -54,15 +68,7 @@ namespace Deribit.S4KTNET.Core.SubscriptionManagement
             this.rpcproxy = rpcproxy;
             this.jsonrpc = jsonrpc;
             this.rpcproxy.subscription += this.handle_notification;
-
-            //this.jsonrpc.AddLocalRpcMethod("subscription", (Action<object, object>) subscription2);
-            
         }
-
-        //public void subscription2(object channel, object data)
-        //{
-
-        //}
 
         //------------------------------------------------------------------------------------------------
         // module
@@ -171,7 +177,34 @@ namespace Deribit.S4KTNET.Core.SubscriptionManagement
 
         private void handle_notification(object sender, JToken e)
         {
-            ;
+            // get channel name
+            string channel = e["channel"].ToString();
+            // validate
+            if (string.IsNullOrEmpty(channel))
+                throw new Exception();
+            // switch channel
+            if (channel.StartsWith(DeribitChannelPrefix.announcements))
+            {
+                // deserialize
+                var dto = e.ToObject<AnnouncementsNotificationDto>(jsonser);
+                // map
+                var noti = this.mapper.Map<AnnouncementsNotification>(dto);
+                // resolve
+                this.AnnouncementsSubject.OnNext(noti);
+            }
+            else if (channel.StartsWith(DeribitChannelPrefix.book))
+            {
+                // deserialize
+                var dto = e.ToObject<BookDepthLimitedNotificationDto>(jsonser);
+                // map
+                var noti = this.mapper.Map<BookDepthLimitedNotification>(dto);
+                // resolve
+                this.BookSubject.OnNext(noti);
+            }
+            else
+            {
+                throw new NotImplementedException();
+            }
         }
 
         //------------------------------------------------------------------------------------------------

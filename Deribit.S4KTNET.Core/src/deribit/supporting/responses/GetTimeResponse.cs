@@ -19,7 +19,7 @@ namespace Deribit.S4KTNET.Core.Supporting
                 this.CreateMap<long, GetTimeResponse>()
                     .ForMember(d => d.server_time_millis, o => o.MapFrom(s => s))
                     .ForMember(d => d.server_time, 
-                        o => o.ConvertUsing<UnixTimestampMillisValueResolver, long>(s => s));
+                        o => o.ConvertUsing<UnixTimestampMillisValueConverter, long>(s => s));
             }
         }
 

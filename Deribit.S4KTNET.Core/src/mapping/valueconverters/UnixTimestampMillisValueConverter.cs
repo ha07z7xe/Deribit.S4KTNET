@@ -3,7 +3,7 @@ using AutoMapper;
 
 namespace Deribit.S4KTNET.Core.Mapping
 {
-    class UnixTimestampMillisValueResolver : IValueConverter<long, DateTime>
+    class UnixTimestampMillisValueConverter : IValueConverter<long, DateTime>
     {
         public DateTime Convert(long sourceMember, ResolutionContext context)
         {

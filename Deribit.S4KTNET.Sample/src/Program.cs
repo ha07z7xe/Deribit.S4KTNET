@@ -93,7 +93,7 @@ namespace Deribit.S4KTNET.Sample
                 {
                         channels = new string[] 
                         {
-                            DeribitSubscriptions.trades(DeribitInstruments.Perpetual.BTCPERPETRUAL, Interval.raw),
+                            //DeribitSubscriptions.trades(DeribitInstruments.Perpetual.BTCPERPETRUAL, Interval.raw),
                             DeribitSubscriptions.book(DeribitInstruments.Perpetual.BTCPERPETRUAL, Interval._100ms),
                         },
                 });
@@ -111,7 +111,7 @@ namespace Deribit.S4KTNET.Sample
                     {
                         channels = new string[]
                         {
-                            DeribitSubscriptions.trades(DeribitInstruments.Perpetual.BTCPERPETRUAL, Interval.raw),
+                            //DeribitSubscriptions.trades(DeribitInstruments.Perpetual.BTCPERPETRUAL, Interval.raw),
                             DeribitSubscriptions.book(DeribitInstruments.Perpetual.BTCPERPETRUAL, Interval._100ms),
                         },
                     });
