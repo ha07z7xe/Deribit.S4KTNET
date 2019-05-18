@@ -17,7 +17,8 @@ namespace Deribit.S4KTNET.Test.Integration
         IObserver<BookDepthLimitedNotification>,
         IObserver<BookFullNotification>,
         IObserver<DeribitPriceIndexNotification>,
-        IObserver<QuoteNotification>
+        IObserver<QuoteNotification>,
+        IObserver<TradeNotification>
     {
         //----------------------------------------------------------------------------
         // configuration
@@ -35,9 +36,10 @@ namespace Deribit.S4KTNET.Test.Integration
         {
             //DeribitSubscriptions.announcements,
             //DeribitSubscriptions.book(DeribitInstruments.Perpetual.BTCPERPETRUAL, OrderbookGrouping._5, OrderbookDepth._10, Interval._100ms),
-            DeribitSubscriptions.book(DeribitInstruments.Perpetual.BTCPERPETRUAL, Interval._100ms),
-            DeribitSubscriptions.deribit_price_index(DeribitIndices.btc_usd),
-            DeribitSubscriptions.quote(DeribitInstruments.Perpetual.BTCPERPETRUAL),
+            //DeribitSubscriptions.book(DeribitInstruments.Perpetual.BTCPERPETRUAL, Interval._100ms),
+            //DeribitSubscriptions.deribit_price_index(DeribitIndices.btc_usd),
+            //DeribitSubscriptions.quote(DeribitInstruments.Perpetual.BTCPERPETRUAL),
+            DeribitSubscriptions.trades(DeribitInstruments.Perpetual.BTCPERPETRUAL, Interval._100ms),
         };
 
         //----------------------------------------------------------------------------
@@ -49,6 +51,7 @@ namespace Deribit.S4KTNET.Test.Integration
         private int bookfullnotificationcount = 0;
         private int deribitpriceindexnotificationcount = 0;
         private int quotenotificationcount = 0;
+        private int tradenotificationcount = 0;
 
         //----------------------------------------------------------------------------
         // lifecycle
@@ -81,6 +84,7 @@ namespace Deribit.S4KTNET.Test.Integration
         //----------------------------------------------------------------------------
 
         [Test]
+        [Retry(3)]
         [Ignore("unauthorized")]
         public async Task TestAnnouncementsStream()
         {
@@ -103,6 +107,7 @@ namespace Deribit.S4KTNET.Test.Integration
         //----------------------------------------------------------------------------
 
         [Test]
+        [Retry(3)]
         [Ignore("unauthorized")]
         public async Task BookDepthLimitedStream()
         {
@@ -125,6 +130,7 @@ namespace Deribit.S4KTNET.Test.Integration
         //----------------------------------------------------------------------------
 
         [Test]
+        [Retry(3)]
         public async Task BookFullStream()
         {
             Assert.That(channels.Any(c => c.StartsWith(DeribitChannelPrefix.book)));
@@ -146,6 +152,7 @@ namespace Deribit.S4KTNET.Test.Integration
         //----------------------------------------------------------------------------
 
         [Test]
+        [Retry(3)]
         public async Task DeribitPriceIndexStream()
         {
             Assert.That(channels.Any(c => c.StartsWith(DeribitChannelPrefix.deribit_price_index)));
@@ -167,6 +174,7 @@ namespace Deribit.S4KTNET.Test.Integration
         //----------------------------------------------------------------------------
 
         [Test]
+        [Retry(3)]
         public async Task QuoteStream()
         {
             Assert.That(channels.Any(c => c.StartsWith(DeribitChannelPrefix.quote)));
@@ -181,6 +189,29 @@ namespace Deribit.S4KTNET.Test.Integration
         {
             Log.Information($"{value.channel} | Received {nameof(QuoteNotification)} {value.sequencenumber}");
             Interlocked.Increment(ref this.quotenotificationcount);
+        }
+
+        //----------------------------------------------------------------------------
+        // trade
+        //----------------------------------------------------------------------------
+
+        [Test]
+        [Retry(3)]
+        [Ignore("Deribit is not sending data")]
+        public async Task TradeStream()
+        {
+            Assert.That(channels.Any(c => c.StartsWith(DeribitChannelPrefix.trades)));
+            using (var sub = this.deribit.SubscriptionManagement.TradeStream.Subscribe(this))
+            {
+                await Task.Delay(mediumwait);
+            }
+            Assert.That(this.tradenotificationcount, Is.GreaterThan(0));
+        }
+
+        public void OnNext(TradeNotification value)
+        {
+            Log.Information($"{value.channel} | Received {nameof(TradeNotification)} {value.sequencenumber}");
+            Interlocked.Increment(ref this.tradenotificationcount);
         }
 
         //----------------------------------------------------------------------------

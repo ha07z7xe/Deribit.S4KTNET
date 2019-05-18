@@ -23,6 +23,7 @@ namespace Deribit.S4KTNET.Core.SubscriptionManagement
         IObservable<BookFullNotification> BookFullStream { get; }
         IObservable<DeribitPriceIndexNotification> DeribitPriceIndexStream { get; }
         IObservable<QuoteNotification> QuoteStream { get; }
+        IObservable<TradeNotification> TradeStream { get; }
         //------------------------------------------------------------------------------------------------
         // subscribe / unsubscribe
         //------------------------------------------------------------------------------------------------
@@ -53,6 +54,8 @@ namespace Deribit.S4KTNET.Core.SubscriptionManagement
 
         public IObservable<QuoteNotification> QuoteStream => QuoteSubject;
         private readonly ISubject<QuoteNotification> QuoteSubject = new Subject<QuoteNotification>();
+        public IObservable<TradeNotification> TradeStream => TradeSubject;
+        private readonly ISubject<TradeNotification> TradeSubject = new Subject<TradeNotification>();
 
         //------------------------------------------------------------------------------------------------
         // dependencies
@@ -261,6 +264,17 @@ namespace Deribit.S4KTNET.Core.SubscriptionManagement
                     new QuoteNotification.Validator().ValidateAndThrow(noti);
                     // raise
                     this.QuoteSubject.OnNext(noti);
+                }
+                else if (channel.StartsWith(DeribitChannelPrefix.trades))
+                {
+                    // deserialize
+                    var dto = e.ToObject<TradeNotificationDto>(jsonser);
+                    // map
+                    var noti = this.mapper.Map<TradeNotification>(dto);
+                    // validate
+                    new TradeNotification.Validator().ValidateAndThrow(noti);
+                    // raise
+                    this.TradeSubject.OnNext(noti);
                 }
                 else
                 {

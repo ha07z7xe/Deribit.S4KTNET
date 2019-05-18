@@ -111,6 +111,34 @@ namespace Deribit.S4KTNET.Core.Mapping
             }
         }
 
+        public static BuySell ToBuySell(this string buysell)
+        {
+            switch (buysell)
+            {
+                case "buy":
+                case "Buy":
+                    return BuySell.Buy;
+                case "sell":
+                case "Sell":
+                    return BuySell.Sell;
+                default:
+                    throw new Exception();
+            }
+        }
+
+        public static string ToDeribitString(this BuySell buysell)
+        {
+            switch (buysell)
+            {
+                case BuySell.Buy:
+                    return "buy";
+                case BuySell.Sell:
+                    return "sell";
+                default:
+                    throw new Exception();
+            }
+        }
+
         public static DateTime UnixTimeStampMillisToDateTimeUtc(this long unixTimeStampMillis)
         {
             return unixepoch.AddMilliseconds(unixTimeStampMillis);
