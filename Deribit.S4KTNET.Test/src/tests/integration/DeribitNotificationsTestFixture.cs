@@ -16,7 +16,8 @@ namespace Deribit.S4KTNET.Test.Integration
         IObserver<AnnouncementsNotification>,
         IObserver<BookDepthLimitedNotification>,
         IObserver<BookFullNotification>,
-        IObserver<DeribitPriceIndexNotification>
+        IObserver<DeribitPriceIndexNotification>,
+        IObserver<QuoteNotification>
     {
         //----------------------------------------------------------------------------
         // configuration
@@ -36,6 +37,7 @@ namespace Deribit.S4KTNET.Test.Integration
             //DeribitSubscriptions.book(DeribitInstruments.Perpetual.BTCPERPETRUAL, OrderbookGrouping._5, OrderbookDepth._10, Interval._100ms),
             DeribitSubscriptions.book(DeribitInstruments.Perpetual.BTCPERPETRUAL, Interval._100ms),
             DeribitSubscriptions.deribit_price_index(DeribitIndices.btc_usd),
+            DeribitSubscriptions.quote(DeribitInstruments.Perpetual.BTCPERPETRUAL),
         };
 
         //----------------------------------------------------------------------------
@@ -46,6 +48,7 @@ namespace Deribit.S4KTNET.Test.Integration
         private int bookdepthlimitednotificationcount = 0;
         private int bookfullnotificationcount = 0;
         private int deribitpriceindexnotificationcount = 0;
+        private int quotenotificationcount = 0;
 
         //----------------------------------------------------------------------------
         // lifecycle
@@ -157,6 +160,27 @@ namespace Deribit.S4KTNET.Test.Integration
         {
             Log.Information($"{value.channel} | Received {nameof(DeribitPriceIndexNotification)} {value.sequencenumber}");
             Interlocked.Increment(ref this.deribitpriceindexnotificationcount);
+        }
+
+        //----------------------------------------------------------------------------
+        // quote
+        //----------------------------------------------------------------------------
+
+        [Test]
+        public async Task QuoteStream()
+        {
+            Assert.That(channels.Any(c => c.StartsWith(DeribitChannelPrefix.quote)));
+            using (var sub = this.deribit.SubscriptionManagement.QuoteStream.Subscribe(this))
+            {
+                await Task.Delay(mediumwait);
+            }
+            Assert.That(this.quotenotificationcount, Is.GreaterThan(0));
+        }
+
+        public void OnNext(QuoteNotification value)
+        {
+            Log.Information($"{value.channel} | Received {nameof(QuoteNotification)} {value.sequencenumber}");
+            Interlocked.Increment(ref this.quotenotificationcount);
         }
 
         //----------------------------------------------------------------------------
