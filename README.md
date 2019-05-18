@@ -15,14 +15,22 @@ Deribit Rest and Websocket library
 
 ## Rest Api
 
-| Operation | Path | Covered | Notes |
-| --------- | ---- | ------- | ----- |
-| -         | -    | -       | -     |
+| Api | Method | Covered | Notes |
+| --- | ---- | ------- | ----- |
+| Authentication | *   | ✗ | unsupported |
+| SessionManagement | *   | ✗ | unsupported |
+| Supporting | *   | ✗ | unsupported |
+| Subscriptions | *   | ✗ | unsupported |
+| AccountManagement | *   | ✗ | unsupported |
+| Trading | *   | ✗ | unsupported |
+| MarketData | *   | ✗ | unsupported |
+| Wallet | *   | ✗ | unsupported |
+| Notifications | *   | ✗ | unsupported |
 
 ## WebSocket Api
 
 | Api | Method | Covered | Notes |
-| ---  | ------ | ------- | ----- |
+| --- | ------ | ------- | ----- |
 | Authentication | [public/auth](https://docs.deribit.com/v2/#public-auth) | ✗ | in progress |
 | Authentication | [private/logout](https://docs.deribit.com/v2/#private-logout) | ✗ | in progress |
 | SessionManagement | [public/set_heartbeat](https://docs.deribit.com/v2/#session-management) | ✗ | in progress |
@@ -73,18 +81,29 @@ Deribit Rest and Websocket library
 | Trading | [private/get_user_trades_by_order](https://docs.deribit.com/v2/#private-get_user_trades_by_order) | ✗ | todo |
 | Trading | [private/get_settlement_history_by_instrument](https://docs.deribit.com/v2/#private-get_settlement_history_by_instrument) | ✗ | |
 | Trading | [private/get_settlement_history_by_currency](https://docs.deribit.com/v2/#private-get_settlement_history_by_currency) | ✗ | |
+| MarketData | *   | ✗ | todo |
+| Wallet | *   | ✗ |  |
+| Notifications | [announcements](https://docs.deribit.com/v2/#announcements) | ○ | partially tested |
+| Notifications | [book.{instrument_name}.{group}.{depth}.{interval}](https://docs.deribit.com/v2/#book-instrument_name-group-depth-interval) | ○ | partially tested |
+| Notifications | [book.{instrument_name}.{interval}](https://docs.deribit.com/v2/#book-instrument_name-interval) | ✔ |  |
+| Notifications | [deribit_price_index.{index_name}](https://docs.deribit.com/v2/#deribit_price_index-index_name) | ✔ |  |
+| Notifications | [deribit_price_ranking.{index_name}](https://docs.deribit.com/v2/#deribit_price_ranking-index_name) | ✗ | todo |
+| Notifications | [estimated_expiration_price.{index_name}](https://docs.deribit.com/v2/#estimated_expiration_price-index_name) | ✗ | todo |
+| Notifications | [markprice.options.{index_name}](https://docs.deribit.com/v2/#markprice-options-index_name) | ✗ | todo |
+| Notifications | [perpetual.{instrument_name}.{interval}](https://docs.deribit.com/v2/#perpetual-instrument_name-interval) | ✗ | todo |
+| Notifications | [quote.{instrument_name}](https://docs.deribit.com/v2/#quote-instrument_name) | ✔ |  |
+| Notifications | [ticker.{instrument_name}.{interval}](https://docs.deribit.com/v2/#ticker-instrument_name-interval) | ✔ |  |
+| Notifications | [trades.{instrument_name}.{interval}](https://docs.deribit.com/v2/#trades-instrument_name-interval) | ○ | partially tested |
+| Notifications | [user.orders.{instrument_name}.{interval}](https://docs.deribit.com/v2/#user-orders-instrument_name-interval) | ✗ | todo |
+| Notifications | [user.orders.{kind}.{currency}.{interval}](https://docs.deribit.com/v2/#user-orders-kind-currency-interval) | ✗ | todo |
+| Notifications | [user.portfolio.{currency}](https://docs.deribit.com/v2/#user-portfolio-currency) | ✗ | todo |
+| Notifications | [user.trades.{instrument_name}.{interval}](https://docs.deribit.com/v2/#user-trades-instrument_name-interval) | ✗ | todo |
+| Notifications | [user.trades.{kind}.{currency}.{interval}](https://docs.deribit.com/v2/#user-trades-kind-currency-interval) | ✗ | todo |
 
-## WebSocket Notification
+
 
 # Security
 
-# 
-
-
-https://docs.deribit.com/v2/#user-portfolio-currency
-
-Security
-=============
 * Do NOT trust the binaries with your keys
 * compiling from source
 * binary signatures
