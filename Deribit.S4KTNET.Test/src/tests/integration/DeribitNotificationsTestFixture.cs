@@ -36,10 +36,10 @@ namespace Deribit.S4KTNET.Test.Integration
         {
             //DeribitSubscriptions.announcements,
             //DeribitSubscriptions.book(DeribitInstruments.Perpetual.BTCPERPETRUAL, OrderbookGrouping._5, OrderbookDepth._10, Interval._100ms),
-            //DeribitSubscriptions.book(DeribitInstruments.Perpetual.BTCPERPETRUAL, Interval._100ms),
-            //DeribitSubscriptions.deribit_price_index(DeribitIndices.btc_usd),
-            //DeribitSubscriptions.quote(DeribitInstruments.Perpetual.BTCPERPETRUAL),
-            DeribitSubscriptions.trades(DeribitInstruments.Perpetual.BTCPERPETRUAL, Interval._100ms),
+            DeribitSubscriptions.book(DeribitInstruments.Perpetual.BTCPERPETRUAL, Interval._100ms),
+            DeribitSubscriptions.deribit_price_index(DeribitIndices.btc_usd),
+            DeribitSubscriptions.quote(DeribitInstruments.Perpetual.BTCPERPETRUAL),
+            //DeribitSubscriptions.trades(DeribitInstruments.Perpetual.BTCPERPETRUAL, Interval._100ms),
         };
 
         //----------------------------------------------------------------------------
