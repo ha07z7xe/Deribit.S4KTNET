@@ -23,6 +23,7 @@ namespace Deribit.S4KTNET.Core.SubscriptionManagement
         IObservable<BookFullNotification> BookFullStream { get; }
         IObservable<DeribitPriceIndexNotification> DeribitPriceIndexStream { get; }
         IObservable<QuoteNotification> QuoteStream { get; }
+        IObservable<TickerNotification> TickerStream { get; }
         IObservable<TradeNotification> TradeStream { get; }
         //------------------------------------------------------------------------------------------------
         // subscribe / unsubscribe
@@ -54,6 +55,10 @@ namespace Deribit.S4KTNET.Core.SubscriptionManagement
 
         public IObservable<QuoteNotification> QuoteStream => QuoteSubject;
         private readonly ISubject<QuoteNotification> QuoteSubject = new Subject<QuoteNotification>();
+
+        public IObservable<TickerNotification> TickerStream => TickerSubject;
+        private readonly ISubject<TickerNotification> TickerSubject = new Subject<TickerNotification>();
+
         public IObservable<TradeNotification> TradeStream => TradeSubject;
         private readonly ISubject<TradeNotification> TradeSubject = new Subject<TradeNotification>();
 
@@ -264,6 +269,17 @@ namespace Deribit.S4KTNET.Core.SubscriptionManagement
                     new QuoteNotification.Validator().ValidateAndThrow(noti);
                     // raise
                     this.QuoteSubject.OnNext(noti);
+                }
+                else if (channel.StartsWith(DeribitChannelPrefix.ticker))
+                {
+                    // deserialize
+                    var dto = e.ToObject<TickerNotificationDto>(jsonser);
+                    // map
+                    var noti = this.mapper.Map<TickerNotification>(dto);
+                    // validate
+                    new TickerNotification.Validator().ValidateAndThrow(noti);
+                    // raise
+                    this.TickerSubject.OnNext(noti);
                 }
                 else if (channel.StartsWith(DeribitChannelPrefix.trades))
                 {

@@ -18,6 +18,7 @@ namespace Deribit.S4KTNET.Test.Integration
         IObserver<BookFullNotification>,
         IObserver<DeribitPriceIndexNotification>,
         IObserver<QuoteNotification>,
+        IObserver<TickerNotification>,
         IObserver<TradeNotification>
     {
         //----------------------------------------------------------------------------
@@ -39,6 +40,7 @@ namespace Deribit.S4KTNET.Test.Integration
             DeribitSubscriptions.book(DeribitInstruments.Perpetual.BTCPERPETRUAL, Interval._100ms),
             DeribitSubscriptions.deribit_price_index(DeribitIndices.btc_usd),
             DeribitSubscriptions.quote(DeribitInstruments.Perpetual.BTCPERPETRUAL),
+            DeribitSubscriptions.ticker(DeribitInstruments.Perpetual.BTCPERPETRUAL, Interval._100ms),
             //DeribitSubscriptions.trades(DeribitInstruments.Perpetual.BTCPERPETRUAL, Interval._100ms),
         };
 
@@ -51,6 +53,7 @@ namespace Deribit.S4KTNET.Test.Integration
         private int bookfullnotificationcount = 0;
         private int deribitpriceindexnotificationcount = 0;
         private int quotenotificationcount = 0;
+        private int tickernotificationcount = 0;
         private int tradenotificationcount = 0;
 
         //----------------------------------------------------------------------------
@@ -189,6 +192,28 @@ namespace Deribit.S4KTNET.Test.Integration
         {
             Log.Information($"{value.channel} | Received {nameof(QuoteNotification)} {value.sequencenumber}");
             Interlocked.Increment(ref this.quotenotificationcount);
+        }
+
+        //----------------------------------------------------------------------------
+        // ticker
+        //----------------------------------------------------------------------------
+
+        [Test]
+        [Retry(3)]
+        public async Task TickerStream()
+        {
+            Assert.That(channels.Any(c => c.StartsWith(DeribitChannelPrefix.ticker)));
+            using (var sub = this.deribit.SubscriptionManagement.TickerStream.Subscribe(this))
+            {
+                await Task.Delay(mediumwait);
+            }
+            Assert.That(this.tickernotificationcount, Is.GreaterThan(0));
+        }
+
+        public void OnNext(TickerNotification value)
+        {
+            Log.Information($"{value.channel} | Received {nameof(TickerNotification)} {value.sequencenumber}");
+            Interlocked.Increment(ref this.tickernotificationcount);
         }
 
         //----------------------------------------------------------------------------
