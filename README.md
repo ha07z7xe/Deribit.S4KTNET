@@ -81,8 +81,32 @@ Deribit Rest and Websocket library
 | Trading | [private/get_user_trades_by_order](https://docs.deribit.com/v2/#private-get_user_trades_by_order) | ✗ | todo |
 | Trading | [private/get_settlement_history_by_instrument](https://docs.deribit.com/v2/#private-get_settlement_history_by_instrument) | ✗ | |
 | Trading | [private/get_settlement_history_by_currency](https://docs.deribit.com/v2/#private-get_settlement_history_by_currency) | ✗ | |
-| MarketData | *   | ✗ | todo |
-| Wallet | *   | ✗ |  |
+| MarketData | [public/get_book_summary_by_currency](https://docs.deribit.com/v2/#public-get_book_summary_by_currency) | ✗ | todo |
+| MarketData | [public/get_book_summary_by_instrument](https://docs.deribit.com/v2/#public-get_book_summary_by_instrument) | ✗ | todo |
+| MarketData | [public/get_contact_size](https://docs.deribit.com/v2/#public-get_contract_size) | ✗ | todo |
+| MarketData | [public/get_currencies](https://docs.deribit.com/v2/#public-get_currencies) | ✗ | todo |
+| MarketData | [public/get_funding_chart_data](https://docs.deribit.com/v2/#public-get_funding_chart_data) | ✗ | todo |
+| MarketData | [public/get_historical_volatility](https://docs.deribit.com/v2/#public-get_historical_volatility) | ✗ | todo |
+| MarketData | [public/get_index](https://docs.deribit.com/v2/#public-get_index) | ✗ | todo |
+| MarketData | [public/get_instruments](https://docs.deribit.com/v2/#public-get_instruments) | ✗ | todo |
+| MarketData | [public/get_last_settlemens_by_currency](https://docs.deribit.com/v2/#public-get_last_settlements_by_currency) | ✗ | todo |
+| MarketData | [public/get_last_settlemens_by_instrument](https://docs.deribit.com/v2/#public-get_last_settlements_by_instrument) | ✗ | todo |
+| MarketData | [public/get_last_trades_by_currency](https://docs.deribit.com/v2/#public-get_last_trades_by_currency) | ✗ | todo |
+| MarketData | [public/get_last_trades_by_currency_and_time](https://docs.deribit.com/v2/#public-get_last_trades_by_currency_and_time) | ✗ | todo |
+| MarketData | [public/get_last_trades_by_instrument](https://docs.deribit.com/v2/#public-get_last_trades_by_instrument) | ✗ | todo |
+| MarketData | [public/get_last_trades_by_instrument_and_time](https://docs.deribit.com/v2/#public-get_last_trades_by_instrument_and_time) | ✗ | todo |
+| MarketData | [public/get_order_book](https://docs.deribit.com/v2/#public-get_order_book) | ✗ | todo |
+| MarketData | [public/get_trade_volumes](https://docs.deribit.com/v2/#public-get_trade_volumes) | ✗ | todo |
+| MarketData | [public/get_tradingview_chart_data](https://docs.deribit.com/v2/#public-get_tradingview_chart_data) | ✗ | |
+| MarketData | [public/ticker](https://docs.deribit.com/v2/#public-ticker) | ✗ | todo |
+| Wallet | [private/cancel_transfer_by_id](https://docs.deribit.com/v2/#private-cancel_transfer_by_id) | ✗ | |
+| Wallet | [private/cancel_withdrawal](https://docs.deribit.com/v2/#private-cancel_withdrawal) | ✗ | |
+| Wallet | [private/create_deposit_address](https://docs.deribit.com/v2/#private-create_deposit_address) | ✗ | |
+| Wallet | [private/get_current_deposit_address](https://docs.deribit.com/v2/#private-get_current_deposit_address) | ✗ | |
+| Wallet | [private/get_deposits](https://docs.deribit.com/v2/#private-get_deposits) | ✗ | |
+| Wallet | [private/get_transfers](https://docs.deribit.com/v2/#private-get_transfers) | ✗ | |
+| Wallet | [private/get_withdrawals](https://docs.deribit.com/v2/#private-get_withdrawals) | ✗ | |
+| Wallet | [private/withdraw](https://docs.deribit.com/v2/#private-withdraw) | ✗ | |
 | Notifications | [announcements](https://docs.deribit.com/v2/#announcements) | ○ | partially tested |
 | Notifications | [book.{instrument_name}.{group}.{depth}.{interval}](https://docs.deribit.com/v2/#book-instrument_name-group-depth-interval) | ○ | partially tested |
 | Notifications | [book.{instrument_name}.{interval}](https://docs.deribit.com/v2/#book-instrument_name-interval) | ✔ |  |
