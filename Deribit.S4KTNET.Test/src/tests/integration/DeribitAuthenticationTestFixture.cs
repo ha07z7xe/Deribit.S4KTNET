@@ -78,6 +78,25 @@ namespace Deribit.S4KTNET.Test.Integration
             Assert.That(authresponse.refresh_token, Is.Not.Null);
         }
 
+        [Test]
+        [Description("public/auth (signed)")]
+        [Order(3)]
+        [Ignore("Client signature computation is not correct")]
+        public async Task Test_auth_clientsignature_success()
+        {
+            if (this.deribitcredentials.client_id == null || this.deribitcredentials.client_secret == null)
+            {
+                throw new Exception("This test requires client credentials");
+            }
+            AuthResponse authresponse = await deribit.Authentication.Auth(new AuthRequest()
+            {
+                grant_type = GrantType.client_credentials,
+                client_id = this.deribitcredentials.client_id,
+                client_secret = this.deribitcredentials.client_secret,
+            }.Sign());
+            Assert.That(authresponse.refresh_token, Is.Not.Null);
+        }
+
         //----------------------------------------------------------------------------
         // private/logout
         //----------------------------------------------------------------------------

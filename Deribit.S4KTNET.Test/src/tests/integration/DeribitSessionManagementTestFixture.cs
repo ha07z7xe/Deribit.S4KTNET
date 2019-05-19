@@ -7,12 +7,13 @@ using System;
 using System.Reactive;
 using System.Threading;
 using System.Threading.Tasks;
+using rx = System.Reactive;
 
 namespace Deribit.S4KTNET.Test.Integration
 {
     [TestFixture]
     [Category(TestCategories.integration)]
-    class SessionManagementTestFixture : DeribitIntegrationTestFixtureBase, IObserver<Unit>
+    class SessionManagementTestFixture : DeribitIntegrationTestFixtureBase, IObserver<rx.Unit>
     {
         //----------------------------------------------------------------------------
         // state
@@ -104,7 +105,7 @@ namespace Deribit.S4KTNET.Test.Integration
         // heartbeat notifications
         //----------------------------------------------------------------------------
 
-        public void OnNext(Unit value)
+        public void OnNext(rx.Unit value)
         {
             Interlocked.Increment(ref this.heartbeatnotificationcount);
         }

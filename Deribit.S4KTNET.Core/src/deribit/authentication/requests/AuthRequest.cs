@@ -1,6 +1,9 @@
+using Deribit.S4KTNET.Core.Mapping;
 using FluentValidation;
 using FluentValidation.Results;
 using System;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace Deribit.S4KTNET.Core.Authentication
 {
@@ -20,7 +23,7 @@ namespace Deribit.S4KTNET.Core.Authentication
 
         public string refresh_token { get; set; }
 
-        public DateTime timestamp { get; set; }
+        public long timestamp { get; set; }
 
         public string signature { get; set; }
 
@@ -29,6 +32,8 @@ namespace Deribit.S4KTNET.Core.Authentication
         public string state { get; set; }
 
         public string scope { get; set; }
+
+        public string data { get; set; }
 
         internal class Validator : AbstractValidator<AuthRequest>
         {
@@ -51,10 +56,46 @@ namespace Deribit.S4KTNET.Core.Authentication
             public Profile()
             {
                 this.CreateMap<AuthRequest, AuthRequestDto>()
-                    .ForMember(x => x.grant_type, o => o.MapFrom(x => x.grant_type.ToString()))
-                    // is this unix seconds ? not sure
-                    .ForMember(x => x.timestamp, o => o.Ignore());
+                    .ForMember(d => d.grant_type, o => o.MapFrom(s => s.grant_type.ToString()))
+                    .ForMember(d => d.timestamp, o => o.MapFrom(s => s.timestamp.ToString()));
             }
+        }
+
+        // https://docs.deribit.com/v2/#authentication
+        /// <summary>
+        /// Sign the request
+        public AuthRequest Sign()
+        {
+            // validate
+            if (this.grant_type != GrantType.client_credentials)
+            {
+                throw new InvalidOperationException($"GrantType must be {GrantType.client_credentials} prior to signing.");
+            }
+            if (this.client_id == null || this.client_secret == null)
+            {
+                throw new InvalidOperationException($"ClientCredentials are not set.");
+            }
+            byte[] clientsecretbytes = Convert.FromBase64String(this.client_secret);
+            // locals
+            data = data ?? "";
+            Random random = new Random();
+            var hmacsha256 = new HMACSHA256(clientsecretbytes);
+            // determine timestamp
+            this.timestamp = this.timestamp != default ? this.timestamp : DateTime.UtcNow.UnixTimeStampDateTimeUtcToMillis();
+            // determine nonce
+            this.nonce = this.nonce != default ? this.nonce : random.Next(int.MaxValue).ToString();
+            // determine string to sign
+            string stringtosign = $"{timestamp}\n{nonce}\n{data}";
+            byte[] stringtosignbytes = Encoding.UTF8.GetBytes(stringtosign);
+            // sign
+            byte[] signaturebytes = hmacsha256.ComputeHash(stringtosignbytes);
+            this.signature = signaturebytes.ByteArrayToHexString()
+                .ToLowerInvariant();
+            this.grant_type = GrantType.client_signature;
+            // dispose resources
+            hmacsha256.Dispose();
+            // return
+            return this;
         }
     }
 
@@ -81,6 +122,8 @@ namespace Deribit.S4KTNET.Core.Authentication
         public string state { get; set; }
 
         public string scope { get; set; }
+
+        public string data { get; set; }
     }
 
     public enum GrantType

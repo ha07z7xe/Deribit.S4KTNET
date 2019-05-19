@@ -138,11 +138,73 @@ deribit.SessionManagement.SetHeartbeat(new SetHeartbeatRequest()
 
 # Authentication
 
-Private methods require authentication. 
+Private methods require authentication. The library supports all 3 authentication flows available.
 
-## Auth Token Refresh
+`SecureString` is not supported, as the credentials are exposed in memory through the websocket libraries anyway.
+
+## Authentication - via username/password
+This flow is not recommended.
+
+```C#
+// form request
+var request = new AuthRequest()
+{
+    grant_type = GrantType.password,
+    username = "<yourusername>",
+    password = "<yourpassword>",
+}
+// execute request
+deribit.Authentication.Auth(request);
+```
+## Authentication - via Api Key
+This is the recommended method.
+```C#
+// form request
+var request = new AuthRequest()
+{
+    grant_type = GrantType.client_credentials,
+    client_id = "<yourapikey>",
+    client_secret = "<yourapisecret>",
+}
+// execute request
+deribit.Authentication.Auth(request);
+```
+## Authentication - signed
+
+**This flow is not computing the correct signature, for reasons unknown. PR fix welcome.**
+
+This is the most secure option available.
+Client signatures are computed as per [documentation](https://docs.deribit.com/v2/#authentication).
+
+```C#
+// form request
+var request = new AuthRequest()
+{
+    grant_type = GrantType.client_credentials,
+    client_id = "<yourapikey>",
+    client_secret = "yourapisecret>",
+};
+// sign the request
+request = request.Sign();
+// execute request
+deribit.Authentication.Auth(request);
+
+```
+
+
+## Authentication - via refresh token
+Token refresh is handled by the library.
 If a valid refresh token is available, the library will periodically refresh the auth token every 15m.
 Note that Deribit seems to grant auth tokens with extended lifetimes (several months) which I do not understand; this functionality may not be required.
+
+If required, you can refresh manually:
+```C#
+var request = new AuthRequest()
+{
+    grant_type = GrantType.refresh_token,
+    refresh_token = "<refresh_token>",
+}
+```
 
 You can disable auto refresh through the config object
 ```C#

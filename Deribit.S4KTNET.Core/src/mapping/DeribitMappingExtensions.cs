@@ -1,4 +1,6 @@
 using System;
+using System.Linq;
+using System.Text;
 
 namespace Deribit.S4KTNET.Core.Mapping
 {
@@ -142,6 +144,27 @@ namespace Deribit.S4KTNET.Core.Mapping
         public static DateTime UnixTimeStampMillisToDateTimeUtc(this long unixTimeStampMillis)
         {
             return unixepoch.AddMilliseconds(unixTimeStampMillis);
+        }
+
+        public static long UnixTimeStampDateTimeUtcToMillis(this DateTime dt)
+        {
+            return Convert.ToInt64((dt - unixepoch).TotalMilliseconds);
+        }
+
+        public static string ByteArrayToHexString(this byte[] ba)
+        {
+            StringBuilder hex = new StringBuilder(ba.Length * 2);
+            foreach (byte b in ba)
+                hex.AppendFormat("{0:x2}", b);
+            return hex.ToString();
+        }
+
+        public static byte[] HexStringToByteArray(this string hex)
+        {
+            return Enumerable.Range(0, hex.Length)
+                             .Where(x => x % 2 == 0)
+                             .Select(x => Convert.ToByte(hex.Substring(x, 2), 16))
+                             .ToArray();
         }
     }
 }
