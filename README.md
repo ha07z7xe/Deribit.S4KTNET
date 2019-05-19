@@ -129,11 +129,27 @@ Deribit Rest and Websocket library
 
 The client automatically responds to heartbeat requests.
 You must enable heartbeats manually:
-```
+```C#
 deribit.SessionManagement.SetHeartbeat(new SetHeartbeatRequest()
 {
     interval = 10, // 10 seconds
 })
+```
+
+# Authentication
+
+Private methods require authentication. 
+
+## Auth Token Refresh
+If a valid refresh token is available, the library will periodically refresh the auth token every 15m.
+Note that Deribit seems to grant auth tokens with extended lifetimes (several months) which I do not understand; this functionality may not be required.
+
+You can disable auto refresh through the config object
+```C#
+new DeribitConfig()
+{
+    NoRefreshAuthToken = true,
+}
 ```
 
 # Security

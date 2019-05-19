@@ -24,6 +24,18 @@ namespace Deribit.S4KTNET.Core.Authentication
 
         public bool IsAuthenticated { get; private set; }
 
+        //-----------------------------------------------------------------------------------------
+        // configuration
+        //-----------------------------------------------------------------------------------------
+
+        private readonly int RefreshAuthTokenLoopPeriodMins = 15;
+
+        //-----------------------------------------------------------------------------------------
+        // loops
+        //-----------------------------------------------------------------------------------------
+
+        private readonly System.Timers.Timer RefreshAuthTokenTimer;
+
         //------------------------------------------------------------------------------------------------
         // dependencies
         //------------------------------------------------------------------------------------------------
@@ -50,6 +62,23 @@ namespace Deribit.S4KTNET.Core.Authentication
             this.mapper = mapper;
             this.rpcproxy = rpcproxy;
             this.jsonrpc = jsonrpc;
+
+            //---------------------------------------------------------------------
+            // refresh auth token periodically
+            {
+                this.RefreshAuthTokenTimer = new System.Timers.Timer()
+                {
+                    Interval = TimeSpan.FromMinutes(this.RefreshAuthTokenLoopPeriodMins).TotalMilliseconds,
+                    Enabled = !this.deribit.deribitconfig.NoRefreshAuthToken,
+                };
+            }
+            this.RefreshAuthTokenTimer.Elapsed += async (sender, e) =>
+            {
+                if (this.deribit.deribitconfig.NoRefreshAuthToken)
+                    return;
+                await this.RefreshAuthTokenLoop();
+            };
+            //---------------------------------------------------------------------
         }
 
         //------------------------------------------------------------------------------------------------
@@ -65,6 +94,33 @@ namespace Deribit.S4KTNET.Core.Authentication
                     .As<IDeribitAuthenticationService>()
                     .SingleInstance();
             }
+        }
+
+        //------------------------------------------------------------------------------------------------
+        // disposal
+        //------------------------------------------------------------------------------------------------
+
+        public void Dispose()
+        {
+            this.RefreshAuthTokenTimer.Stop();
+        }
+
+        //------------------------------------------------------------------------------------------------
+        // refresh auth token loop
+        //------------------------------------------------------------------------------------------------
+
+        private async Task RefreshAuthTokenLoop()
+        {
+            if (this.LastAuthResponse == null || this.LastAuthResponse.refresh_token == null)
+                return;
+            // form request
+            AuthRequest authrequest = new AuthRequest()
+            {
+                grant_type = GrantType.refresh_token,
+                refresh_token = this.LastAuthResponse.refresh_token,
+            };
+            // execute
+            await this.Auth(authrequest, default);
         }
 
         //------------------------------------------------------------------------------------------------
