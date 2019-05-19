@@ -31,7 +31,7 @@ Deribit Rest and Websocket library
 
 | Api | Method | Covered | Notes |
 | --- | ------ | ------- | ----- |
-| Authentication | [public/auth](https://docs.deribit.com/v2/#public-auth) | ✗ | in progress |
+| Authentication | [public/auth](https://docs.deribit.com/v2/#public-auth) | ○ | signed auth not working |
 | Authentication | [private/logout](https://docs.deribit.com/v2/#private-logout) | ✔ | |
 | SessionManagement | [public/set_heartbeat](https://docs.deribit.com/v2/#session-management) | ✔ | |
 | SessionManagement | [public/disable_heartbeat](https://docs.deribit.com/v2/#public-disable_heartbeat) | ✔ | |
