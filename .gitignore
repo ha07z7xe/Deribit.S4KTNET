@@ -3,3 +3,5 @@
 */bin/*
 */obj/*
 *.user
+secrets.json
+secrets.yml

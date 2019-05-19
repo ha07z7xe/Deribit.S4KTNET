@@ -10,6 +10,14 @@ namespace Deribit.S4KTNET.Core
 
         public bool ConnectOnConstruction { get; set; }
 
+        /// <summary>
+        /// log jsonrpc requests
+        /// </summary>
         public bool EnableJsonRpcTracing { get; set; }
+
+        /// <summary>
+        /// Automatically refresh the access token periodically
+        /// </summary>
+        public bool RefreshAuthToken { get; set; }
     }
 }

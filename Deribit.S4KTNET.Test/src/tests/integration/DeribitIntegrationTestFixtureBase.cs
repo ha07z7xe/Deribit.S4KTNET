@@ -1,4 +1,5 @@
 ﻿using Deribit.S4KTNET.Core;
+using Microsoft.Extensions.Configuration;
 using NUnit.Framework;
 using System.Threading.Tasks;
 
@@ -8,6 +9,13 @@ namespace Deribit.S4KTNET.Test.Integration
     [Category(TestCategories.integration)]
     abstract class DeribitIntegrationTestFixtureBase
     {
+        //----------------------------------------------------------------------------
+        // configuration
+        //----------------------------------------------------------------------------
+
+        protected IConfigurationRoot configurationRoot;
+        protected DeribitCredentials deribitcredentials;
+
         //----------------------------------------------------------------------------
         // components
         //----------------------------------------------------------------------------
@@ -28,6 +36,18 @@ namespace Deribit.S4KTNET.Test.Integration
                 Environment = DeribitEnvironment.Test,
                 EnableJsonRpcTracing = true,
             };
+
+            // read config
+            this.configurationRoot =
+                new ConfigurationBuilder()
+                    .AddJsonFile("config/secrets.json", true)
+                    .Build();
+
+            // bind credentials
+            this.deribitcredentials = this.configurationRoot
+                .GetSection("deribit:credentials")
+                .Get<DeribitCredentials>();
+                
 
             // construct services
             deribit = new DeribitService(deribitconfig);
