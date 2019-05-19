@@ -29,5 +29,11 @@ namespace Deribit.S4KTNET.Core.JsonRpc
 
         [JsonRpcMethod("public/disable_heartbeat")]
         Task<string> disable_heartbeat(CancellationToken ct);
+
+        [JsonRpcMethod("private/enable_cancel_on_disconnect")]
+        Task<string> enable_cancel_on_disconnect(CancellationToken ct);
+
+        [JsonRpcMethod("private/disable_cancel_on_disconnect")]
+        Task<string> disable_cancel_on_disconnect(CancellationToken ct);
     }
 }

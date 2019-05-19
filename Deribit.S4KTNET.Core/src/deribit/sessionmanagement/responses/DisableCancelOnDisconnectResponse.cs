@@ -2,9 +2,9 @@ using System;
 
 namespace Deribit.S4KTNET.Core.SessionManagement
 {
-    // https://docs.deribit.com/v2/#private-enable_cancel_on_disconnect
+    // https://docs.deribit.com/v2/#private-disable_cancel_on_disconnect
 
-    public class EnableCancelOnDisconnectResponse : ResponseBase
+    public class DisableCancelOnDisconnectResponse : ResponseBase
     {
         public bool result { get; set; }
 
@@ -12,20 +12,20 @@ namespace Deribit.S4KTNET.Core.SessionManagement
         {
             public Profile()
             {
-                this.CreateMap<EnableCancelOnDisconnectResponseDto, EnableCancelOnDisconnectResponse>()
+                this.CreateMap<DisableCancelOnDisconnectResponseDto, DisableCancelOnDisconnectResponse>()
                     .ForMember(x => x.result, o => o.MapFrom(x => x.result == "ok"));
 
-                this.CreateMap<string, EnableCancelOnDisconnectResponse>()
+                this.CreateMap<string, DisableCancelOnDisconnectResponse>()
                     .ConvertUsing((s, d, r) =>
                     {
-                        return r.Mapper.Map<EnableCancelOnDisconnectResponse>(r.Mapper.Map<EnableCancelOnDisconnectResponseDto>(s));
+                        return r.Mapper.Map<DisableCancelOnDisconnectResponse>(r.Mapper.Map<DisableCancelOnDisconnectResponseDto>(s));
                     });
             }
         }
 
     }
 
-    public class EnableCancelOnDisconnectResponseDto
+    public class DisableCancelOnDisconnectResponseDto
     {
         public string result { get; set; }
 
@@ -33,8 +33,8 @@ namespace Deribit.S4KTNET.Core.SessionManagement
         {
             public Profile()
             {
-                this.CreateMap<string, EnableCancelOnDisconnectResponseDto>()
-                    .ConvertUsing(s => new EnableCancelOnDisconnectResponseDto()
+                this.CreateMap<string, DisableCancelOnDisconnectResponseDto>()
+                    .ConvertUsing(s => new DisableCancelOnDisconnectResponseDto()
                     {
                         result = s,
                     });

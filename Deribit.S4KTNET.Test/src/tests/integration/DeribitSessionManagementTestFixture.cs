@@ -1,4 +1,5 @@
 ﻿using Deribit.S4KTNET.Core;
+using Deribit.S4KTNET.Core.Authentication;
 using Deribit.S4KTNET.Core.SessionManagement;
 using NUnit.Framework;
 using StreamJsonRpc;
@@ -20,6 +21,26 @@ namespace Deribit.S4KTNET.Test.Integration
         private int heartbeatnotificationcount = 0;
 
         //----------------------------------------------------------------------------
+        // lifecycle
+        //----------------------------------------------------------------------------
+
+        [OneTimeSetUp]
+        public new async Task OneTimeSetUp()
+        {
+            // authenticate if possible
+            if (this.deribitcredentials != null)
+            {
+                var authresponse = await this.deribit.Authentication.Auth(new Core.Authentication.AuthRequest()
+                {
+                    grant_type = GrantType.client_credentials,
+                    client_id = deribitcredentials.client_id,
+                    client_secret = deribitcredentials.client_secret,
+                });
+                Assert.That(authresponse.refresh_token, Is.Not.Empty);
+            }
+        }
+
+        //----------------------------------------------------------------------------
         // public/set_heartbeat
         //----------------------------------------------------------------------------
 
@@ -34,7 +55,7 @@ namespace Deribit.S4KTNET.Test.Integration
                     interval = 10,
                 });
                 Assert.That(setheartbeatresponse.result, Is.True);
-                await Task.Delay(TimeSpan.FromSeconds(24));
+                await Task.Delay(TimeSpan.FromSeconds(15));
             }
             Assert.That(heartbeatnotificationcount, Is.GreaterThan(0));
         }
@@ -49,6 +70,34 @@ namespace Deribit.S4KTNET.Test.Integration
         {
             DisableHeartbeatResponse disableheartbeatresponse = await deribit.SessionManagement.DisableHeartbeat();
             Assert.That(disableheartbeatresponse.result, Is.True);
+        }
+
+        //----------------------------------------------------------------------------
+        // private/enable_cancel_on_disconnect
+        //----------------------------------------------------------------------------
+
+        [Test]
+        [Description("private/enable_cancel_on_disconnect")]
+        public async Task Test_enable_cancel_on_disconnect_success()
+        {
+            if (!this.deribit.Authentication.IsAuthenticated)
+                throw new Exception("Test requires authentication");
+            EnableCancelOnDisconnectResponse response = await deribit.SessionManagement.EnableCancelOnDisconnect();
+            Assert.That(response.result, Is.True);
+        }
+
+        //----------------------------------------------------------------------------
+        // private/disable_cancel_on_disconnect
+        //----------------------------------------------------------------------------
+
+        [Test]
+        [Description("private/disable_cancel_on_disconnect")]
+        public async Task Test_disable_cancel_on_disconnect_success()
+        {
+            if (!this.deribit.Authentication.IsAuthenticated)
+                throw new Exception("Test requires authentication");
+            DisableCancelOnDisconnectResponse response = await deribit.SessionManagement.DisableCancelOnDisconnect();
+            Assert.That(response.result, Is.True);
         }
 
         //----------------------------------------------------------------------------

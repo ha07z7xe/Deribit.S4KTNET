@@ -10,12 +10,20 @@ namespace Deribit.S4KTNET.Core.Authentication
 {
     public interface IDeribitAuthenticationService
     {
+        bool IsAuthenticated { get; }
+
         Task<AuthResponse> Auth(AuthRequest request, CancellationToken ct = default);
         Task Logout(CancellationToken ct = default);
     }
 
     internal class DeribitAuthenticationService : IDeribitAuthenticationService
     {
+        //------------------------------------------------------------------------------------------------
+        // properties
+        //------------------------------------------------------------------------------------------------
+
+        public bool IsAuthenticated { get; private set; }
+
         //------------------------------------------------------------------------------------------------
         // dependencies
         //------------------------------------------------------------------------------------------------
@@ -89,6 +97,7 @@ namespace Deribit.S4KTNET.Core.Authentication
             AuthResponse response = mapper.Map<AuthResponse>(responsedto);
             // validate
             new AuthResponse.Validator().ValidateAndThrow(response);
+            this.IsAuthenticated = true;
             // return
             return LastAuthResponse = response;
         }
@@ -113,6 +122,7 @@ namespace Deribit.S4KTNET.Core.Authentication
             //AuthResponse response = mapper.Map<AuthResponse>(responsedto);
             //// return
             //return response;
+            this.IsAuthenticated = false;
         }
 
         //------------------------------------------------------------------------------------------------

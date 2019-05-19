@@ -32,11 +32,11 @@ Deribit Rest and Websocket library
 | Api | Method | Covered | Notes |
 | --- | ------ | ------- | ----- |
 | Authentication | [public/auth](https://docs.deribit.com/v2/#public-auth) | ✗ | in progress |
-| Authentication | [private/logout](https://docs.deribit.com/v2/#private-logout) | ✔ | in progress |
+| Authentication | [private/logout](https://docs.deribit.com/v2/#private-logout) | ✔ | |
 | SessionManagement | [public/set_heartbeat](https://docs.deribit.com/v2/#session-management) | ✔ | |
 | SessionManagement | [public/disable_heartbeat](https://docs.deribit.com/v2/#public-disable_heartbeat) | ✔ | |
-| SessionManagement | [private/enable_cancel_on_disconnect](https://docs.deribit.com/v2/#private-enable_cancel_on_disconnect) | ✗ | in progress |
-| SessionManagement | [private/disable_cancel_on_disconnect](https://docs.deribit.com/v2/#private-disable_cancel_on_disconnect) | ✗ | in progress |
+| SessionManagement | [private/enable_cancel_on_disconnect](https://docs.deribit.com/v2/#private-enable_cancel_on_disconnect) | ✔ | |
+| SessionManagement | [private/disable_cancel_on_disconnect](https://docs.deribit.com/v2/#private-disable_cancel_on_disconnect) | ✔ | |
 | Supporting | [public/hello](https://docs.deribit.com/v2/#public-hello) | ✔ | |
 | Supporting | [public/get_time](https://docs.deribit.com/v2/#public-get_time) | ✔ | |
 | Supporting | [public/test](https://docs.deribit.com/v2/#public-test) | ✔ | |

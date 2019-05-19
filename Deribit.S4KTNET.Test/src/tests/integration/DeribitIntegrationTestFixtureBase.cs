@@ -1,4 +1,5 @@
 ﻿using Deribit.S4KTNET.Core;
+using Deribit.S4KTNET.Core.Authentication;
 using Microsoft.Extensions.Configuration;
 using NUnit.Framework;
 using System.Threading.Tasks;
@@ -54,6 +55,31 @@ namespace Deribit.S4KTNET.Test.Integration
 
             // connect
             await deribit.Connect(default);
+
+            // authenticate if possible
+            if (this.deribitcredentials != null)
+            {
+                if (this.deribitcredentials.client_id != null)
+                {
+                    var authresponse = await this.deribit.Authentication.Auth(new AuthRequest()
+                    {
+                        grant_type = GrantType.client_credentials,
+                        client_id = this.deribitcredentials.client_id,
+                        client_secret = this.deribitcredentials.client_secret,
+                    });
+                    Assert.That(authresponse.refresh_token, Is.Not.Empty);
+                }
+                else if (this.deribitcredentials.username != null)
+                {
+                    var authresponse = await this.deribit.Authentication.Auth(new AuthRequest()
+                    {
+                        grant_type = GrantType.password,
+                        username = this.deribitcredentials.username,
+                        password = this.deribitcredentials.password,
+                    });
+                    Assert.That(authresponse.refresh_token, Is.Not.Empty);
+                }
+            }
         }
 
         [OneTimeTearDown]
