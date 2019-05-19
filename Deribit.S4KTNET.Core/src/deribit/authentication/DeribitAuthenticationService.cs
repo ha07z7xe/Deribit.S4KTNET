@@ -11,7 +11,7 @@ namespace Deribit.S4KTNET.Core.Authentication
     public interface IDeribitAuthenticationService
     {
         Task<AuthResponse> Auth(AuthRequest request, CancellationToken ct = default);
-        Task Logout(LogoutRequest request, CancellationToken ct = default);
+        Task Logout(CancellationToken ct = default);
     }
 
     internal class DeribitAuthenticationService : IDeribitAuthenticationService
@@ -93,12 +93,12 @@ namespace Deribit.S4KTNET.Core.Authentication
             return LastAuthResponse = response;
         }
 
-        public async Task Logout(LogoutRequest request, CancellationToken ct = default)
+        public async Task Logout(CancellationToken ct = default)
         {
             // validate
             //new LogoutRequest.Validator().ValidateAndThrow(request);
             // map request
-            LogoutRequestDto requestdto = mapper.Map<LogoutRequestDto>(request);
+            //LogoutRequestDto requestdto = mapper.Map<LogoutRequestDto>(request);
             // execute request
             try
             {

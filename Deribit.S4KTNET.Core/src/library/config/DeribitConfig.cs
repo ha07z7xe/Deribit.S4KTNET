@@ -16,8 +16,13 @@ namespace Deribit.S4KTNET.Core
         public bool EnableJsonRpcTracing { get; set; }
 
         /// <summary>
-        /// Automatically refresh the access token periodically
+        /// Dont automatically refresh the access token periodically
         /// </summary>
-        public bool RefreshAuthToken { get; set; }
+        public bool NoRefreshAuthToken { get; set; }
+
+        /// <summary>
+        /// Dont automatically respond to heartbeats
+        /// </summary>
+        public bool NoRespondHeartbeats { get; set; }
     }
 }

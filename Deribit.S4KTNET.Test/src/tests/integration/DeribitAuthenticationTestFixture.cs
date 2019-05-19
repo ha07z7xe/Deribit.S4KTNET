@@ -87,7 +87,7 @@ namespace Deribit.S4KTNET.Test.Integration
         [Order(100)]
         public async Task Test_auth_logout_success()
         {
-            await deribit.Authentication.Logout(new LogoutRequest());
+            await deribit.Authentication.Logout();
         }
         
         //----------------------------------------------------------------------------

@@ -5,6 +5,7 @@ using Serilog.Sinks.SystemConsole.Themes;
 using Deribit.S4KTNET.Core.Supporting;
 using System.Threading.Tasks;
 using Deribit.S4KTNET.Core.SubscriptionManagement;
+using Deribit.S4KTNET.Core.SessionManagement;
 
 namespace Deribit.S4KTNET.Sample
 {
@@ -33,8 +34,11 @@ namespace Deribit.S4KTNET.Sample
             // test supporting
             await TestSupportingApiAsync();
 
-            // test subscription management
-            await TestSubscriptionManagementApiAsync();
+            //// test subscription management
+            //await TestSubscriptionManagementApiAsync();
+
+            // test heartbeats
+            await TestHeartbeatsAsync();
 
             // wait for input
             Console.ReadKey();
@@ -117,6 +121,26 @@ namespace Deribit.S4KTNET.Sample
                     });
                 Log.Information($"public/unsubscribe | channels:{{channels}}", 
                     string.Join(',', unsubscriberesponse.subscribed_channels));
+            }
+        }
+
+        private static async Task TestHeartbeatsAsync()
+        {
+            // public/set_heartbeat
+            {
+                SetHeartbeatResponse setheartbeatresponse = await deribit.SessionManagement
+                    .SetHeartbeat(new SetHeartbeatRequest()
+                    {
+                        interval = 10,
+                    });
+            }
+
+            // wait
+            await Task.Delay(36 * 1000);
+
+            // public/disable_heartbeat
+            {
+                await deribit.SessionManagement.DisableHeartbeat();
             }
         }
     }
