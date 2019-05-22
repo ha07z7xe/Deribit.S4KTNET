@@ -20,7 +20,7 @@ namespace Deribit.S4KTNET.Core.Trading
             }
         }
 
-        internal class Validator : FluentValidation.AbstractValidator<BuySellResponse>
+        public class Validator : FluentValidation.AbstractValidator<BuySellResponse>
         {
             public Validator()
             {

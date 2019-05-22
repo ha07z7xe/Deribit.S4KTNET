@@ -66,6 +66,7 @@ namespace Deribit.S4KTNET.Core
         {
             public Validator()
             {
+                this.RuleFor(x => x.order_id).NotEmpty();
                 this.RuleFor(x => x.amount).GreaterThan(0);
                 this.RuleFor(x => x.filled_amount).GreaterThanOrEqualTo(0);
                 this.RuleFor(x => x.instrument_name).NotEmpty();

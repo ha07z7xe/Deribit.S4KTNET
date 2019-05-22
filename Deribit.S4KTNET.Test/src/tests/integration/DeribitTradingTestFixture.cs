@@ -1,6 +1,7 @@
 ﻿using Deribit.S4KTNET.Core;
 using Deribit.S4KTNET.Core.Authentication;
 using Deribit.S4KTNET.Core.Trading;
+using FluentValidation;
 using NUnit.Framework;
 using StreamJsonRpc;
 using System;
@@ -50,7 +51,7 @@ namespace Deribit.S4KTNET.Test.Integration
             BuySellRequest req = new BuySellRequest()
             {
                 instrument_name = DeribitInstruments.Perpetual.BTCPERPETRUAL,
-                amount = 1,
+                amount = 10,
                 type = OrderType.limit,
                 label = "mylabel",
                 price = 6000,
@@ -58,9 +59,11 @@ namespace Deribit.S4KTNET.Test.Integration
             // execute
             BuySellResponse response = await this.deribit.Trading.buy(req);
             // assert
+            new BuySellResponse.Validator().ValidateAndThrow(response);
             Assert.That(response.order, Is.Not.Null);
             Assert.That(response.order.direction, Is.EqualTo(BuySell.Buy));
             Assert.That(response.order.label, Is.EqualTo(req.label));
+            Assert.That(response.order.order_id, Is.Not.Null);
             // cleanup
             // todo - cancel order
         }
