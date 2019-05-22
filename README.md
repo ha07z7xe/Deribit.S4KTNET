@@ -60,8 +60,8 @@ Deribit Rest and Websocket library
 | AccountManagement | private/set_password_for_subaccount | ✗ | |
 | AccountManagement | private/toggle_notifications_from_subaccount | ✗ | |
 | AccountManagement | private/toggle_subaccount_login | ✗ | |
-| Trading | [private/buy](https://docs.deribit.com/v2/#private-buy) | ✗ | todo |
-| Trading | [private/sell](https://docs.deribit.com/v2/#private-sell) | ✗ | todo |
+| Trading | [private/buy](https://docs.deribit.com/v2/#private-buy) | ✗ | in progress |
+| Trading | [private/sell](https://docs.deribit.com/v2/#private-sell) | ✗ | in progress |
 | Trading | [private/edit](https://docs.deribit.com/v2/#private-edit) | ✗ | todo |
 | Trading | [private/cancel](https://docs.deribit.com/v2/#private-cancel) | ✗ | todo |
 | Trading | [private/cancel_all](https://docs.deribit.com/v2/#private-cancel_all) | ✗ | todo |

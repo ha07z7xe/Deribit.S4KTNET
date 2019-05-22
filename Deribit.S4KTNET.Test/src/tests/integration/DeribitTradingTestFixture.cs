@@ -33,6 +33,13 @@ namespace Deribit.S4KTNET.Test.Integration
             }
         }
 
+        [SetUp]
+        public new async Task SetUp()
+        {
+            // dont spam
+            await Task.Delay(1000);
+        }
+
         [TearDown]
         public new async Task TearDown()
         {
@@ -65,7 +72,10 @@ namespace Deribit.S4KTNET.Test.Integration
             Assert.That(response.order.label, Is.EqualTo(req.label));
             Assert.That(response.order.order_id, Is.Not.Null);
             // cleanup
-            // todo - cancel order
+            await this.deribit.Trading.cancel(new CancelRequest()
+            {
+                order_id = response.order.order_id,
+            });
         }
 
         [Test]
@@ -88,6 +98,7 @@ namespace Deribit.S4KTNET.Test.Integration
             Assert.That(response.order, Is.Not.Null);
             Assert.That(response.order.direction, Is.EqualTo(BuySell.Buy));
             Assert.That(response.order.label, Is.EqualTo(req.label));
+            
         }
 
         [Test]
@@ -151,6 +162,30 @@ namespace Deribit.S4KTNET.Test.Integration
             // assert
             Assert.That(response.order, Is.Not.Null);
             Assert.That(response.order.direction == BuySell.Sell);
+        }
+
+        //----------------------------------------------------------------------------
+        // private/cancel
+        //----------------------------------------------------------------------------
+
+        [Test]
+        [Ignore("skipped")]
+        public async Task Test_cancel()
+        {
+            
+        }
+
+        //----------------------------------------------------------------------------
+        // private/cancel_all
+        //----------------------------------------------------------------------------
+
+        [Test]
+        public async Task Test_cancelall()
+        {
+            // execute
+            var response = await this.deribit.Trading.cancel_all();
+            // assert
+            Assert.That(response.success, Is.True);
         }
 
         //----------------------------------------------------------------------------

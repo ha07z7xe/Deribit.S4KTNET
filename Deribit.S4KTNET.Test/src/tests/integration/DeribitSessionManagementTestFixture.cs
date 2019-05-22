@@ -31,11 +31,11 @@ namespace Deribit.S4KTNET.Test.Integration
         {
             using (var sub = this.deribit.SessionManagement.HeartbeatStream.Subscribe(this))
             {
-                SetHeartbeatResponse setheartbeatresponse = await deribit.SessionManagement.SetHeartbeat(new SetHeartbeatRequest()
+                GenericResponse setheartbeatresponse = await deribit.SessionManagement.SetHeartbeat(new SetHeartbeatRequest()
                 {
                     interval = 10,
                 });
-                Assert.That(setheartbeatresponse.result, Is.True);
+                Assert.That(setheartbeatresponse.success, Is.True);
                 await Task.Delay(TimeSpan.FromSeconds(15));
             }
             Assert.That(heartbeatnotificationcount, Is.GreaterThan(0));
@@ -49,8 +49,8 @@ namespace Deribit.S4KTNET.Test.Integration
         [Description("public/disable_heartbeat")]
         public async Task Test_disableheartbeat_success()
         {
-            DisableHeartbeatResponse disableheartbeatresponse = await deribit.SessionManagement.DisableHeartbeat();
-            Assert.That(disableheartbeatresponse.result, Is.True);
+            GenericResponse disableheartbeatresponse = await deribit.SessionManagement.DisableHeartbeat();
+            Assert.That(disableheartbeatresponse.success, Is.True);
         }
 
         //----------------------------------------------------------------------------
@@ -63,8 +63,8 @@ namespace Deribit.S4KTNET.Test.Integration
         {
             if (!this.deribit.Authentication.IsAuthenticated)
                 throw new Exception("Test requires authentication");
-            EnableCancelOnDisconnectResponse response = await deribit.SessionManagement.EnableCancelOnDisconnect();
-            Assert.That(response.result, Is.True);
+            GenericResponse response = await deribit.SessionManagement.EnableCancelOnDisconnect();
+            Assert.That(response.success, Is.True);
         }
 
         //----------------------------------------------------------------------------
@@ -77,8 +77,8 @@ namespace Deribit.S4KTNET.Test.Integration
         {
             if (!this.deribit.Authentication.IsAuthenticated)
                 throw new Exception("Test requires authentication");
-            DisableCancelOnDisconnectResponse response = await deribit.SessionManagement.DisableCancelOnDisconnect();
-            Assert.That(response.result, Is.True);
+            GenericResponse response = await deribit.SessionManagement.DisableCancelOnDisconnect();
+            Assert.That(response.success, Is.True);
         }
 
         //----------------------------------------------------------------------------

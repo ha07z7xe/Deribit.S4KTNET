@@ -57,5 +57,12 @@ namespace Deribit.S4KTNET.Core.JsonRpc
             string advanced,
             CancellationToken ct
         );
+
+        [JsonRpcMethod("private/cancel")]
+        Task<OrderDto> cancel(string order_id, CancellationToken ct);
+
+        [JsonRpcMethod("private/cancel_all")]
+        Task<string> cancel_all(CancellationToken ct);
+
     }
 }

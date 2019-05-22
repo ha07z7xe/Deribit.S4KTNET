@@ -15,13 +15,13 @@ namespace Deribit.S4KTNET.Core.SessionManagement
     {
         IObservable<Unit> HeartbeatStream { get; }
 
-        Task<SetHeartbeatResponse> SetHeartbeat(SetHeartbeatRequest request, CancellationToken ct = default);
+        Task<GenericResponse> SetHeartbeat(SetHeartbeatRequest request, CancellationToken ct = default);
 
-        Task<DisableHeartbeatResponse> DisableHeartbeat(CancellationToken ct = default);
+        Task<GenericResponse> DisableHeartbeat(CancellationToken ct = default);
 
-        Task<EnableCancelOnDisconnectResponse> EnableCancelOnDisconnect(CancellationToken ct = default);
+        Task<GenericResponse> EnableCancelOnDisconnect(CancellationToken ct = default);
 
-        Task<DisableCancelOnDisconnectResponse> DisableCancelOnDisconnect(CancellationToken ct = default);
+        Task<GenericResponse> DisableCancelOnDisconnect(CancellationToken ct = default);
     }
 
     internal class DeribitSessionManagementService : IDeribitSessionManagementService
@@ -84,7 +84,7 @@ namespace Deribit.S4KTNET.Core.SessionManagement
         // api
         //------------------------------------------------------------------------------------------------
 
-        public async Task<SetHeartbeatResponse> SetHeartbeat(SetHeartbeatRequest request, CancellationToken ct)
+        public async Task<GenericResponse> SetHeartbeat(SetHeartbeatRequest request, CancellationToken ct)
         {
             // validate
             new SetHeartbeatRequest.Validator().ValidateAndThrow(request);
@@ -93,12 +93,12 @@ namespace Deribit.S4KTNET.Core.SessionManagement
             // execute request
             var responsedto = await this.rpcproxy.set_heartbeat(requestDto.interval, ct);
             // map response
-            SetHeartbeatResponse response = mapper.Map<SetHeartbeatResponse>(responsedto);
+            GenericResponse response = mapper.Map<GenericResponse>(responsedto);
             // return
             return response;
         }
 
-        public async Task<DisableHeartbeatResponse> DisableHeartbeat(CancellationToken ct)
+        public async Task<GenericResponse> DisableHeartbeat(CancellationToken ct)
         {
             // validate
             //new DisableHeartbeatRequest.Validator().ValidateAndThrow(request);
@@ -107,27 +107,27 @@ namespace Deribit.S4KTNET.Core.SessionManagement
             // execute request
             var responsedto = await this.rpcproxy.disable_heartbeat(ct);
             // map response
-            DisableHeartbeatResponse response = mapper.Map<DisableHeartbeatResponse>(responsedto);
+            GenericResponse response = mapper.Map<GenericResponse>(responsedto);
             // return
             return response;
         }
 
-        public async Task<EnableCancelOnDisconnectResponse> EnableCancelOnDisconnect(CancellationToken ct = default)
+        public async Task<GenericResponse> EnableCancelOnDisconnect(CancellationToken ct = default)
         {
             // execute request
             var responsedto = await this.rpcproxy.enable_cancel_on_disconnect(ct);
             // map response
-            EnableCancelOnDisconnectResponse response = mapper.Map<EnableCancelOnDisconnectResponse>(responsedto);
+            GenericResponse response = mapper.Map<GenericResponse>(responsedto);
             // return
             return response;
         }
 
-        public async Task<DisableCancelOnDisconnectResponse> DisableCancelOnDisconnect(CancellationToken ct = default)
+        public async Task<GenericResponse> DisableCancelOnDisconnect(CancellationToken ct = default)
         {
             // execute request
             var responsedto = await this.rpcproxy.disable_cancel_on_disconnect(ct);
             // map response
-            DisableCancelOnDisconnectResponse response = mapper.Map<DisableCancelOnDisconnectResponse>(responsedto);
+            GenericResponse response = mapper.Map<GenericResponse>(responsedto);
             // return
             return response;
         }

@@ -13,6 +13,10 @@ namespace Deribit.S4KTNET.Core.Trading
         Task<BuySellResponse> buy(BuySellRequest request, CancellationToken ct = default);
 
         Task<BuySellResponse> sell(BuySellRequest request, CancellationToken ct = default);
+
+        Task<Order> cancel(CancelRequest request, CancellationToken ct = default);
+
+        Task<GenericResponse> cancel_all(CancellationToken ct = default);
     }
 
     internal class DeribitTradingService : IDeribitTradingService
@@ -59,7 +63,7 @@ namespace Deribit.S4KTNET.Core.Trading
         // api
         //------------------------------------------------------------------------------------------------
 
-        public async Task<BuySellResponse> buy(BuySellRequest request, CancellationToken ct = default)
+        public async Task<BuySellResponse> buy(BuySellRequest request, CancellationToken ct)
         {
             // validate
             new BuySellRequest.Validator().ValidateAndThrow(request);
@@ -90,7 +94,7 @@ namespace Deribit.S4KTNET.Core.Trading
             return response;
         }
 
-        public async Task<BuySellResponse> sell(BuySellRequest request, CancellationToken ct = default)
+        public async Task<BuySellResponse> sell(BuySellRequest request, CancellationToken ct)
         {
             // validate
             new BuySellRequest.Validator().ValidateAndThrow(request);
@@ -117,6 +121,30 @@ namespace Deribit.S4KTNET.Core.Trading
             BuySellResponse response = mapper.Map<BuySellResponse>(responsedto);
             // validate
             new BuySellResponse.Validator().ValidateAndThrow(response);
+            // return
+            return response;
+        }
+
+        public async Task<Order> cancel(CancelRequest request, CancellationToken ct)
+        {
+            // validate 
+            new CancelRequest.Validator().ValidateAndThrow(request);
+            // map request
+            CancelRequestDto reqdto = mapper.Map<CancelRequestDto>(request);
+            // execute request
+            var orderdto = await this.rpcproxy.cancel(reqdto.order_id, ct);
+            // map response
+            Order order = mapper.Map<Order>(orderdto);
+            // return
+            return order;
+        }
+
+        public async Task<GenericResponse> cancel_all(CancellationToken ct)
+        {
+            // execute request
+            var responsedto = await this.rpcproxy.cancel_all(ct);
+            // map response
+            GenericResponse response = this.mapper.Map<GenericResponse>(responsedto);
             // return
             return response;
         }
