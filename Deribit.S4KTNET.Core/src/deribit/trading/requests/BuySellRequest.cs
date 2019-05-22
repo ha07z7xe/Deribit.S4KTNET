@@ -15,19 +15,19 @@ namespace Deribit.S4KTNET.Core.Trading
 
         public string label { get; set; }
 
-        public decimal price { get; set; }
+        public decimal? price { get; set; }
 
         public OrderTimeInForce time_in_force { get; set; }
 
-        public decimal max_show { get; set; }
+        public decimal? max_show { get; set; }
 
         public bool post_only { get; set; }
 
         public bool reduce_only { get; set; }
 
-        public decimal stop_price { get; set; }
+        public decimal? stop_price { get; set; }
 
-        public OrderTriggerType trigger { get; set; }
+        public OrderTriggerType? trigger { get; set; }
 
         public string advanced { get; set; }
 
@@ -38,7 +38,7 @@ namespace Deribit.S4KTNET.Core.Trading
                 this.CreateMap<BuySellRequest, BuySellRequestDto>()
                     .ForMember(d => d.type, o => o.MapFrom(s => s.type.ToDeribitString()))
                     .ForMember(d => d.time_in_force, o => o.MapFrom(s => s.time_in_force.ToDeribitString()))
-                    .ForMember(d => d.trigger, o => o.MapFrom(s => s.trigger.ToDeribitString()))
+                    .ForMember(d => d.trigger, o => o.MapFrom(s => s.trigger.HasValue ? s.trigger.Value.ToDeribitString() : null))
                     ;
             }
         }
@@ -49,8 +49,14 @@ namespace Deribit.S4KTNET.Core.Trading
             {
                 this.RuleFor(x => x.instrument_name).NotEmpty();
                 this.RuleFor(x => x.price).NotEmpty().When(x => x.type == OrderType.limit || x.type == OrderType.stop_limit);
+                this.RuleFor(x => x.price).Empty().When(x => x.type == OrderType.market || x.type == OrderType.stop_market);
                 this.RuleFor(x => x.amount).GreaterThan(0);
+                this.RuleFor(x => x.amount).GreaterThanOrEqualTo(DeribitContracts.ByInstrumentName[DeribitInstruments.Perpetual.BTCPERPETRUAL].ContractSize)
+                    .When(x => x.instrument_name == DeribitInstruments.Perpetual.BTCPERPETRUAL);
+                this.RuleFor(x => x.amount).GreaterThanOrEqualTo(DeribitContracts.ByInstrumentName[DeribitInstruments.Perpetual.ETHPERPETRUAL].ContractSize)
+                    .When(x => x.instrument_name == DeribitInstruments.Perpetual.ETHPERPETRUAL);
                 this.RuleFor(x => x.stop_price).NotEmpty().When(x => x.type == OrderType.stop_limit || x.type == OrderType.stop_market);
+                this.RuleFor(x => x.stop_price).Empty().When(x => x.type == OrderType.limit|| x.type == OrderType.market);
             }
         }
     }
@@ -65,17 +71,17 @@ namespace Deribit.S4KTNET.Core.Trading
 
         public string label { get; set; }
 
-        public decimal price { get; set; }
+        public decimal? price { get; set; }
 
         public string time_in_force { get; set; }
 
-        public decimal max_show { get; set; }
+        public decimal? max_show { get; set; }
 
         public bool post_only { get; set; }
 
         public bool reduce_only { get; set; }
 
-        public decimal stop_price { get; set; }
+        public decimal? stop_price { get; set; }
 
         public string trigger { get; set; }
 

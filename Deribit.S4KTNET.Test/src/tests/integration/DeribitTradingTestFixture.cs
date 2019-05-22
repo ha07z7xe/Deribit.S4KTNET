@@ -53,8 +53,7 @@ namespace Deribit.S4KTNET.Test.Integration
                 amount = 1,
                 type = OrderType.limit,
                 label = "mylabel",
-                price = 1000,
-                time_in_force = OrderTimeInForce.good_til_cancelled,
+                price = 6000,
             };
             // execute
             BuySellResponse response = await this.deribit.Trading.buy(req);
