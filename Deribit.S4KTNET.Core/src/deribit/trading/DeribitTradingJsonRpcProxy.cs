@@ -64,5 +64,22 @@ namespace Deribit.S4KTNET.Core.JsonRpc
         [JsonRpcMethod("private/cancel_all")]
         Task<string> cancel_all(CancellationToken ct);
 
+        [JsonRpcMethod("private/cancel_all_by_currency")]
+        Task<string> cancel_all_by_currency
+        (
+            string currency,
+            string kind,
+            string type,
+            CancellationToken ct
+        );
+
+        [JsonRpcMethod("private/cancel_all_by_instrument")]
+        Task<string> cancel_all_by_instrument
+        (
+            string instrument_name,
+            string type,
+            CancellationToken ct
+        );
+
     }
 }

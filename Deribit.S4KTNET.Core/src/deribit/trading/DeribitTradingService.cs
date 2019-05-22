@@ -17,6 +17,10 @@ namespace Deribit.S4KTNET.Core.Trading
         Task<Order> cancel(CancelRequest request, CancellationToken ct = default);
 
         Task<GenericResponse> cancel_all(CancellationToken ct = default);
+
+        Task<GenericResponse> cancel_all_by_currency(CancelAllByCurrencyRequest request, CancellationToken ct = default);
+
+        Task<GenericResponse> cancel_all_by_instrument(CancelAllByInstrumentRequest request, CancellationToken ct = default);
     }
 
     internal class DeribitTradingService : IDeribitTradingService
@@ -143,6 +147,49 @@ namespace Deribit.S4KTNET.Core.Trading
         {
             // execute request
             var responsedto = await this.rpcproxy.cancel_all(ct);
+            // map response
+            GenericResponse response = this.mapper.Map<GenericResponse>(responsedto);
+            // return
+            return response;
+        }
+
+        public async Task<GenericResponse> cancel_all_by_currency(CancelAllByCurrencyRequest request, CancellationToken ct)
+        {
+            // validate request
+            new CancelAllByCurrencyRequest.Validator().ValidateAndThrow(request);
+            // map request
+            var reqdto = this.mapper.Map<CancelAllByCurrencyRequestDto>(request);
+            // validate request dto
+            new CancelAllByCurrencyRequestDto.Validator().ValidateAndThrow(reqdto);
+            // execute request
+            var responsedto = await this.rpcproxy.cancel_all_by_currency
+            (
+                currency: reqdto.currency,
+                kind: reqdto.kind,
+                type: reqdto.type,
+                ct
+            );
+            // map response
+            GenericResponse response = this.mapper.Map<GenericResponse>(responsedto);
+            // return
+            return response;
+        }
+
+        public async Task<GenericResponse> cancel_all_by_instrument(CancelAllByInstrumentRequest request, CancellationToken ct)
+        {
+            // validate request
+            new CancelAllByInstrumentRequest.Validator().ValidateAndThrow(request);
+            // map request
+            var reqdto = this.mapper.Map<CancelAllByInstrumentRequestDto>(request);
+            // validate request dto
+            new CancelAllByInstrumentRequestDto.Validator().ValidateAndThrow(reqdto);
+            // execute request
+            var responsedto = await this.rpcproxy.cancel_all_by_instrument
+            (
+                instrument_name: reqdto.instrument_name,
+                type: reqdto.type,
+                ct
+            );
             // map response
             GenericResponse response = this.mapper.Map<GenericResponse>(responsedto);
             // return

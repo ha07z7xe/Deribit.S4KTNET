@@ -63,10 +63,10 @@ Deribit Rest and Websocket library
 | Trading | [private/buy](https://docs.deribit.com/v2/#private-buy) | ✗ | in progress |
 | Trading | [private/sell](https://docs.deribit.com/v2/#private-sell) | ✗ | in progress |
 | Trading | [private/edit](https://docs.deribit.com/v2/#private-edit) | ✗ | todo |
-| Trading | [private/cancel](https://docs.deribit.com/v2/#private-cancel) | ✗ | todo |
-| Trading | [private/cancel_all](https://docs.deribit.com/v2/#private-cancel_all) | ✗ | todo |
-| Trading | [private/cancel_all_by_currency](https://docs.deribit.com/v2/#private-cancel_all_by_currency) | ✗ | todo |
-| Trading | [private/cancel_all_by_instrument](https://docs.deribit.com/v2/#private-cancel_all_by_instrument) | ✗ | todo |
+| Trading | [private/cancel](https://docs.deribit.com/v2/#private-cancel) | ✔ | |
+| Trading | [private/cancel_all](https://docs.deribit.com/v2/#private-cancel_all) | ✔ | |
+| Trading | [private/cancel_all_by_currency](https://docs.deribit.com/v2/#private-cancel_all_by_currency) | ✔ | |
+| Trading | [private/cancel_all_by_instrument](https://docs.deribit.com/v2/#private-cancel_all_by_instrument) | ✔ | |
 | Trading | [private/close_position](https://docs.deribit.com/v2/#private-close_position) | ✗ | todo |
 | Trading | [private/get_margins](https://docs.deribit.com/v2/#private-get_margins) | ✗ | todo |
 | Trading | [private/get_open_orders_by_currency](https://docs.deribit.com/v2/#private-get_open_orders_by_currency) | ✗ | todo |

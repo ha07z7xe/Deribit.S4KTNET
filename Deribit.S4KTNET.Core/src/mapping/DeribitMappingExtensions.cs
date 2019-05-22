@@ -279,6 +279,36 @@ namespace Deribit.S4KTNET.Core.Mapping
             }
         }
 
+        public static string ToDeribitString(this InstrumentKind instrumentKind)
+        {
+            switch (instrumentKind)
+            {
+                case InstrumentKind.any:
+                    return "any";
+                case InstrumentKind.future:
+                    return "future";
+                case InstrumentKind.option:
+                    return "option";
+                default:
+                    throw new Exception();
+            }
+        }
+
+        public static string ToDeribitString(this Currency currency)
+        {
+            switch (currency)
+            {
+                case Currency.any:
+                    return "any";
+                case Currency.BTC:
+                    return "BTC";
+                case Currency.ETH:
+                    return "ETH";
+                default:
+                    throw new Exception();
+            }
+        }
+
         public static DateTime UnixTimeStampMillisToDateTimeUtc(this long unixTimeStampMillis)
         {
             return unixepoch.AddMilliseconds(unixTimeStampMillis);

@@ -189,5 +189,37 @@ namespace Deribit.S4KTNET.Test.Integration
         }
 
         //----------------------------------------------------------------------------
+        // private/cancel_all_by_currency
+        //----------------------------------------------------------------------------
+
+        [Test]
+        public async Task Test_cancelallbycurrency()
+        {
+            // execute
+            var response = await this.deribit.Trading.cancel_all_by_currency(new CancelAllByCurrencyRequest
+            {
+                currency = Currency.BTC,
+            });
+            // assert
+            Assert.That(response.success, Is.True);
+        }
+
+        //----------------------------------------------------------------------------
+        // private/cancel_all_by_instrument
+        //----------------------------------------------------------------------------
+
+        [Test]
+        public async Task Test_cancelallbyinstrument()
+        {
+            // execute
+            var response = await this.deribit.Trading.cancel_all_by_instrument(new CancelAllByInstrumentRequest
+            {
+                instrument_name = DeribitInstruments.Perpetual.BTCPERPETRUAL,
+            });
+            // assert
+            Assert.That(response.success, Is.True);
+        }
+
+        //----------------------------------------------------------------------------
     }
 }
