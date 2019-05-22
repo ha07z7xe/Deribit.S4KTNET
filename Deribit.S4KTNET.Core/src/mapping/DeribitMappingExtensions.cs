@@ -159,6 +159,8 @@ namespace Deribit.S4KTNET.Core.Mapping
                     return OrderState.filled;
                 case "untriggered":
                     return OrderState.untriggered;
+                case "closed":
+                    return OrderState.closed;
                 default:
                     throw new Exception();
             }

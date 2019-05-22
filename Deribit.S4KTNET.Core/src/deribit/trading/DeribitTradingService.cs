@@ -21,6 +21,8 @@ namespace Deribit.S4KTNET.Core.Trading
         Task<GenericResponse> cancel_all_by_currency(CancelAllByCurrencyRequest request, CancellationToken ct = default);
 
         Task<GenericResponse> cancel_all_by_instrument(CancelAllByInstrumentRequest request, CancellationToken ct = default);
+
+        Task<ClosePositionResponse> close_position(ClosePositionRequest request, CancellationToken ct = default);
     }
 
     internal class DeribitTradingService : IDeribitTradingService
@@ -192,6 +194,30 @@ namespace Deribit.S4KTNET.Core.Trading
             );
             // map response
             GenericResponse response = this.mapper.Map<GenericResponse>(responsedto);
+            // return
+            return response;
+        }
+
+        public async Task<ClosePositionResponse> close_position(ClosePositionRequest request, CancellationToken ct)
+        {
+            // validate request
+            new ClosePositionRequest.Validator().ValidateAndThrow(request);
+            // map request
+            var reqdto = this.mapper.Map<ClosePositionRequestDto>(request);
+            // validate request dto
+            new ClosePositionRequestDto.Validator().ValidateAndThrow(reqdto);
+            // execute request
+            var responsedto = await this.rpcproxy.close_position
+            (
+                instrument_name: reqdto.instrument_name,
+                type: reqdto.type,
+                price: reqdto.price,
+                ct
+            );
+            // map response
+            ClosePositionResponse response = this.mapper.Map<ClosePositionResponse>(responsedto);
+            // validate response
+            new ClosePositionResponse.Validator().ValidateAndThrow(response);
             // return
             return response;
         }

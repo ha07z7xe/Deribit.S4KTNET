@@ -221,5 +221,31 @@ namespace Deribit.S4KTNET.Test.Integration
         }
 
         //----------------------------------------------------------------------------
+        // private/close_position
+        //----------------------------------------------------------------------------
+
+        [Test]
+        public async Task Test_closeposition()
+        {
+            // open a position
+            await this.deribit.Trading.buy(new BuySellRequest
+            {
+                amount = 10,
+                instrument_name = DeribitInstruments.Perpetual.BTCPERPETRUAL,
+                type = OrderType.market,
+            });
+            // wait
+            await Task.Delay(1 << 9);
+            // close position
+            var response = await this.deribit.Trading.close_position(new ClosePositionRequest
+            {
+                instrument_name = DeribitInstruments.Perpetual.BTCPERPETRUAL,
+                type = "market",
+            });
+            // assert
+            new ClosePositionResponse.Validator().ValidateAndThrow(response);
+        }
+
+        //----------------------------------------------------------------------------
     }
 }

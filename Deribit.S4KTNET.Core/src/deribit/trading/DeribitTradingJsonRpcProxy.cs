@@ -81,5 +81,14 @@ namespace Deribit.S4KTNET.Core.JsonRpc
             CancellationToken ct
         );
 
+        [JsonRpcMethod("private/close_position")]
+        Task<ClosePositionResponseDto> close_position
+        (
+            string instrument_name,
+            string type,
+            decimal? price,
+            CancellationToken ct
+        );
+
     }
 }

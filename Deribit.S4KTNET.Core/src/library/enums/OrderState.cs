@@ -7,5 +7,6 @@ namespace Deribit.S4KTNET.Core
         rejected,
         cancelled,
         untriggered,
+        closed,
     }
 }
