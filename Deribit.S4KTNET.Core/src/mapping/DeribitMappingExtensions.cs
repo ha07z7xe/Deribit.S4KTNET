@@ -128,6 +128,144 @@ namespace Deribit.S4KTNET.Core.Mapping
             }
         }
 
+        public static OrderType ToOrderType(this string ordertype)
+        {
+            switch (ordertype)
+            {
+                case "limit":
+                    return OrderType.limit;
+                case "market":
+                    return OrderType.market;
+                case "stop_limit":
+                    return OrderType.stop_limit;
+                case "stop_market":
+                    return OrderType.stop_market;
+                default:
+                    throw new Exception();
+            }
+        }
+
+        public static OrderState ToOrderState(this string orderstate)
+        {
+            switch (orderstate)
+            {
+                case "cancelled":
+                    return OrderState.cancelled;
+                case "open":
+                    return OrderState.open;
+                case "rejected":
+                    return OrderState.rejected;
+                case "filled":
+                    return OrderState.filled;
+                case "untriggered":
+                    return OrderState.untriggered;
+                default:
+                    throw new Exception();
+            }
+        }
+
+        public static string ToDeribitString(this OrderState orderstate)
+        {
+            switch (orderstate)
+            {
+                case OrderState.untriggered:
+                    return "untriggered";
+                case OrderState.cancelled:
+                    return "cancelled";
+                case OrderState.filled:
+                    return "filled";
+                case OrderState.open:
+                    return "open";
+                case OrderState.rejected:
+                    return "rejected";
+                default:
+                    throw new Exception();
+            }
+        }
+
+        public static string ToDeribitString(this OrderType ordertype)
+        {
+            switch (ordertype)
+            {
+                case OrderType.limit:
+                    return "limit";
+                case OrderType.market:
+                    return "market";
+                case OrderType.stop_limit:
+                    return "stop_limit";
+                case OrderType.stop_market:
+                    return "stop_market";
+                default:
+                    throw new Exception();
+            }
+        }
+
+        public static OrderTimeInForce ToOrderTimeInForce(this string timeinforce)
+        {
+            switch (timeinforce)
+            {
+                case "good_til_cancelled":
+                    return OrderTimeInForce.good_til_cancelled;
+                case "fill_or_kill":
+                    return OrderTimeInForce.fill_or_kill;
+                case "immediate_or_cancel":
+                    return OrderTimeInForce.immediate_or_cancel;
+                default:
+                    throw new Exception();
+            }
+        }
+
+        public static string ToDeribitString(this OrderTimeInForce tif)
+        {
+            switch (tif)
+            {
+                case OrderTimeInForce.fill_or_kill:
+                    return "fill_or_kill";
+                case OrderTimeInForce.good_til_cancelled:
+                    return "good_til_cancelled";
+                case OrderTimeInForce.immediate_or_cancel:
+                    return "immediate_or_cancel";
+                default:
+                    throw new Exception();
+            }
+        }
+
+        public static OrderTriggerType ToOrderTriggerType(this string triggertype)
+        {
+            switch (triggertype)
+            {
+                case "":
+                case null:
+                case "none":
+                    return OrderTriggerType.none;
+                case "index_price":
+                    return OrderTriggerType.index_price;
+                case "mark_price":
+                    return OrderTriggerType.mark_price;
+                case "last_price":
+                    return OrderTriggerType.last_price;
+                default:
+                    throw new Exception();
+            }
+        }
+
+        public static string ToDeribitString(this OrderTriggerType triggertype)
+        {
+            switch (triggertype)
+            {
+                case OrderTriggerType.none:
+                    return null;
+                case OrderTriggerType.index_price:
+                    return "index_price";
+                case OrderTriggerType.mark_price:
+                    return "mark_price";
+                case OrderTriggerType.last_price:
+                    return "last_price";
+                default:
+                    throw new Exception();
+            }
+        }
+
         public static string ToDeribitString(this BuySell buysell)
         {
             switch (buysell)

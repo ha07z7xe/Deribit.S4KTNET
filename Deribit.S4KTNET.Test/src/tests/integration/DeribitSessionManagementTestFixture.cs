@@ -22,26 +22,6 @@ namespace Deribit.S4KTNET.Test.Integration
         private int heartbeatnotificationcount = 0;
 
         //----------------------------------------------------------------------------
-        // lifecycle
-        //----------------------------------------------------------------------------
-
-        [OneTimeSetUp]
-        public new async Task OneTimeSetUp()
-        {
-            // authenticate if possible
-            if (this.deribitcredentials != null)
-            {
-                var authresponse = await this.deribit.Authentication.Auth(new Core.Authentication.AuthRequest()
-                {
-                    grant_type = GrantType.client_credentials,
-                    client_id = deribitcredentials.client_id,
-                    client_secret = deribitcredentials.client_secret,
-                });
-                Assert.That(authresponse.refresh_token, Is.Not.Empty);
-            }
-        }
-
-        //----------------------------------------------------------------------------
         // public/set_heartbeat
         //----------------------------------------------------------------------------
 

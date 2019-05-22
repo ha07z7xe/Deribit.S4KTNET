@@ -8,6 +8,7 @@ using Deribit.S4KTNET.Core.Mapping;
 using Deribit.S4KTNET.Core.SessionManagement;
 using Deribit.S4KTNET.Core.SubscriptionManagement;
 using Deribit.S4KTNET.Core.Supporting;
+using Deribit.S4KTNET.Core.Trading;
 using Deribit.S4KTNET.Core.WebSocket;
 
 namespace Deribit.S4KTNET.Core
@@ -33,6 +34,7 @@ namespace Deribit.S4KTNET.Core
             builder.RegisterModule<DeribitSessionManagementModule>();
             builder.RegisterModule<DeribitSupportingModule>();
             builder.RegisterModule<DeribitSubscriptionManagementModule>();
+            builder.RegisterModule<DeribitTradingModule>();
         }
     }
 }

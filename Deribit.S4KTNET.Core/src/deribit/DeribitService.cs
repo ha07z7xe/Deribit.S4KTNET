@@ -7,6 +7,7 @@ using Deribit.S4KTNET.Core.JsonRpc;
 using Deribit.S4KTNET.Core.SessionManagement;
 using Deribit.S4KTNET.Core.SubscriptionManagement;
 using Deribit.S4KTNET.Core.Supporting;
+using Deribit.S4KTNET.Core.Trading;
 using Deribit.S4KTNET.Core.WebSocket;
 
 namespace Deribit.S4KTNET.Core
@@ -30,6 +31,8 @@ namespace Deribit.S4KTNET.Core
         IDeribitSessionManagementService SessionManagement { get; }
 
         IDeribitSupportingService Supporting { get; }
+
+        IDeribitTradingService Trading { get; }
 
         //------------------------------------------------------------------------------------------------
         // connection
@@ -63,6 +66,9 @@ namespace Deribit.S4KTNET.Core
 
         public IDeribitSubscriptionManagementService SubscriptionManagement => this.SubscriptionManagement2;
         internal DeribitSubscriptionManagementService SubscriptionManagement2 { get; }
+
+        public IDeribitTradingService Trading => this.Trading2;
+        internal DeribitTradingService Trading2 { get; }
 
         //------------------------------------------------------------------------------------------------
         // configuration
@@ -99,6 +105,7 @@ namespace Deribit.S4KTNET.Core
             this.SessionManagement2 = container.Resolve<DeribitSessionManagementService>();
             this.Supporting2 = container.Resolve<DeribitSupportingService>();
             this.SubscriptionManagement2 = container.Resolve<DeribitSubscriptionManagementService>();
+            this.Trading2 = container.Resolve<DeribitTradingService>();
             // connect
             if (config.ConnectOnConstruction)
             {

@@ -62,6 +62,7 @@ Deribit Rest and Websocket library
 | AccountManagement | private/toggle_subaccount_login | ✗ | |
 | Trading | [private/buy](https://docs.deribit.com/v2/#private-buy) | ✗ | todo |
 | Trading | [private/sell](https://docs.deribit.com/v2/#private-sell) | ✗ | todo |
+| Trading | [private/edit](https://docs.deribit.com/v2/#private-edit) | ✗ | todo |
 | Trading | [private/cancel](https://docs.deribit.com/v2/#private-cancel) | ✗ | todo |
 | Trading | [private/cancel_all](https://docs.deribit.com/v2/#private-cancel_all) | ✗ | todo |
 | Trading | [private/cancel_all_by_currency](https://docs.deribit.com/v2/#private-cancel_all_by_currency) | ✗ | todo |
