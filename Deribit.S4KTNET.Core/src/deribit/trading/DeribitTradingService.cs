@@ -34,6 +34,8 @@ namespace Deribit.S4KTNET.Core.Trading
         Task<Order> GetOrderState(GetOrderStateRequest request, CancellationToken ct = default);
 
         Task<GetUserTradesByInstrumentResponse> GetUserTradesByInstrument(GetUserTradesByInstrumentRequest request, CancellationToken ct = default);
+
+        Task<IList<Trade>> GetUserTradesByOrder(GetUserTradesByOrderRequest request, CancellationToken ct = default);
     }
 
     internal class DeribitTradingService : IDeribitTradingService
@@ -345,6 +347,30 @@ namespace Deribit.S4KTNET.Core.Trading
             GetUserTradesByInstrumentResponse response = this.mapper.Map<GetUserTradesByInstrumentResponse>(responsedto);
             // validate response
             new GetUserTradesByInstrumentResponse.Validator().ValidateAndThrow(response);
+            // return
+            return response;
+        }
+
+        public async Task<IList<Trade>> GetUserTradesByOrder(GetUserTradesByOrderRequest request, CancellationToken ct)
+        {
+            // validate request
+            new GetUserTradesByOrderRequest.Validator().ValidateAndThrow(request);
+            // map request
+            var reqdto = this.mapper.Map<GetUserTradesByOrderRequestDto>(request);
+            // execute request
+            var responsedto = await this.rpcproxy.get_user_trades_by_order
+            (
+                order_id: reqdto.order_id,
+                sorting: reqdto.sorting,
+                ct
+            );
+            // map response
+            IList<Trade> response = this.mapper.Map<IList<Trade>>(responsedto);
+            // validate response
+            foreach (var trade in response)
+            {
+                new Trade.Validator().ValidateAndThrow(trade);
+            }
             // return
             return response;
         }

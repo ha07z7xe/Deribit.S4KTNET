@@ -43,10 +43,14 @@ namespace Deribit.S4KTNET.Core
 
         public long trade_seq { get; set; }
 
-        internal class Validator : FluentValidation.AbstractValidator<Trade>
+        public class Validator : FluentValidation.AbstractValidator<Trade>
         {
             public Validator()
             {
+                this.RuleFor(x => x.trade_id).NotEmpty();
+                this.RuleFor(x => x.timestamp).NotEmpty();
+                this.RuleFor(x => x.trade_seq).NotEmpty();
+                this.RuleFor(x => x.price).NotEmpty();
                 this.RuleFor(x => x.amount).GreaterThanOrEqualTo(0);
             }
         }

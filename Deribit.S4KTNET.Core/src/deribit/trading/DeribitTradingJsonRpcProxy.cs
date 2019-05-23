@@ -137,5 +137,13 @@ namespace Deribit.S4KTNET.Core.JsonRpc
             string sorting,
             CancellationToken ct
         );
+
+        [JsonRpcMethod("private/get_user_trades_by_order")]
+        Task<TradeDto[]> get_user_trades_by_order
+        (
+            string order_id,
+            string sorting,
+            CancellationToken ct
+        );
     }
 }
