@@ -46,6 +46,11 @@ namespace Deribit.S4KTNET.Test.Integration
             // cancel all orders
         }
 
+        public new async Task OneTimeTearDown()
+        {
+            await this.deribit.Trading.cancel_all();
+        }
+
         //----------------------------------------------------------------------------
         // private/buy
         //----------------------------------------------------------------------------
@@ -61,7 +66,7 @@ namespace Deribit.S4KTNET.Test.Integration
                 amount = 10,
                 type = OrderType.limit,
                 label = "mylabel",
-                price = 6000,
+                price = 2000,
             };
             // execute
             BuySellResponse response = await this.deribit.Trading.buy(req);
@@ -71,11 +76,12 @@ namespace Deribit.S4KTNET.Test.Integration
             Assert.That(response.order.direction, Is.EqualTo(BuySell.Buy));
             Assert.That(response.order.label, Is.EqualTo(req.label));
             Assert.That(response.order.order_id, Is.Not.Null);
+            // wait 
+            await Task.Delay(1 << 9);
             // cleanup
-            await this.deribit.Trading.cancel(new CancelRequest()
-            {
-                order_id = response.order.order_id,
-            });
+            var response2 = await this.deribit.Trading.cancel_all();
+            // assert
+            Assert.That(response2.success, Is.True);
         }
 
         [Test]
@@ -86,19 +92,29 @@ namespace Deribit.S4KTNET.Test.Integration
             BuySellRequest req = new BuySellRequest()
             {
                 instrument_name = DeribitInstruments.Perpetual.BTCPERPETRUAL,
-                amount = 1,
+                amount = 10,
                 type = OrderType.market,
                 label = "mylabel",
-                price = 1000,
-                time_in_force = OrderTimeInForce.good_til_cancelled,
             };
             // execute
             BuySellResponse response = await this.deribit.Trading.buy(req);
             // assert
+            new BuySellResponse.Validator().ValidateAndThrow(response);
             Assert.That(response.order, Is.Not.Null);
             Assert.That(response.order.direction, Is.EqualTo(BuySell.Buy));
             Assert.That(response.order.label, Is.EqualTo(req.label));
-            
+            Assert.That(response.order.order_id, Is.Not.Null);
+            Assert.That(response.trades.Count, Is.GreaterThan(0));
+            // wait 
+            await Task.Delay(1 << 9);
+            // cleanup
+            var response2 = await this.deribit.Trading.close_position(new ClosePositionRequest
+            {
+                instrument_name = DeribitInstruments.Perpetual.BTCPERPETRUAL,
+                type = "market",
+            });
+            // assert
+            new ClosePositionResponse.Validator().ValidateAndThrow(response2);
         }
 
         [Test]
@@ -109,18 +125,26 @@ namespace Deribit.S4KTNET.Test.Integration
             BuySellRequest req = new BuySellRequest()
             {
                 instrument_name = DeribitInstruments.Perpetual.BTCPERPETRUAL,
-                amount = 1,
+                amount = 10,
                 type = OrderType.stop_limit,
                 label = "mylabel",
-                price = 1000,
-                time_in_force = OrderTimeInForce.good_til_cancelled,
+                price = 11000,
+                stop_price = 10000,
             };
             // execute
             BuySellResponse response = await this.deribit.Trading.buy(req);
             // assert
+            new BuySellResponse.Validator().ValidateAndThrow(response);
             Assert.That(response.order, Is.Not.Null);
             Assert.That(response.order.direction, Is.EqualTo(BuySell.Buy));
             Assert.That(response.order.label, Is.EqualTo(req.label));
+            Assert.That(response.order.order_id, Is.Not.Null);
+            // wait 
+            await Task.Delay(1 << 9);
+            // cleanup
+            var response2 = await this.deribit.Trading.cancel_all();
+            // assert
+            Assert.That(response2.success, Is.True);
         }
         
         [Test]
