@@ -1,4 +1,4 @@
-**This library is a work in progress and will be force-pushed**
+**This library is a work in progress and may be force-pushed**
 
 # Deribit.S4KTNET
 Deribit Rest and Websocket library
@@ -200,16 +200,6 @@ deribit.Dispose();
 | Notifications | [user.trades.{kind}.{currency}.{interval}](https://docs.deribit.com/v2/#user-trades-kind-currency-interval) | ✗ | todo (high) |
 
 
-# Heartbeats
-
-The client automatically responds to heartbeat requests.
-You must enable heartbeats manually:
-```C#
-deribit.SessionManagement.SetHeartbeat(new SetHeartbeatRequest()
-{
-    interval = 10, // 10 seconds
-})
-```
 
 # Authentication
 
@@ -218,6 +208,7 @@ Private methods require authentication. The library supports all 3 authenticatio
 `SecureString` is not supported, as the credentials are exposed in memory through the websocket libraries anyway.
 
 ## Authentication - via username/password
+
 This flow is not recommended.
 
 ```C#
@@ -232,6 +223,7 @@ var request = new AuthRequest()
 deribit.Authentication.Auth(request);
 ```
 ## Authentication - via Api Key
+
 This is the recommended method.
 ```C#
 // form request
@@ -268,6 +260,7 @@ deribit.Authentication.Auth(request);
 
 
 ## Authentication - via refresh token
+
 Token refresh is handled by the library.
 If a valid refresh token is available, the library will periodically refresh the auth token every 15m.
 Note that Deribit seems to grant auth tokens with extended lifetimes (several months) which I do not understand; this functionality may not be required.
@@ -289,8 +282,25 @@ new DeribitConfig()
 }
 ```
 
+# Heartbeats
+
+The client automatically responds to heartbeat requests.
+But you must enable heartbeats yourself:
+```C#
+deribit.SessionManagement.SetHeartbeat(new SetHeartbeatRequest()
+{
+    interval = 10, // 10 seconds
+})
+```
+
+# Stream Multi-Threading
+
+Rx observables are synchronous by default. That means your observer code is called on the same thread the message is received on the websocket feed.
+Be sure to unblock the thread as soon as possible.
+
+* http://introtorx.com/Content/v1.0.10621.0/15_SchedulingAndThreading.html
+
 # Security
 
 * Do NOT trust the binaries with your keys
-* compiling from source
-* binary signatures
+* compile from source
