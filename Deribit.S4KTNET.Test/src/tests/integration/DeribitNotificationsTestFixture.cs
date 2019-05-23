@@ -37,10 +37,10 @@ namespace Deribit.S4KTNET.Test.Integration
         {
             //DeribitSubscriptions.announcements,
             //DeribitSubscriptions.book(DeribitInstruments.Perpetual.BTCPERPETRUAL, OrderbookGrouping._5, OrderbookDepth._10, Interval._100ms),
-            DeribitSubscriptions.book(DeribitInstruments.Perpetual.BTCPERPETRUAL, Interval._100ms),
+            DeribitSubscriptions.book(DeribitInstruments.Perpetual.BTCPERPETUAL, Interval._100ms),
             DeribitSubscriptions.deribit_price_index(DeribitIndices.btc_usd),
-            DeribitSubscriptions.quote(DeribitInstruments.Perpetual.BTCPERPETRUAL),
-            DeribitSubscriptions.ticker(DeribitInstruments.Perpetual.BTCPERPETRUAL, Interval._100ms),
+            DeribitSubscriptions.quote(DeribitInstruments.Perpetual.BTCPERPETUAL),
+            DeribitSubscriptions.ticker(DeribitInstruments.Perpetual.BTCPERPETUAL, Interval._100ms),
             //DeribitSubscriptions.trades(DeribitInstruments.Perpetual.BTCPERPETRUAL, Interval._100ms),
         };
 
@@ -64,7 +64,7 @@ namespace Deribit.S4KTNET.Test.Integration
         public async Task OneTimeSetUp()
         {
             SubscribeResponse subscriberesponse = await deribit.SubscriptionManagement
-                .subscribe_public(new SubscribeRequest()
+                .SubscribePublic(new SubscribeRequest()
             {
                 channels = channels,
             });
@@ -75,7 +75,7 @@ namespace Deribit.S4KTNET.Test.Integration
         public async Task OneTimeTearDown()
         {
             UnsubscribeResponse unsubscriberesponse = await deribit.SubscriptionManagement
-                .unsubscribe_public(new UnsubscribeRequest()
+                .UnsubscribePublic(new UnsubscribeRequest()
                 {
                     channels = channels,
                 });

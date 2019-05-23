@@ -10,11 +10,11 @@ namespace Deribit.S4KTNET.Core.Supporting
 {
     public interface IDeribitSupportingService
     {
-        Task<GetTimeResponse> get_time(CancellationToken ct = default);
+        Task<GetTimeResponse> GetTime(CancellationToken ct = default);
 
-        Task<HelloResponse> hello(HelloRequest request, CancellationToken ct = default);
+        Task<HelloResponse> Hello(HelloRequest request, CancellationToken ct = default);
 
-        Task<TestResponse> test(TestRequest request, CancellationToken ct = default);
+        Task<TestResponse> Test(TestRequest request, CancellationToken ct = default);
     }
 
     internal class DeribitSupportingService : IDeribitSupportingService
@@ -62,7 +62,7 @@ namespace Deribit.S4KTNET.Core.Supporting
         //------------------------------------------------------------------------------------------------
 
 
-        public async Task<GetTimeResponse> get_time(CancellationToken ct)
+        public async Task<GetTimeResponse> GetTime(CancellationToken ct)
         {
             // execute request
             var responsedto = await this.rpcproxy.get_time(ct);
@@ -72,7 +72,7 @@ namespace Deribit.S4KTNET.Core.Supporting
             return response;
         }
 
-        public async Task<HelloResponse> hello(HelloRequest request, CancellationToken ct)
+        public async Task<HelloResponse> Hello(HelloRequest request, CancellationToken ct)
         {
             // validate
             new HelloRequest.Validator().ValidateAndThrow(request);
@@ -91,7 +91,7 @@ namespace Deribit.S4KTNET.Core.Supporting
             return response;
         }
 
-        public async Task<TestResponse> test(TestRequest request, CancellationToken ct)
+        public async Task<TestResponse> Test(TestRequest request, CancellationToken ct)
         {
             // validate
             new TestRequest.Validator().ValidateAndThrow(request);

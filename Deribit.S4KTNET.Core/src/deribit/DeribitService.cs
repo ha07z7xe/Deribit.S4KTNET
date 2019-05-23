@@ -38,7 +38,7 @@ namespace Deribit.S4KTNET.Core
         // connection
         //------------------------------------------------------------------------------------------------
 
-        Task Connect(CancellationToken ct);
+        Task Connect(CancellationToken ct = default);
         
         //------------------------------------------------------------------------------------------------
     }

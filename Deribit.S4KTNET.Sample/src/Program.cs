@@ -64,7 +64,7 @@ namespace Deribit.S4KTNET.Sample
         {
             // public/test
             {
-                TestResponse testresponse = await deribit.Supporting.test(new TestRequest()
+                TestResponse testresponse = await deribit.Supporting.Test(new TestRequest()
                 {
                     expected_result = null,
                 });
@@ -73,13 +73,13 @@ namespace Deribit.S4KTNET.Sample
 
             // public/get_time
             {
-                GetTimeResponse timeresponse = await deribit.Supporting.get_time();
+                GetTimeResponse timeresponse = await deribit.Supporting.GetTime();
                 Log.Information($"public/get_time | time:{{time:u}}", timeresponse.server_time);
             }
 
             // public/hello
             {
-                HelloResponse helloresponse = await deribit.Supporting.hello(new HelloRequest
+                HelloResponse helloresponse = await deribit.Supporting.Hello(new HelloRequest
                 {
                     client_name = "clientname",
                     client_version = "1",
@@ -93,12 +93,12 @@ namespace Deribit.S4KTNET.Sample
             // public/subscribe
             {
                 SubscribeResponse subscriberesponse = await deribit.SubscriptionManagement
-                    .subscribe_public(new SubscribeRequest
+                    .SubscribePublic(new SubscribeRequest
                 {
                         channels = new string[] 
                         {
                             //DeribitSubscriptions.trades(DeribitInstruments.Perpetual.BTCPERPETRUAL, Interval.raw),
-                            DeribitSubscriptions.book(DeribitInstruments.Perpetual.BTCPERPETRUAL, Interval._100ms),
+                            DeribitSubscriptions.book(DeribitInstruments.Perpetual.BTCPERPETUAL, Interval._100ms),
                         },
                 });
                 Log.Information($"public/subscribe | channels:{{channels}}", 
@@ -111,12 +111,12 @@ namespace Deribit.S4KTNET.Sample
             // public/unsubscribe
             {
                 UnsubscribeResponse unsubscriberesponse = await deribit.SubscriptionManagement
-                    .unsubscribe_public(new UnsubscribeRequest
+                    .UnsubscribePublic(new UnsubscribeRequest
                     {
                         channels = new string[]
                         {
                             //DeribitSubscriptions.trades(DeribitInstruments.Perpetual.BTCPERPETRUAL, Interval.raw),
-                            DeribitSubscriptions.book(DeribitInstruments.Perpetual.BTCPERPETRUAL, Interval._100ms),
+                            DeribitSubscriptions.book(DeribitInstruments.Perpetual.BTCPERPETUAL, Interval._100ms),
                         },
                     });
                 Log.Information($"public/unsubscribe | channels:{{channels}}", 

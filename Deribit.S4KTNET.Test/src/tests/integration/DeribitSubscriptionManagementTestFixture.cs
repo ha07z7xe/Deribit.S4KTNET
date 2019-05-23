@@ -14,8 +14,8 @@ namespace Deribit.S4KTNET.Test.Integration
     {
         private static readonly string[] channels = new string[]
         {
-            DeribitSubscriptions.trades(DeribitInstruments.Perpetual.BTCPERPETRUAL, Interval.raw),
-            DeribitSubscriptions.book(DeribitInstruments.Perpetual.BTCPERPETRUAL, Interval._100ms),
+            DeribitSubscriptions.trades(DeribitInstruments.Perpetual.BTCPERPETUAL, Interval.raw),
+            DeribitSubscriptions.book(DeribitInstruments.Perpetual.BTCPERPETUAL, Interval._100ms),
         };
 
         //----------------------------------------------------------------------------
@@ -27,7 +27,7 @@ namespace Deribit.S4KTNET.Test.Integration
         public async Task Test_subscribe()
         {
             SubscribeResponse subscriberesponse = await deribit.SubscriptionManagement
-                .subscribe_public(new SubscribeRequest()
+                .SubscribePublic(new SubscribeRequest()
             {
                 channels = channels,
             });
@@ -39,7 +39,7 @@ namespace Deribit.S4KTNET.Test.Integration
         public async Task Test_unsubscribe()
         {
             UnsubscribeResponse unsubscriberesponse = await deribit.SubscriptionManagement
-                .unsubscribe_public(new UnsubscribeRequest()
+                .UnsubscribePublic(new UnsubscribeRequest()
                 {
                     channels = channels,
                 });

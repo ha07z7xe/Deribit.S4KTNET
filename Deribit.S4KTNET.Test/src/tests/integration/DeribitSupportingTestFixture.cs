@@ -19,7 +19,7 @@ namespace Deribit.S4KTNET.Test.Integration
         [Description("public/test")]
         public async Task Test_test_success()
         {
-            TestResponse testresponse = await deribit.Supporting.test(new TestRequest()
+            TestResponse testresponse = await deribit.Supporting.Test(new TestRequest()
             {
                 expected_result = null,
             });
@@ -33,7 +33,7 @@ namespace Deribit.S4KTNET.Test.Integration
         {
             Assert.ThrowsAsync<RemoteInvocationException>(async () =>
             {
-                TestResponse testresponse = await deribit.Supporting.test(new TestRequest()
+                TestResponse testresponse = await deribit.Supporting.Test(new TestRequest()
                 {
                     expected_result = "exception",
                 });
@@ -48,7 +48,7 @@ namespace Deribit.S4KTNET.Test.Integration
         [Description("public/test")]
         public async Task Test_gettime()
         {
-            GetTimeResponse timeresponse = await deribit.Supporting.get_time();
+            GetTimeResponse timeresponse = await deribit.Supporting.GetTime();
             var timedifferencemillis = Math.Abs((DateTime.UtcNow - timeresponse.server_time).TotalMilliseconds);
             Assert.That(timedifferencemillis, Is.LessThan(1000));
         }
@@ -61,7 +61,7 @@ namespace Deribit.S4KTNET.Test.Integration
         [Description("public/hello")]
         public async Task Test_hello()
         {
-            HelloResponse helloresponse = await deribit.Supporting.hello(new HelloRequest
+            HelloResponse helloresponse = await deribit.Supporting.Hello(new HelloRequest
             {
                 client_name = "clientname",
                 client_version = "1",

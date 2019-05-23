@@ -48,7 +48,7 @@ namespace Deribit.S4KTNET.Test.Integration
 
         public new async Task OneTimeTearDown()
         {
-            await this.deribit.Trading.cancel_all();
+            await this.deribit.Trading.CancelAll();
         }
 
         //----------------------------------------------------------------------------
@@ -62,14 +62,14 @@ namespace Deribit.S4KTNET.Test.Integration
             // form request
             BuySellRequest req = new BuySellRequest()
             {
-                instrument_name = DeribitInstruments.Perpetual.BTCPERPETRUAL,
+                instrument_name = DeribitInstruments.Perpetual.BTCPERPETUAL,
                 amount = 10,
                 type = OrderType.limit,
                 label = "mylabel",
                 price = 2000,
             };
             // execute
-            BuySellResponse response = await this.deribit.Trading.buy(req);
+            BuySellResponse response = await this.deribit.Trading.Buy(req);
             // assert
             new BuySellResponse.Validator().ValidateAndThrow(response);
             Assert.That(response.order, Is.Not.Null);
@@ -79,7 +79,7 @@ namespace Deribit.S4KTNET.Test.Integration
             // wait 
             await Task.Delay(1 << 9);
             // cleanup
-            var response2 = await this.deribit.Trading.cancel_all();
+            var response2 = await this.deribit.Trading.CancelAll();
             // assert
             Assert.That(response2.success, Is.True);
         }
@@ -91,13 +91,13 @@ namespace Deribit.S4KTNET.Test.Integration
             // form request
             BuySellRequest req = new BuySellRequest()
             {
-                instrument_name = DeribitInstruments.Perpetual.BTCPERPETRUAL,
+                instrument_name = DeribitInstruments.Perpetual.BTCPERPETUAL,
                 amount = 10,
                 type = OrderType.market,
                 label = "mylabel",
             };
             // execute
-            BuySellResponse response = await this.deribit.Trading.buy(req);
+            BuySellResponse response = await this.deribit.Trading.Buy(req);
             // assert
             new BuySellResponse.Validator().ValidateAndThrow(response);
             Assert.That(response.order, Is.Not.Null);
@@ -108,9 +108,9 @@ namespace Deribit.S4KTNET.Test.Integration
             // wait 
             await Task.Delay(1 << 9);
             // cleanup
-            var response2 = await this.deribit.Trading.close_position(new ClosePositionRequest
+            var response2 = await this.deribit.Trading.ClosePosition(new ClosePositionRequest
             {
-                instrument_name = DeribitInstruments.Perpetual.BTCPERPETRUAL,
+                instrument_name = DeribitInstruments.Perpetual.BTCPERPETUAL,
                 type = "market",
             });
             // assert
@@ -124,7 +124,7 @@ namespace Deribit.S4KTNET.Test.Integration
             // form request
             BuySellRequest req = new BuySellRequest()
             {
-                instrument_name = DeribitInstruments.Perpetual.BTCPERPETRUAL,
+                instrument_name = DeribitInstruments.Perpetual.BTCPERPETUAL,
                 amount = 10,
                 type = OrderType.stop_limit,
                 label = "mylabel",
@@ -133,7 +133,7 @@ namespace Deribit.S4KTNET.Test.Integration
                 trigger = OrderTriggerType.index_price,
             };
             // execute
-            BuySellResponse response = await this.deribit.Trading.buy(req);
+            BuySellResponse response = await this.deribit.Trading.Buy(req);
             // assert
             new BuySellResponse.Validator().ValidateAndThrow(response);
             Assert.That(response.order, Is.Not.Null);
@@ -143,7 +143,7 @@ namespace Deribit.S4KTNET.Test.Integration
             // wait 
             await Task.Delay(1 << 9);
             // cleanup
-            var response2 = await this.deribit.Trading.cancel_all();
+            var response2 = await this.deribit.Trading.CancelAll();
             // assert
             Assert.That(response2.success, Is.True);
         }
@@ -155,7 +155,7 @@ namespace Deribit.S4KTNET.Test.Integration
             // form request
             BuySellRequest req = new BuySellRequest()
             {
-                instrument_name = DeribitInstruments.Perpetual.BTCPERPETRUAL,
+                instrument_name = DeribitInstruments.Perpetual.BTCPERPETUAL,
                 amount = 10,
                 type = OrderType.stop_market,
                 label = "mylabel",
@@ -163,7 +163,7 @@ namespace Deribit.S4KTNET.Test.Integration
                 trigger = OrderTriggerType.index_price,
             };
             // execute
-            BuySellResponse response = await this.deribit.Trading.buy(req);
+            BuySellResponse response = await this.deribit.Trading.Buy(req);
             // assert
             new BuySellResponse.Validator().ValidateAndThrow(response);
             Assert.That(response.order, Is.Not.Null);
@@ -183,7 +183,7 @@ namespace Deribit.S4KTNET.Test.Integration
             // form request
             BuySellRequest req = new BuySellRequest()
             {
-                instrument_name = DeribitInstruments.Perpetual.BTCPERPETRUAL,
+                instrument_name = DeribitInstruments.Perpetual.BTCPERPETUAL,
                 amount = 10,
                 type = OrderType.limit,
                 label = "mylabel",
@@ -191,7 +191,7 @@ namespace Deribit.S4KTNET.Test.Integration
                 post_only = true,
             };
             // execute
-            BuySellResponse response = await this.deribit.Trading.sell(req);
+            BuySellResponse response = await this.deribit.Trading.Sell(req);
             // assert
             new BuySellResponse.Validator().ValidateAndThrow(response);
             Assert.That(response.order, Is.Not.Null);
@@ -202,7 +202,7 @@ namespace Deribit.S4KTNET.Test.Integration
             // wait 
             await Task.Delay(1 << 9);
             // cleanup
-            var response2 = await this.deribit.Trading.cancel_all();
+            var response2 = await this.deribit.Trading.CancelAll();
             // assert
             Assert.That(response2.success, Is.True);
         }
@@ -226,7 +226,7 @@ namespace Deribit.S4KTNET.Test.Integration
         public async Task Test_cancelall()
         {
             // execute
-            var response = await this.deribit.Trading.cancel_all();
+            var response = await this.deribit.Trading.CancelAll();
             // assert
             Assert.That(response.success, Is.True);
         }
@@ -239,7 +239,7 @@ namespace Deribit.S4KTNET.Test.Integration
         public async Task Test_cancelallbycurrency()
         {
             // execute
-            var response = await this.deribit.Trading.cancel_all_by_currency(new CancelAllByCurrencyRequest
+            var response = await this.deribit.Trading.CancelAllByCurrency(new CancelAllByCurrencyRequest
             {
                 currency = Currency.BTC,
             });
@@ -255,9 +255,9 @@ namespace Deribit.S4KTNET.Test.Integration
         public async Task Test_cancelallbyinstrument()
         {
             // execute
-            var response = await this.deribit.Trading.cancel_all_by_instrument(new CancelAllByInstrumentRequest
+            var response = await this.deribit.Trading.CancelAllByInstrument(new CancelAllByInstrumentRequest
             {
-                instrument_name = DeribitInstruments.Perpetual.BTCPERPETRUAL,
+                instrument_name = DeribitInstruments.Perpetual.BTCPERPETUAL,
             });
             // assert
             Assert.That(response.success, Is.True);
@@ -271,18 +271,18 @@ namespace Deribit.S4KTNET.Test.Integration
         public async Task Test_closeposition()
         {
             // open a position
-            await this.deribit.Trading.buy(new BuySellRequest
+            await this.deribit.Trading.Buy(new BuySellRequest
             {
                 amount = 10,
-                instrument_name = DeribitInstruments.Perpetual.BTCPERPETRUAL,
+                instrument_name = DeribitInstruments.Perpetual.BTCPERPETUAL,
                 type = OrderType.market,
             });
             // wait
             await Task.Delay(1 << 9);
             // close position
-            var response = await this.deribit.Trading.close_position(new ClosePositionRequest
+            var response = await this.deribit.Trading.ClosePosition(new ClosePositionRequest
             {
-                instrument_name = DeribitInstruments.Perpetual.BTCPERPETRUAL,
+                instrument_name = DeribitInstruments.Perpetual.BTCPERPETUAL,
                 type = "market",
             });
             // assert

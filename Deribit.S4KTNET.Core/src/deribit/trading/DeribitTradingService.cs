@@ -10,19 +10,19 @@ namespace Deribit.S4KTNET.Core.Trading
 {
     public interface IDeribitTradingService
     {
-        Task<BuySellResponse> buy(BuySellRequest request, CancellationToken ct = default);
+        Task<BuySellResponse> Buy(BuySellRequest request, CancellationToken ct = default);
 
-        Task<BuySellResponse> sell(BuySellRequest request, CancellationToken ct = default);
+        Task<BuySellResponse> Sell(BuySellRequest request, CancellationToken ct = default);
 
-        Task<Order> cancel(CancelRequest request, CancellationToken ct = default);
+        Task<Order> Cancel(CancelRequest request, CancellationToken ct = default);
 
-        Task<GenericResponse> cancel_all(CancellationToken ct = default);
+        Task<GenericResponse> CancelAll(CancellationToken ct = default);
 
-        Task<GenericResponse> cancel_all_by_currency(CancelAllByCurrencyRequest request, CancellationToken ct = default);
+        Task<GenericResponse> CancelAllByCurrency(CancelAllByCurrencyRequest request, CancellationToken ct = default);
 
-        Task<GenericResponse> cancel_all_by_instrument(CancelAllByInstrumentRequest request, CancellationToken ct = default);
+        Task<GenericResponse> CancelAllByInstrument(CancelAllByInstrumentRequest request, CancellationToken ct = default);
 
-        Task<ClosePositionResponse> close_position(ClosePositionRequest request, CancellationToken ct = default);
+        Task<ClosePositionResponse> ClosePosition(ClosePositionRequest request, CancellationToken ct = default);
     }
 
     internal class DeribitTradingService : IDeribitTradingService
@@ -69,7 +69,7 @@ namespace Deribit.S4KTNET.Core.Trading
         // api
         //------------------------------------------------------------------------------------------------
 
-        public async Task<BuySellResponse> buy(BuySellRequest request, CancellationToken ct)
+        public async Task<BuySellResponse> Buy(BuySellRequest request, CancellationToken ct)
         {
             // validate
             new BuySellRequest.Validator().ValidateAndThrow(request);
@@ -100,7 +100,7 @@ namespace Deribit.S4KTNET.Core.Trading
             return response;
         }
 
-        public async Task<BuySellResponse> sell(BuySellRequest request, CancellationToken ct)
+        public async Task<BuySellResponse> Sell(BuySellRequest request, CancellationToken ct)
         {
             // validate
             new BuySellRequest.Validator().ValidateAndThrow(request);
@@ -131,7 +131,7 @@ namespace Deribit.S4KTNET.Core.Trading
             return response;
         }
 
-        public async Task<Order> cancel(CancelRequest request, CancellationToken ct)
+        public async Task<Order> Cancel(CancelRequest request, CancellationToken ct)
         {
             // validate 
             new CancelRequest.Validator().ValidateAndThrow(request);
@@ -145,7 +145,7 @@ namespace Deribit.S4KTNET.Core.Trading
             return order;
         }
 
-        public async Task<GenericResponse> cancel_all(CancellationToken ct)
+        public async Task<GenericResponse> CancelAll(CancellationToken ct)
         {
             // execute request
             var responsedto = await this.rpcproxy.cancel_all(ct);
@@ -155,7 +155,7 @@ namespace Deribit.S4KTNET.Core.Trading
             return response;
         }
 
-        public async Task<GenericResponse> cancel_all_by_currency(CancelAllByCurrencyRequest request, CancellationToken ct)
+        public async Task<GenericResponse> CancelAllByCurrency(CancelAllByCurrencyRequest request, CancellationToken ct)
         {
             // validate request
             new CancelAllByCurrencyRequest.Validator().ValidateAndThrow(request);
@@ -177,7 +177,7 @@ namespace Deribit.S4KTNET.Core.Trading
             return response;
         }
 
-        public async Task<GenericResponse> cancel_all_by_instrument(CancelAllByInstrumentRequest request, CancellationToken ct)
+        public async Task<GenericResponse> CancelAllByInstrument(CancelAllByInstrumentRequest request, CancellationToken ct)
         {
             // validate request
             new CancelAllByInstrumentRequest.Validator().ValidateAndThrow(request);
@@ -198,7 +198,7 @@ namespace Deribit.S4KTNET.Core.Trading
             return response;
         }
 
-        public async Task<ClosePositionResponse> close_position(ClosePositionRequest request, CancellationToken ct)
+        public async Task<ClosePositionResponse> ClosePosition(ClosePositionRequest request, CancellationToken ct)
         {
             // validate request
             new ClosePositionRequest.Validator().ValidateAndThrow(request);

@@ -51,10 +51,10 @@ namespace Deribit.S4KTNET.Core.Trading
                 this.RuleFor(x => x.price).NotEmpty().When(x => x.type == OrderType.limit || x.type == OrderType.stop_limit);
                 this.RuleFor(x => x.price).Empty().When(x => x.type == OrderType.market || x.type == OrderType.stop_market);
                 this.RuleFor(x => x.amount).GreaterThan(0);
-                this.RuleFor(x => x.amount).GreaterThanOrEqualTo(DeribitContracts.ByInstrumentName[DeribitInstruments.Perpetual.BTCPERPETRUAL].ContractSize)
-                    .When(x => x.instrument_name == DeribitInstruments.Perpetual.BTCPERPETRUAL);
-                this.RuleFor(x => x.amount).GreaterThanOrEqualTo(DeribitContracts.ByInstrumentName[DeribitInstruments.Perpetual.ETHPERPETRUAL].ContractSize)
-                    .When(x => x.instrument_name == DeribitInstruments.Perpetual.ETHPERPETRUAL);
+                this.RuleFor(x => x.amount).GreaterThanOrEqualTo(DeribitContracts.ByInstrumentName[DeribitInstruments.Perpetual.BTCPERPETUAL].ContractSize)
+                    .When(x => x.instrument_name == DeribitInstruments.Perpetual.BTCPERPETUAL);
+                this.RuleFor(x => x.amount).GreaterThanOrEqualTo(DeribitContracts.ByInstrumentName[DeribitInstruments.Perpetual.ETHPERPETUAL].ContractSize)
+                    .When(x => x.instrument_name == DeribitInstruments.Perpetual.ETHPERPETUAL);
                 this.RuleFor(x => x.stop_price).NotEmpty().When(x => x.type == OrderType.stop_limit || x.type == OrderType.stop_market);
                 this.RuleFor(x => x.stop_price).Empty().When(x => x.type == OrderType.limit|| x.type == OrderType.market);
                 this.RuleFor(x => x.trigger).NotEmpty().When(x => x.type == OrderType.stop_limit || x.type == OrderType.stop_market);

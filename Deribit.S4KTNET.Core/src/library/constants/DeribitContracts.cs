@@ -7,9 +7,9 @@ namespace Deribit.S4KTNET.Core
         public static readonly IDictionary<string, Contract> ByInstrumentName
             = new Dictionary<string, Contract>
             {
-                [DeribitInstruments.Perpetual.BTCPERPETRUAL] = new Contract
+                [DeribitInstruments.Perpetual.BTCPERPETUAL] = new Contract
                 {
-                    InstrumentName = DeribitInstruments.Perpetual.BTCPERPETRUAL,
+                    InstrumentName = DeribitInstruments.Perpetual.BTCPERPETUAL,
                     QuoteCurrency = "USD",
                     Url = "https://www.deribit.com/pages/docs/perpetual",
                     TickSize = 0.25m,
@@ -17,9 +17,9 @@ namespace Deribit.S4KTNET.Core
                     TakerFee = 0.00075m,
                     MakerFee = -0.00025m,
                 },
-                [DeribitInstruments.Perpetual.ETHPERPETRUAL] = new Contract
+                [DeribitInstruments.Perpetual.ETHPERPETUAL] = new Contract
                 {
-                    InstrumentName = DeribitInstruments.Perpetual.ETHPERPETRUAL,
+                    InstrumentName = DeribitInstruments.Perpetual.ETHPERPETUAL,
                     QuoteCurrency = "USD",
                     Url = "https://www.deribit.com/pages/docs/perpetual",
                     TickSize = 0.01m,

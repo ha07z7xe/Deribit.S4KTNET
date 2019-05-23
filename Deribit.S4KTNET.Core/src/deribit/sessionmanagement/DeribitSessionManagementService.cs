@@ -21,7 +21,7 @@ namespace Deribit.S4KTNET.Core.SessionManagement
 
         Task<GenericResponse> EnableCancelOnDisconnect(CancellationToken ct = default);
 
-        Task<GenericResponse> DisableCancelOnDisconnect(CancellationToken ct = default);
+        Task<GenericResponse> disable_cancel_on_disconnect(CancellationToken ct = default);
     }
 
     internal class DeribitSessionManagementService : IDeribitSessionManagementService
@@ -122,7 +122,7 @@ namespace Deribit.S4KTNET.Core.SessionManagement
             return response;
         }
 
-        public async Task<GenericResponse> DisableCancelOnDisconnect(CancellationToken ct = default)
+        public async Task<GenericResponse> disable_cancel_on_disconnect(CancellationToken ct = default)
         {
             // execute request
             var responsedto = await this.rpcproxy.disable_cancel_on_disconnect(ct);
@@ -141,7 +141,7 @@ namespace Deribit.S4KTNET.Core.SessionManagement
             // response to heartbeat
             if (!this.deribit.deribitconfig.NoRespondHeartbeats)
             {
-                deribit.Supporting.test(new Supporting.TestRequest());
+                deribit.Supporting.Test(new Supporting.TestRequest());
             }
             // raise
             this.HeartbeatSubject.OnNext(new Unit());

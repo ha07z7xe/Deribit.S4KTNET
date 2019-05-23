@@ -28,10 +28,10 @@ namespace Deribit.S4KTNET.Core.SubscriptionManagement
         //------------------------------------------------------------------------------------------------
         // subscribe / unsubscribe
         //------------------------------------------------------------------------------------------------
-        Task<SubscribeResponse> subscribe_public(SubscribeRequest request, CancellationToken ct = default);
-        Task<UnsubscribeResponse> unsubscribe_public(UnsubscribeRequest request, CancellationToken ct = default);
-        Task<SubscribeResponse> subscribe_private(SubscribeRequest request, CancellationToken ct = default);
-        Task<UnsubscribeResponse> unsubscribe_private(UnsubscribeRequest request, CancellationToken ct = default);
+        Task<SubscribeResponse> SubscribePublic(SubscribeRequest request, CancellationToken ct = default);
+        Task<UnsubscribeResponse> UnsubscribePublic(UnsubscribeRequest request, CancellationToken ct = default);
+        Task<SubscribeResponse> SubscribePrivate(SubscribeRequest request, CancellationToken ct = default);
+        Task<UnsubscribeResponse> UnsubscribePrivate(UnsubscribeRequest request, CancellationToken ct = default);
         //------------------------------------------------------------------------------------------------
     }
 
@@ -119,7 +119,7 @@ namespace Deribit.S4KTNET.Core.SubscriptionManagement
         // subscribe api
         //------------------------------------------------------------------------------------------------
 
-        public async Task<SubscribeResponse> subscribe_public(SubscribeRequest request, CancellationToken ct)
+        public async Task<SubscribeResponse> SubscribePublic(SubscribeRequest request, CancellationToken ct)
         {
             // validate
             new SubscribeRequest.Validator().ValidateAndThrow(request);
@@ -137,7 +137,7 @@ namespace Deribit.S4KTNET.Core.SubscriptionManagement
             return response;
         }
 
-        public async Task<UnsubscribeResponse> unsubscribe_public(UnsubscribeRequest request, CancellationToken ct)
+        public async Task<UnsubscribeResponse> UnsubscribePublic(UnsubscribeRequest request, CancellationToken ct)
         {
             // validate
             new UnsubscribeRequest.Validator().ValidateAndThrow(request);
@@ -155,7 +155,7 @@ namespace Deribit.S4KTNET.Core.SubscriptionManagement
             return response;
         }
 
-        public async Task<SubscribeResponse> subscribe_private(SubscribeRequest request, CancellationToken ct)
+        public async Task<SubscribeResponse> SubscribePrivate(SubscribeRequest request, CancellationToken ct)
         {
             // validate
             new SubscribeRequest.Validator().ValidateAndThrow(request);
@@ -173,7 +173,7 @@ namespace Deribit.S4KTNET.Core.SubscriptionManagement
             return response;
         }
 
-        public async Task<UnsubscribeResponse> unsubscribe_private(UnsubscribeRequest request, CancellationToken ct)
+        public async Task<UnsubscribeResponse> UnsubscribePrivate(UnsubscribeRequest request, CancellationToken ct)
         {
             // validate
             new UnsubscribeRequest.Validator().ValidateAndThrow(request);

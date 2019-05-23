@@ -15,8 +15,8 @@ namespace Deribit.S4KTNET.Core
 
         public static class Perpetual
         {
-            public const string BTCPERPETRUAL = "BTC-PERPETUAL";
-            public const string ETHPERPETRUAL = "ETH-PERPETUAL";
+            public const string BTCPERPETUAL = "BTC-PERPETUAL";
+            public const string ETHPERPETUAL = "ETH-PERPETUAL";
 
         }
 

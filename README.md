@@ -10,6 +10,80 @@ Deribit Rest and Websocket library
 # Installation
 
 # Usage
+* Namespaces
+```C#
+using Deribit.S4KTNET.Core;
+using Deribit.S4KTNET.Core.Authentication;
+using Deribit.S4KTNET.Core.SubscriptionManagement;
+using Deribit.S4KTNET.Core.SessionManagement;
+using Deribit.S4KTNET.Core.Trading;
+```
+* Configure
+```C#
+var deribitconfig = new DeribitConfig
+{
+    Environment = DeribitEnvironment.Live,
+    // ConnectOnConstruction // automatically connect
+    // EnableJsonRpcTracing // troubleshooting jsonrpc
+    // NoRefreshAuthToken // do not automatically refresh authentication token
+    // NoRespondHeartbeats // do not automatically response to hearbeats,
+};
+```
+* Construct client object
+```C#
+var deribit = new DeribitService(deribitconfig);
+```
+* Connect
+```C#
+await deribit.Connect();
+```
+* Test connection
+```C#
+await deribit.Supporting.Test(new TestRequest());
+```
+* Enable heartbeats
+```C#
+deribit.SessionManagement.SetHeartbeat(new SetHeartbeatRequest()
+{
+    interval = 10, // seconds
+});
+```
+* Subscribe to data streams
+```C#
+// subscribe to BTC perp quotes
+await deribit.SubscriptionManagement.subscribe_public(new SubscribeRequest()
+{
+    channels = new string[]
+    {
+        DeribitSubscriptions.quote(DeribitInstruments.Perpetual.BTCPERPETUAL),
+    },
+});
+// listen to stream
+deribit.SubscriptionManagement.QuoteStream.Subscribe(quoteObserver);
+```
+* Authenticate
+```C#
+deribit.Authentication.Auth(new AuthRequest()
+{
+    grant_type = GrantType.client_credentials,
+    client_id = "<yourapikey>",
+    client_secret = "<yourapisecret>",
+});
+```
+* Submit orders
+```C#
+await deribit.Trading.buy(new BuySellRequest()
+{
+    instrument_name = DeribitInstruments.Perpetual.BTCPERPETUAL,
+    type = OrderType.limit,
+    amount = 10,
+    price = 1234,
+});
+```
+* Disconnect
+```C#
+deribit.Dispose();
+```
 
 # Coverage
 
