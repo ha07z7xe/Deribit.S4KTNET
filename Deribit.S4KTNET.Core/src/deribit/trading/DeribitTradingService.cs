@@ -32,6 +32,8 @@ namespace Deribit.S4KTNET.Core.Trading
         Task<IList<Order>> GetOpenOrdersByInstrument(GetOpenOrdersByInstrumentRequest request, CancellationToken ct = default);
 
         Task<Order> GetOrderState(GetOrderStateRequest request, CancellationToken ct = default);
+
+        Task<GetUserTradesByInstrumentResponse> GetUserTradesByInstrument(GetUserTradesByInstrumentRequest request, CancellationToken ct = default);
     }
 
     internal class DeribitTradingService : IDeribitTradingService
@@ -256,7 +258,7 @@ namespace Deribit.S4KTNET.Core.Trading
             return response;
         }
 
-        public async Task<GetMarginsResponse> GetMargins(GetMarginsRequest request, CancellationToken ct = default)
+        public async Task<GetMarginsResponse> GetMargins(GetMarginsRequest request, CancellationToken ct)
         {
             // validate request
             new GetMarginsRequest.Validator().ValidateAndThrow(request);
@@ -278,7 +280,7 @@ namespace Deribit.S4KTNET.Core.Trading
             return response;
         }
 
-        public async Task<IList<Order>> GetOpenOrdersByInstrument(GetOpenOrdersByInstrumentRequest request, CancellationToken ct = default)
+        public async Task<IList<Order>> GetOpenOrdersByInstrument(GetOpenOrdersByInstrumentRequest request, CancellationToken ct)
         {
             // validate request
             new GetOpenOrdersByInstrumentRequest.Validator().ValidateAndThrow(request);
@@ -302,7 +304,7 @@ namespace Deribit.S4KTNET.Core.Trading
             return response;
         }
 
-        public async Task<Order> GetOrderState(GetOrderStateRequest request, CancellationToken ct = default)
+        public async Task<Order> GetOrderState(GetOrderStateRequest request, CancellationToken ct)
         {
             // validate request
             new GetOrderStateRequest.Validator().ValidateAndThrow(request);
@@ -321,6 +323,32 @@ namespace Deribit.S4KTNET.Core.Trading
             // return
             return response;
         }
+
+        public async Task<GetUserTradesByInstrumentResponse> GetUserTradesByInstrument(GetUserTradesByInstrumentRequest request, CancellationToken ct)
+        {
+            // validate request
+            new GetUserTradesByInstrumentRequest.Validator().ValidateAndThrow(request);
+            // map request
+            var reqdto = this.mapper.Map<GetUserTradesByInstrumentRequestDto>(request);
+            // execute request
+            var responsedto = await this.rpcproxy.get_user_trades_by_instrument
+            (
+                instrument_name: reqdto.instrument_name,
+                start_seq: reqdto.start_seq,
+                end_seq: reqdto.end_seq,
+                count: reqdto.count,
+                include_old: reqdto.include_old,
+                sorting: reqdto.sorting,
+                ct
+            );
+            // map response
+            GetUserTradesByInstrumentResponse response = this.mapper.Map<GetUserTradesByInstrumentResponse>(responsedto);
+            // validate response
+            new GetUserTradesByInstrumentResponse.Validator().ValidateAndThrow(response);
+            // return
+            return response;
+        }
+
 
         //------------------------------------------------------------------------------------------------
     }

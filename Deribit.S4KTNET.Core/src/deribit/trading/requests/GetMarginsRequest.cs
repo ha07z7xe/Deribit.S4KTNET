@@ -13,6 +13,7 @@ namespace Deribit.S4KTNET.Core.Trading
 
         public decimal price { get; set; }
 
+
         internal class Profile : AutoMapper.Profile
         {
             public Profile()

@@ -323,9 +323,9 @@ namespace Deribit.S4KTNET.Test.Integration
             // open a position
             await this.deribit.Trading.Buy(new BuySellRequest
             {
-                amount = 10,
                 instrument_name = DeribitInstruments.Perpetual.BTCPERPETUAL,
                 type = OrderType.market,
+                amount = 10,
             });
             // wait
             await Task.Delay(1 << 9);
@@ -435,6 +435,40 @@ namespace Deribit.S4KTNET.Test.Integration
             await Task.Delay(1 << 9);
             // cleanup
             await this.deribit.Trading.CancelAll();
+        }
+
+        //----------------------------------------------------------------------------
+        // private/get_user_trades_by_instrument
+        //----------------------------------------------------------------------------
+
+        [Test]
+        public async Task Test_getusertradesbyinstrument()
+        {
+            // make some trades
+            await this.deribit.Trading.Buy(new BuySellRequest
+            {
+                instrument_name = DeribitInstruments.Perpetual.BTCPERPETUAL,
+                type = OrderType.market,
+                amount = 1000,
+            });
+            // wait
+            await Task.Delay(1 << 9);
+            // get trades
+            var response = await this.deribit.Trading.GetUserTradesByInstrument(new GetUserTradesByInstrumentRequest
+            {
+                instrument_name = DeribitInstruments.Perpetual.BTCPERPETUAL,
+            });
+            var trades = response.trades;
+            // assert
+            Assert.That(trades.Count, Is.GreaterThan(0));
+            // wait
+            await Task.Delay(1 << 9);
+            // close position
+            await this.deribit.Trading.ClosePosition(new ClosePositionRequest
+            {
+                instrument_name = DeribitInstruments.Perpetual.BTCPERPETUAL,
+                type = "market",
+            });
         }
 
         //----------------------------------------------------------------------------
