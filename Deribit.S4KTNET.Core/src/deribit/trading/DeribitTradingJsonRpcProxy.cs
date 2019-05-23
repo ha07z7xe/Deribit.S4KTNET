@@ -110,5 +110,13 @@ namespace Deribit.S4KTNET.Core.JsonRpc
             decimal price,
             CancellationToken ct
         );
+
+        [JsonRpcMethod("private/get_open_orders_by_instrument")]
+        Task<OrderDto[]> get_open_orders_by_instrument
+        (
+            string instrument_name,
+            string type,
+            CancellationToken ct
+        );
     }
 }

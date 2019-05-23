@@ -3,6 +3,7 @@ using AutoMapper;
 using Deribit.S4KTNET.Core.JsonRpc;
 using FluentValidation;
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -27,6 +28,8 @@ namespace Deribit.S4KTNET.Core.Trading
         Task<ClosePositionResponse> ClosePosition(ClosePositionRequest request, CancellationToken ct = default);
 
         Task<GetMarginsResponse> GetMargins(GetMarginsRequest request, CancellationToken ct = default);
+
+        Task<IList<Order>> GetOpenOrdersByInstrument(GetOpenOrdersByInstrumentRequest request, CancellationToken ct = default);
     }
 
     internal class DeribitTradingService : IDeribitTradingService
@@ -269,6 +272,30 @@ namespace Deribit.S4KTNET.Core.Trading
             GetMarginsResponse response = this.mapper.Map<GetMarginsResponse>(responsedto);
             // validate response
             new GetMarginsResponse.Validator().ValidateAndThrow(response);
+            // return
+            return response;
+        }
+
+        public async Task<IList<Order>> GetOpenOrdersByInstrument(GetOpenOrdersByInstrumentRequest request, CancellationToken ct = default)
+        {
+            // validate request
+            new GetOpenOrdersByInstrumentRequest.Validator().ValidateAndThrow(request);
+            // map request
+            var reqdto = this.mapper.Map<GetOpenOrdersByInstrumentRequestDto>(request);
+            // execute request
+            var responsedto = await this.rpcproxy.get_open_orders_by_instrument
+            (
+                instrument_name: reqdto.instrument_name,
+                type: reqdto.type,
+                ct
+            );
+            // map response
+            IList<Order> response = this.mapper.Map<IList<Order>>(responsedto);
+            // validate response
+            foreach (var order in response)
+            {
+                new Order.Validator().ValidateAndThrow(order);
+            }
             // return
             return response;
         }
