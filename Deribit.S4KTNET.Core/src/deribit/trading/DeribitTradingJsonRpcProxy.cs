@@ -118,5 +118,13 @@ namespace Deribit.S4KTNET.Core.JsonRpc
             string type,
             CancellationToken ct
         );
+
+
+        [JsonRpcMethod("private/get_order_state")]
+        Task<OrderDto> get_order_state
+        (
+            string order_id,
+            CancellationToken ct
+        );
     }
 }

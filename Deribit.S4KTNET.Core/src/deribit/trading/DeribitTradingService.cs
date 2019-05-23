@@ -30,6 +30,8 @@ namespace Deribit.S4KTNET.Core.Trading
         Task<GetMarginsResponse> GetMargins(GetMarginsRequest request, CancellationToken ct = default);
 
         Task<IList<Order>> GetOpenOrdersByInstrument(GetOpenOrdersByInstrumentRequest request, CancellationToken ct = default);
+
+        Task<Order> GetOrderState(GetOrderStateRequest request, CancellationToken ct = default);
     }
 
     internal class DeribitTradingService : IDeribitTradingService
@@ -296,6 +298,26 @@ namespace Deribit.S4KTNET.Core.Trading
             {
                 new Order.Validator().ValidateAndThrow(order);
             }
+            // return
+            return response;
+        }
+
+        public async Task<Order> GetOrderState(GetOrderStateRequest request, CancellationToken ct = default)
+        {
+            // validate request
+            new GetOrderStateRequest.Validator().ValidateAndThrow(request);
+            // map request
+            var reqdto = this.mapper.Map<GetOrderStateRequestDto>(request);
+            // execute request
+            var responsedto = await this.rpcproxy.get_order_state
+            (
+                order_id: reqdto.order_id,
+                ct
+            );
+            // map response
+            Order response = this.mapper.Map<Order>(responsedto);
+            // validate response
+            new Order.Validator().ValidateAndThrow(response);
             // return
             return response;
         }
