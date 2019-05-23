@@ -340,5 +340,26 @@ namespace Deribit.S4KTNET.Test.Integration
         }
 
         //----------------------------------------------------------------------------
+        // private/get_margins
+        //----------------------------------------------------------------------------
+
+        [Test]
+        public async Task Test_getmargins()
+        {
+            // form request
+            var req = new GetMarginsRequest
+            {
+                instrument_name = DeribitInstruments.Perpetual.BTCPERPETUAL,
+                amount = 20,
+                price = 5000,
+            };
+            // execute request
+            var response = await this.deribit.Trading.GetMargins(req);
+            // assert
+            new GetMarginsResponse.Validator().ValidateAndThrow(response);
+            Assert.That(response.buy, Is.GreaterThan(0));
+        }
+
+        //----------------------------------------------------------------------------
     }
 }

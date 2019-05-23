@@ -102,5 +102,13 @@ namespace Deribit.S4KTNET.Core.JsonRpc
             CancellationToken ct
         );
 
+        [JsonRpcMethod("private/get_margins")]
+        Task<GetMarginsResponseDto> get_margins
+        (
+            string instrument_name,
+            decimal amount,
+            decimal price,
+            CancellationToken ct
+        );
     }
 }

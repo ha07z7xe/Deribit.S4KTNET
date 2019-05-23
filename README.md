@@ -142,7 +142,7 @@ deribit.Dispose();
 | Trading | [private/cancel_all_by_currency](https://docs.deribit.com/v2/#private-cancel_all_by_currency) | ✔ | |
 | Trading | [private/cancel_all_by_instrument](https://docs.deribit.com/v2/#private-cancel_all_by_instrument) | ✔ | |
 | Trading | [private/close_position](https://docs.deribit.com/v2/#private-close_position) | ✔ | |
-| Trading | [private/get_margins](https://docs.deribit.com/v2/#private-get_margins) | ✗ | todo (high) |
+| Trading | [private/get_margins](https://docs.deribit.com/v2/#private-get_margins) | ✔ | |
 | Trading | [private/get_open_orders_by_currency](https://docs.deribit.com/v2/#private-get_open_orders_by_currency) | ✗ | todo |
 | Trading | [private/get_open_orders_by_instrument](https://docs.deribit.com/v2/#private-get_open_orders_by_instrument) | ✗ | todo (high) |
 | Trading | [private/get_order_history_by_currency](https://docs.deribit.com/v2/#private-get_order_history_by_currency) | ✗ | todo |

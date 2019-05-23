@@ -25,6 +25,8 @@ namespace Deribit.S4KTNET.Core.Trading
         Task<GenericResponse> CancelAllByInstrument(CancelAllByInstrumentRequest request, CancellationToken ct = default);
 
         Task<ClosePositionResponse> ClosePosition(ClosePositionRequest request, CancellationToken ct = default);
+
+        Task<GetMarginsResponse> GetMargins(GetMarginsRequest request, CancellationToken ct = default);
     }
 
     internal class DeribitTradingService : IDeribitTradingService
@@ -245,6 +247,28 @@ namespace Deribit.S4KTNET.Core.Trading
             ClosePositionResponse response = this.mapper.Map<ClosePositionResponse>(responsedto);
             // validate response
             new ClosePositionResponse.Validator().ValidateAndThrow(response);
+            // return
+            return response;
+        }
+
+        public async Task<GetMarginsResponse> GetMargins(GetMarginsRequest request, CancellationToken ct = default)
+        {
+            // validate request
+            new GetMarginsRequest.Validator().ValidateAndThrow(request);
+            // map request
+            var reqdto = this.mapper.Map<GetMarginsRequestDto>(request);
+            // execute request
+            var responsedto = await this.rpcproxy.get_margins
+            (
+                instrument_name: reqdto.instrument_name,
+                amount: reqdto.amount,
+                price: reqdto.price,
+                ct
+            );
+            // map response
+            GetMarginsResponse response = this.mapper.Map<GetMarginsResponse>(responsedto);
+            // validate response
+            new GetMarginsResponse.Validator().ValidateAndThrow(response);
             // return
             return response;
         }
