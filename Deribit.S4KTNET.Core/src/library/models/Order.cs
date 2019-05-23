@@ -45,7 +45,7 @@ namespace Deribit.S4KTNET.Core
 
         public bool post_only { get; set; }
 
-        public decimal price { get; set; }
+        public decimal? price { get; set; }
 
         public decimal profit_loss { get; set; }
 

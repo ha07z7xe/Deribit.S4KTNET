@@ -130,6 +130,7 @@ namespace Deribit.S4KTNET.Test.Integration
                 label = "mylabel",
                 price = 11000,
                 stop_price = 10000,
+                trigger = OrderTriggerType.index_price,
             };
             // execute
             BuySellResponse response = await this.deribit.Trading.buy(req);
@@ -155,37 +156,55 @@ namespace Deribit.S4KTNET.Test.Integration
             BuySellRequest req = new BuySellRequest()
             {
                 instrument_name = DeribitInstruments.Perpetual.BTCPERPETRUAL,
-                amount = 1,
+                amount = 10,
                 type = OrderType.stop_market,
                 label = "mylabel",
-                price = 1000,
-                time_in_force = OrderTimeInForce.good_til_cancelled,
+                stop_price = 10000,
+                trigger = OrderTriggerType.index_price,
             };
             // execute
             BuySellResponse response = await this.deribit.Trading.buy(req);
             // assert
+            new BuySellResponse.Validator().ValidateAndThrow(response);
             Assert.That(response.order, Is.Not.Null);
             Assert.That(response.order.direction, Is.EqualTo(BuySell.Buy));
             Assert.That(response.order.label, Is.EqualTo(req.label));
+            Assert.That(response.order.order_id, Is.Not.Null);
         }
+
         //----------------------------------------------------------------------------
         // private/sell
         //----------------------------------------------------------------------------
 
         [Test]
         [Description("private/sell")]
-        public async Task Test_sell_success()
+        public async Task Test_sell_postonly()
         {
             // form request
             BuySellRequest req = new BuySellRequest()
             {
-
+                instrument_name = DeribitInstruments.Perpetual.BTCPERPETRUAL,
+                amount = 10,
+                type = OrderType.limit,
+                label = "mylabel",
+                price = 1000,
+                post_only = true,
             };
             // execute
             BuySellResponse response = await this.deribit.Trading.sell(req);
             // assert
+            new BuySellResponse.Validator().ValidateAndThrow(response);
             Assert.That(response.order, Is.Not.Null);
-            Assert.That(response.order.direction == BuySell.Sell);
+            Assert.That(response.order.direction, Is.EqualTo(BuySell.Sell));
+            Assert.That(response.order.label, Is.EqualTo(req.label));
+            Assert.That(response.order.order_id, Is.Not.Null);
+            Assert.That(response.trades.Count, Is.EqualTo(0));
+            // wait 
+            await Task.Delay(1 << 9);
+            // cleanup
+            var response2 = await this.deribit.Trading.cancel_all();
+            // assert
+            Assert.That(response2.success, Is.True);
         }
 
         //----------------------------------------------------------------------------

@@ -43,7 +43,7 @@ namespace Deribit.S4KTNET.Core.Trading
 
         public bool post_only { get; set; }
 
-        public decimal price { get; set; }
+        public string price { get; set; } // can be "market_price"
 
         public decimal profit_loss { get; set; }
 
@@ -73,6 +73,8 @@ namespace Deribit.S4KTNET.Core.Trading
                     .ForMember(d => d.trigger, o => o.MapFrom(s => s.trigger.ToOrderTriggerType()))
                     .ForMember(d => d.last_update_timestamp, o => o.MapFrom(s => s.last_update_timestamp.UnixTimeStampMillisToDateTimeUtc()))
                     .ForMember(d => d.creation_timestamp, o => o.MapFrom(s => s.creation_timestamp.UnixTimeStampMillisToDateTimeUtc()))
+                    .ForMember(d => d.price, o => o.MapFrom(s => (s.price == null || s.price == "market_price") 
+                        ? (decimal?) null : decimal.Parse(s.price)));
                     ;
             }
         }

@@ -17,7 +17,7 @@ namespace Deribit.S4KTNET.Core.Trading
 
         public decimal? price { get; set; }
 
-        public OrderTimeInForce time_in_force { get; set; }
+        public OrderTimeInForce? time_in_force { get; set; }
 
         public decimal? max_show { get; set; }
 
@@ -37,7 +37,7 @@ namespace Deribit.S4KTNET.Core.Trading
             {
                 this.CreateMap<BuySellRequest, BuySellRequestDto>()
                     .ForMember(d => d.type, o => o.MapFrom(s => s.type.ToDeribitString()))
-                    .ForMember(d => d.time_in_force, o => o.MapFrom(s => s.time_in_force.ToDeribitString()))
+                    .ForMember(d => d.time_in_force, o => o.MapFrom(s => s.time_in_force.HasValue ? s.time_in_force.Value.ToDeribitString() : null))
                     .ForMember(d => d.trigger, o => o.MapFrom(s => s.trigger.HasValue ? s.trigger.Value.ToDeribitString() : null))
                     ;
             }
@@ -57,6 +57,7 @@ namespace Deribit.S4KTNET.Core.Trading
                     .When(x => x.instrument_name == DeribitInstruments.Perpetual.ETHPERPETRUAL);
                 this.RuleFor(x => x.stop_price).NotEmpty().When(x => x.type == OrderType.stop_limit || x.type == OrderType.stop_market);
                 this.RuleFor(x => x.stop_price).Empty().When(x => x.type == OrderType.limit|| x.type == OrderType.market);
+                this.RuleFor(x => x.trigger).NotEmpty().When(x => x.type == OrderType.stop_limit || x.type == OrderType.stop_market);
             }
         }
     }
