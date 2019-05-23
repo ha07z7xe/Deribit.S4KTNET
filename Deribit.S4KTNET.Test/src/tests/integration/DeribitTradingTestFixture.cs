@@ -208,6 +208,56 @@ namespace Deribit.S4KTNET.Test.Integration
         }
 
         //----------------------------------------------------------------------------
+        // private/edit
+        //----------------------------------------------------------------------------
+
+        [Test]
+        [Description("private/edit")]
+        public async Task Test_editorder()
+        {
+            //----------------------------------------------------------------------------
+            // submit bid
+            //----------------------------------------------------------------------------
+            // form request
+            BuySellRequest req = new BuySellRequest()
+            {
+                instrument_name = DeribitInstruments.Perpetual.BTCPERPETUAL,
+                amount = 10,
+                type = OrderType.limit,
+                label = "mylabel",
+                price = 1000,
+                post_only = true,
+            };
+            // execute
+            BuySellResponse response = await this.deribit.Trading.Buy(req);
+            Assert.That(response.order, Is.Not.Null);
+            // wait 
+            await Task.Delay(1 << 9);
+            //----------------------------------------------------------------------------
+            // modify bid
+            //----------------------------------------------------------------------------
+            // form request
+            EditOrderRequest req2 = new EditOrderRequest()
+            {
+                order_id = response.order.order_id,
+                amount = 20,
+                price = 500,
+            };
+            // execute request
+            EditOrderResponse res2 = await this.deribit.Trading.EditOrder(req2);
+            // assert
+            var modifiedorder = res2.order;
+            Assert.That(modifiedorder.order_id, Is.EqualTo(req2.order_id));
+            Assert.That(modifiedorder.amount, Is.EqualTo(req2.amount));
+            Assert.That(modifiedorder.price, Is.EqualTo(req2.price));
+            //----------------------------------------------------------------------------
+            // cleanup
+            var response2 = await this.deribit.Trading.CancelAll();
+            // assert
+            Assert.That(response2.success, Is.True);
+        }
+
+        //----------------------------------------------------------------------------
         // private/cancel
         //----------------------------------------------------------------------------
 

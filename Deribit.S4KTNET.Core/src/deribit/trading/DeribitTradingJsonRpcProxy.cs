@@ -58,6 +58,18 @@ namespace Deribit.S4KTNET.Core.JsonRpc
             CancellationToken ct
         );
 
+        [JsonRpcMethod("private/edit")]
+        Task<EditOrderResponseDto> edit
+        (
+            string order_id,
+            decimal amount,
+            decimal price,
+            bool post_only,
+            decimal? stop_price,
+            string advanced,
+            CancellationToken ct
+        );
+
         [JsonRpcMethod("private/cancel")]
         Task<OrderDto> cancel(string order_id, CancellationToken ct);
 

@@ -14,6 +14,8 @@ namespace Deribit.S4KTNET.Core.Trading
 
         Task<BuySellResponse> Sell(BuySellRequest request, CancellationToken ct = default);
 
+        Task<EditOrderResponse> EditOrder(EditOrderRequest request, CancellationToken ct = default);
+
         Task<Order> Cancel(CancelRequest request, CancellationToken ct = default);
 
         Task<GenericResponse> CancelAll(CancellationToken ct = default);
@@ -127,6 +129,31 @@ namespace Deribit.S4KTNET.Core.Trading
             BuySellResponse response = mapper.Map<BuySellResponse>(responsedto);
             // validate
             new BuySellResponse.Validator().ValidateAndThrow(response);
+            // return
+            return response;
+        }
+
+        public async Task<EditOrderResponse> EditOrder(EditOrderRequest request, CancellationToken ct = default)
+        {
+            // validate
+            new EditOrderRequest.Validator().ValidateAndThrow(request);
+            // map request
+            EditOrderRequestDto reqdto = mapper.Map<EditOrderRequestDto>(request);
+            // execute request
+            var responsedto = await this.rpcproxy.edit
+            (
+                order_id: reqdto.order_id,
+                amount: reqdto.amount,
+                price: reqdto.price,
+                post_only: reqdto.post_only,
+                stop_price: reqdto.stop_price,
+                advanced: reqdto.advanced,
+                ct: ct
+            );
+            // map response
+            EditOrderResponse response = mapper.Map<EditOrderResponse>(responsedto);
+            // validate
+            new EditOrderResponse.Validator().ValidateAndThrow(response);
             // return
             return response;
         }
