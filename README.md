@@ -51,7 +51,7 @@ deribit.SessionManagement.SetHeartbeat(new SetHeartbeatRequest()
 * Subscribe to data streams
 ```C#
 // subscribe to BTC perp quotes
-await deribit.SubscriptionManagement.subscribe_public(new SubscribeRequest()
+await deribit.SubscriptionManagement.SubscribePublic(new SubscribeRequest()
 {
     channels = new string[]
     {
