@@ -16,6 +16,8 @@ namespace Deribit.S4KTNET.Core.MarketData
         Task<GetContractSizeResponse> GetContractSize(GetContractSizeRequest request, CancellationToken ct = default);
 
         Task<IList<Currency>> GetCurrencies(CancellationToken ct = default);
+
+        Task<GetIndexResponse> GetIndex(GetIndexRequest request, CancellationToken ct = default);
     }
 
     internal class DeribitMarketDataService : IDeribitMarketDataService
@@ -107,6 +109,21 @@ namespace Deribit.S4KTNET.Core.MarketData
             return response;
         }
 
+        public async Task<GetIndexResponse> GetIndex(GetIndexRequest request, CancellationToken ct)
+        {
+            // validate request
+            new GetIndexRequest.Validator().ValidateAndThrow(request);
+            // map request
+            var reqdto = this.mapper.Map<GetIndexRequestDto>(request);
+            // execute request
+            var responsedto = await this.rpcproxy.get_index(reqdto.currency, ct);
+            // map response
+            GetIndexResponse response = mapper.Map<GetIndexResponse>(responsedto);
+            // validate response
+            new GetIndexResponse.Validator().Validate(response);
+            // return
+            return response;
+        }
 
         //------------------------------------------------------------------------------------------------
     }

@@ -99,5 +99,22 @@ namespace Deribit.S4KTNET.Test.Integration
         }
 
         //----------------------------------------------------------------------------
+        // public/get_index
+        //----------------------------------------------------------------------------
+
+        [Test]
+        [Description("public/get_index")]
+        public async Task Test_getindex_success()
+        {
+            // execute
+            var response = await deribit.MarketData.GetIndex(new GetIndexRequest()
+            {
+                currency = CurrencyCode.BTC,
+            });
+            // assert
+            Assert.That(response.BTC.Value, Is.GreaterThan(0));
+        }
+
+        //----------------------------------------------------------------------------
     }
 }
