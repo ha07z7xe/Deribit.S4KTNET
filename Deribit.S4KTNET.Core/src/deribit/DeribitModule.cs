@@ -11,6 +11,7 @@ using Deribit.S4KTNET.Core.SubscriptionManagement;
 using Deribit.S4KTNET.Core.Supporting;
 using Deribit.S4KTNET.Core.Trading;
 using Deribit.S4KTNET.Core.WebSocket;
+using Deribit.S4KTNET.Core.MarketData;
 
 namespace Deribit.S4KTNET.Core
 {
@@ -37,6 +38,7 @@ namespace Deribit.S4KTNET.Core
             builder.RegisterModule<DeribitSupportingModule>();
             builder.RegisterModule<DeribitSubscriptionManagementModule>();
             builder.RegisterModule<DeribitTradingModule>();
+            builder.RegisterModule<DeribitMarketDataModule>();
         }
     }
 }

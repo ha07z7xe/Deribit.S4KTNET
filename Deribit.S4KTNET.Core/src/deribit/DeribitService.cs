@@ -5,6 +5,7 @@ using Autofac;
 using Deribit.S4KTNET.Core.AccountManagement;
 using Deribit.S4KTNET.Core.Authentication;
 using Deribit.S4KTNET.Core.JsonRpc;
+using Deribit.S4KTNET.Core.MarketData;
 using Deribit.S4KTNET.Core.SessionManagement;
 using Deribit.S4KTNET.Core.SubscriptionManagement;
 using Deribit.S4KTNET.Core.Supporting;
@@ -36,6 +37,8 @@ namespace Deribit.S4KTNET.Core
         IDeribitSupportingService Supporting { get; }
 
         IDeribitTradingService Trading { get; }
+
+        IDeribitMarketDataService MarketData { get; }
 
         //------------------------------------------------------------------------------------------------
         // connection
@@ -76,6 +79,9 @@ namespace Deribit.S4KTNET.Core
         public IDeribitTradingService Trading => this.Trading2;
         internal DeribitTradingService Trading2 { get; }
 
+        public IDeribitMarketDataService MarketData => this.MarketData2;
+        internal DeribitMarketDataService MarketData2 { get; }
+
         //------------------------------------------------------------------------------------------------
         // configuration
         //------------------------------------------------------------------------------------------------
@@ -113,6 +119,7 @@ namespace Deribit.S4KTNET.Core
             this.Supporting2 = container.Resolve<DeribitSupportingService>();
             this.SubscriptionManagement2 = container.Resolve<DeribitSubscriptionManagementService>();
             this.Trading2 = container.Resolve<DeribitTradingService>();
+            this.MarketData2 = container.Resolve<DeribitMarketDataService>();
             // connect
             if (config.ConnectOnConstruction)
             {
