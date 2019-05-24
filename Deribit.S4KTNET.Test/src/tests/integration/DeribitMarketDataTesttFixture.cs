@@ -64,7 +64,7 @@ namespace Deribit.S4KTNET.Test.Integration
                     });
                 // assert
                 new GetContractSizeResponse.Validator().ValidateAndThrow(btcperpsize);
-                var expectedsize = DeribitContracts.ByInstrumentName[DeribitInstruments.Perpetual.BTCPERPETUAL].ContractSize;
+                var expectedsize = DeribitInstruments.ByInstrumentName[DeribitInstruments.Perpetual.BTCPERPETUAL].ContractSize;
                 Assert.That(btcperpsize.contract_size, Is.EqualTo(expectedsize));
             }
             // wait
@@ -79,7 +79,7 @@ namespace Deribit.S4KTNET.Test.Integration
                     });
                 // assert
                 new GetContractSizeResponse.Validator().ValidateAndThrow(ethperpsize);
-                var expectedsize = DeribitContracts.ByInstrumentName[DeribitInstruments.Perpetual.ETHPERPETUAL].ContractSize;
+                var expectedsize = DeribitInstruments.ByInstrumentName[DeribitInstruments.Perpetual.ETHPERPETUAL].ContractSize;
                 Assert.That(ethperpsize.contract_size, Is.EqualTo(expectedsize));
             }
         }

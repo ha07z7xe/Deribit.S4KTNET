@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace Deribit.S4KTNET.Core
 {
     public static class DeribitInstruments
@@ -25,5 +27,30 @@ namespace Deribit.S4KTNET.Core
             // BTC-DMMMYY-STRIKE-K 	
             public const string BTC25MAR16420C = "BTC-25MAR16-420-C";
         }
+
+        public static readonly IDictionary<string, Instrument> ByInstrumentName
+            = new Dictionary<string, Instrument>
+            {
+                [DeribitInstruments.Perpetual.BTCPERPETUAL] = new Instrument
+                {
+                    InstrumentName = DeribitInstruments.Perpetual.BTCPERPETUAL,
+                    QuoteCurrency = "USD",
+                    Url = "https://www.deribit.com/pages/docs/perpetual",
+                    TickSize = 0.25m,
+                    ContractSize = 10,
+                    TakerFee = 0.00075m,
+                    MakerFee = -0.00025m,
+                },
+                [DeribitInstruments.Perpetual.ETHPERPETUAL] = new Instrument
+                {
+                    InstrumentName = DeribitInstruments.Perpetual.ETHPERPETUAL,
+                    QuoteCurrency = "USD",
+                    Url = "https://www.deribit.com/pages/docs/perpetual",
+                    TickSize = 0.01m,
+                    ContractSize = 1,
+                    TakerFee = 0.00075m,
+                    MakerFee = -0.00025m,
+                },
+            };
     }
 }

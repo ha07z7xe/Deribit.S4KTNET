@@ -54,16 +54,16 @@ namespace Deribit.S4KTNET.Core.Trading
                 this.When(x => x.instrument_name == DeribitInstruments.Perpetual.BTCPERPETUAL, () =>
                 {
                     this.RuleFor(x => x.amount)
-                        .GreaterThanOrEqualTo(DeribitContracts.ByInstrumentName[DeribitInstruments.Perpetual.BTCPERPETUAL].ContractSize);
+                        .GreaterThanOrEqualTo(DeribitInstruments.ByInstrumentName[DeribitInstruments.Perpetual.BTCPERPETUAL].ContractSize);
                     this.RuleFor(x => x.amount)
-                        .Must(x => x % DeribitContracts.ByInstrumentName[DeribitInstruments.Perpetual.BTCPERPETUAL].ContractSize == 0);
+                        .Must(x => x % DeribitInstruments.ByInstrumentName[DeribitInstruments.Perpetual.BTCPERPETUAL].ContractSize == 0);
                 });
                 this.When(x => x.instrument_name == DeribitInstruments.Perpetual.ETHPERPETUAL, () =>
                 {
                     this.RuleFor(x => x.amount)
-                        .GreaterThanOrEqualTo(DeribitContracts.ByInstrumentName[DeribitInstruments.Perpetual.ETHPERPETUAL].ContractSize);
+                        .GreaterThanOrEqualTo(DeribitInstruments.ByInstrumentName[DeribitInstruments.Perpetual.ETHPERPETUAL].ContractSize);
                     this.RuleFor(x => x.amount)
-                        .Must(x => x % DeribitContracts.ByInstrumentName[DeribitInstruments.Perpetual.ETHPERPETUAL].ContractSize == 0);
+                        .Must(x => x % DeribitInstruments.ByInstrumentName[DeribitInstruments.Perpetual.ETHPERPETUAL].ContractSize == 0);
                 });
                 this.RuleFor(x => x.stop_price).NotEmpty().When(x => x.type == OrderType.stop_limit || x.type == OrderType.stop_market);
                 this.RuleFor(x => x.stop_price).Empty().When(x => x.type == OrderType.limit|| x.type == OrderType.market);

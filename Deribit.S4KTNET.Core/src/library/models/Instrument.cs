@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Deribit.S4KTNET.Core
 {
-    public class Contract
+    public class Instrument
     {
         public string InstrumentName { get; set; }
 
