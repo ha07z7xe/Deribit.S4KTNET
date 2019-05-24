@@ -6,6 +6,7 @@ using Deribit.S4KTNET.Core.Authentication;
 using Deribit.S4KTNET.Core.JsonRpc;
 using Deribit.S4KTNET.Core.Mapping;
 using Deribit.S4KTNET.Core.SessionManagement;
+using Deribit.S4KTNET.Core.AccountManagement;
 using Deribit.S4KTNET.Core.SubscriptionManagement;
 using Deribit.S4KTNET.Core.Supporting;
 using Deribit.S4KTNET.Core.Trading;
@@ -31,6 +32,7 @@ namespace Deribit.S4KTNET.Core
             builder.RegisterModule<DeribitMappingModule>();
 
             builder.RegisterModule<DeribitAuthenticationModule>();
+            builder.RegisterModule<DeribitAccountManagementModule>();
             builder.RegisterModule<DeribitSessionManagementModule>();
             builder.RegisterModule<DeribitSupportingModule>();
             builder.RegisterModule<DeribitSubscriptionManagementModule>();

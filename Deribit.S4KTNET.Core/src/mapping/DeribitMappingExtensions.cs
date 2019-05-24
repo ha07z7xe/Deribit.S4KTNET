@@ -166,6 +166,19 @@ namespace Deribit.S4KTNET.Core.Mapping
             }
         }
 
+        public static InstrumentKind ToInstrumentKind(this string inskind)
+        {
+            switch (inskind)
+            {
+                case "future":
+                    return InstrumentKind.future;
+                case "option":
+                    return InstrumentKind.option;
+                default:
+                    throw new Exception();
+            }
+        }
+
         public static string ToDeribitString(this OrderState orderstate)
         {
             switch (orderstate)

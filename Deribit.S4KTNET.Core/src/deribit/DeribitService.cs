@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Autofac;
+using Deribit.S4KTNET.Core.AccountManagement;
 using Deribit.S4KTNET.Core.Authentication;
 using Deribit.S4KTNET.Core.JsonRpc;
 using Deribit.S4KTNET.Core.SessionManagement;
@@ -27,6 +28,8 @@ namespace Deribit.S4KTNET.Core
         //------------------------------------------------------------------------------------------------
 
         IDeribitAuthenticationService Authentication { get; }
+
+        IDeribitAccountManagementService AccountManagement { get; }
 
         IDeribitSessionManagementService SessionManagement { get; }
 
@@ -57,6 +60,9 @@ namespace Deribit.S4KTNET.Core
 
         public IDeribitAuthenticationService Authentication => this.Authentication2;
         internal DeribitAuthenticationService Authentication2 { get; }
+
+        public IDeribitAccountManagementService AccountManagement => this.AccountManagement2;
+        internal DeribitAccountManagementService AccountManagement2 { get; }
 
         public IDeribitSessionManagementService SessionManagement => this.SessionManagement2;
         internal DeribitSessionManagementService SessionManagement2 { get; }
@@ -102,6 +108,7 @@ namespace Deribit.S4KTNET.Core
             this.JsonRpc2 = container.Resolve<DeribitJsonRpcService>();
             // sub services
             this.Authentication2 = container.Resolve<DeribitAuthenticationService>();
+            this.AccountManagement2 = container.Resolve<DeribitAccountManagementService>();
             this.SessionManagement2 = container.Resolve<DeribitSessionManagementService>();
             this.Supporting2 = container.Resolve<DeribitSupportingService>();
             this.SubscriptionManagement2 = container.Resolve<DeribitSubscriptionManagementService>();

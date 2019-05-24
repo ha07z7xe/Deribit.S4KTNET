@@ -1,14 +1,9 @@
 ﻿using Deribit.S4KTNET.Core;
-using Deribit.S4KTNET.Core.Authentication;
 using Deribit.S4KTNET.Core.Trading;
 using FluentValidation;
 using NUnit.Framework;
-using StreamJsonRpc;
 using System;
-using System.Reactive;
-using System.Threading;
 using System.Threading.Tasks;
-using rx = System.Reactive;
 
 namespace Deribit.S4KTNET.Test.Integration
 {
