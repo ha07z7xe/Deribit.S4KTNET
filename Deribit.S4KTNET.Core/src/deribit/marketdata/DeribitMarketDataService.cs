@@ -12,6 +12,8 @@ namespace Deribit.S4KTNET.Core.MarketData
     public interface IDeribitMarketDataService
     {
         Task<IList<BookSummary>> GetBookSummaryByInstrument(GetBookSummaryByInstrumentRequest request, CancellationToken ct = default);
+
+        Task<GetContractSizeResponse> GetContractSize(GetContractSizeRequest request, CancellationToken ct = default);
     }
 
     internal class DeribitMarketDataService : IDeribitMarketDataService
@@ -57,7 +59,6 @@ namespace Deribit.S4KTNET.Core.MarketData
         // api
         //------------------------------------------------------------------------------------------------
 
-
         public async Task<IList<BookSummary>> GetBookSummaryByInstrument(GetBookSummaryByInstrumentRequest request, CancellationToken ct)
         {
             // validate request
@@ -74,6 +75,22 @@ namespace Deribit.S4KTNET.Core.MarketData
             {
                 bookvalidator.ValidateAndThrow(bs);
             }
+            // return
+            return response;
+        }
+
+        public async Task<GetContractSizeResponse> GetContractSize(GetContractSizeRequest request, CancellationToken ct)
+        {
+            // validate request
+            new GetContractSizeRequest.Validator().ValidateAndThrow(request);
+            // map request
+            var reqdto = this.mapper.Map<GetContractSizeRequestDto>(request);
+            // execute request
+            var responsedto = await this.rpcproxy.get_contract_size(reqdto.instrument_name, ct);
+            // map response
+            GetContractSizeResponse response = mapper.Map<GetContractSizeResponse>(responsedto);
+            // validate response
+            new GetContractSizeResponse.Validator().Validate(response);
             // return
             return response;
         }

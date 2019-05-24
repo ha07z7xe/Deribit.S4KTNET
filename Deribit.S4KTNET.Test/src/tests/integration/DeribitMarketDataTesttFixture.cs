@@ -47,5 +47,24 @@ namespace Deribit.S4KTNET.Test.Integration
         }
 
         //----------------------------------------------------------------------------
+        // public/get_contract_size
+        //----------------------------------------------------------------------------
+
+        [Test]
+        [Description("public/get_contract_size")]
+        public async Task Test_getcontractsize_success()
+        {
+            // execute
+            var btcperpsize = await deribit.MarketData.GetContractSize
+                (new GetContractSizeRequest()
+                {
+                    instrument_name = DeribitInstruments.Perpetual.BTCPERPETUAL,
+                });
+            // assert
+            new GetContractSizeResponse.Validator().ValidateAndThrow(btcperpsize);
+            Assert.That(btcperpsize.contract_size, Is.EqualTo(10));
+        }
+
+        //----------------------------------------------------------------------------
     }
 }

@@ -158,7 +158,7 @@ deribit.Dispose();
 | Trading | [private/get_settlement_history_by_currency](https://docs.deribit.com/v2/#private-get_settlement_history_by_currency) | ✗ | |
 | MarketData | [public/get_book_summary_by_currency](https://docs.deribit.com/v2/#public-get_book_summary_by_currency) | ✗ | todo |
 | MarketData | [public/get_book_summary_by_instrument](https://docs.deribit.com/v2/#public-get_book_summary_by_instrument) | ✔ | |
-| MarketData | [public/get_contract_size](https://docs.deribit.com/v2/#public-get_contract_size) | ✗ | todo (high) |
+| MarketData | [public/get_contract_size](https://docs.deribit.com/v2/#public-get_contract_size) | ✔ | |
 | MarketData | [public/get_currencies](https://docs.deribit.com/v2/#public-get_currencies) | ✗ | todo (high) |
 | MarketData | [public/get_funding_chart_data](https://docs.deribit.com/v2/#public-get_funding_chart_data) | ✗ | todo |
 | MarketData | [public/get_historical_volatility](https://docs.deribit.com/v2/#public-get_historical_volatility) | ✗ | todo |

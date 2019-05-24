@@ -23,5 +23,8 @@ namespace Deribit.S4KTNET.Core.JsonRpc
 
         [JsonRpcMethod("public/get_book_summary_by_instrument")]
         Task<BookSummaryDto[]> get_book_summary_by_instrument(string instrument_name, CancellationToken ct);
+
+        [JsonRpcMethod("public/get_contract_size")]
+        Task<GetContractSizeResponseDto> get_contract_size(string instrument_name, CancellationToken ct);
     }
 }
