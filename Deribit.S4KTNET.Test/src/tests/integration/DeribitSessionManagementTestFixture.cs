@@ -77,7 +77,7 @@ namespace Deribit.S4KTNET.Test.Integration
         {
             if (!this.deribit.Authentication.IsAuthenticated)
                 throw new Exception("Test requires authentication");
-            GenericResponse response = await deribit.SessionManagement.disable_cancel_on_disconnect();
+            GenericResponse response = await deribit.SessionManagement.DisableCancelOnDisconnect();
             Assert.That(response.success, Is.True);
         }
 
