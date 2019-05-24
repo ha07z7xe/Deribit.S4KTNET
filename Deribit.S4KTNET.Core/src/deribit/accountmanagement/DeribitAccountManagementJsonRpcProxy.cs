@@ -25,5 +25,8 @@ namespace Deribit.S4KTNET.Core.JsonRpc
 
         [JsonRpcMethod("private/get_position")]
         Task<PositionDto> get_position(string instrument_name, CancellationToken ct);
+
+        [JsonRpcMethod("private/get_positions")]
+        Task<PositionDto[]> get_positions(string currency, string kind, CancellationToken ct);
     }
 }

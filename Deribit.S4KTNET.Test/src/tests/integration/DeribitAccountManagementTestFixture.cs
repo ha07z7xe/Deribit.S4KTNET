@@ -72,5 +72,42 @@ namespace Deribit.S4KTNET.Test.Integration
         }
 
         //----------------------------------------------------------------------------
+        // private/get_positions
+        //----------------------------------------------------------------------------
+
+        [Test, Order(1)]
+        [Description("private/get_positions")]
+        public async Task Test_getpositions_success()
+        {
+            // open positions
+            await this.deribit.Trading.Sell(new BuySellRequest
+            {
+                instrument_name = DeribitInstruments.Perpetual.BTCPERPETUAL,
+                type = OrderType.market,
+                amount = 910,
+            });
+            // wait
+            await Task.Delay(1 << 9);
+            // get position
+            var positions = await this.deribit.AccountManagement.GetPositions(new GetPositionsRequest
+            {
+                currency = Currency.BTC,
+            });
+            // assert
+            foreach (var p in positions)
+            {
+                new Position.Validator().ValidateAndThrow(p);
+            }
+            // wait
+            await Task.Delay(1 << 9);
+            // close position
+            await this.deribit.Trading.ClosePosition(new ClosePositionRequest
+            {
+                instrument_name = DeribitInstruments.Perpetual.BTCPERPETUAL,
+                type = "market",
+            });
+        }
+
+        //----------------------------------------------------------------------------
     }
 }

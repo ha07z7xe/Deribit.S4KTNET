@@ -126,7 +126,7 @@ deribit.Dispose();
 | AccountManagement | private/get_email_language | ✗ | |
 | AccountManagement | private/get_new_announcements | ✗ | |
 | AccountManagement | [private/get_position](https://docs.deribit.com/v2/#private-get_position) | ✔ | |
-| AccountManagement | [private/get_positions](https://docs.deribit.com/v2/#private-get_positions) | ✗ | todo (high) |
+| AccountManagement | [private/get_positions](https://docs.deribit.com/v2/#private-get_positions) | ✔ | |
 | AccountManagement | private/get_subaccounts | ✗ | |
 | AccountManagement | private/set_announcement_as_read | ✗ | |
 | AccountManagement | private/set_email_for_subaccount | ✗ | |

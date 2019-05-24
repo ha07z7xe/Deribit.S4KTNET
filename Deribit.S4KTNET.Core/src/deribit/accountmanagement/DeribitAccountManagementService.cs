@@ -2,10 +2,7 @@
 using AutoMapper;
 using Deribit.S4KTNET.Core.JsonRpc;
 using FluentValidation;
-using Newtonsoft.Json.Linq;
-using System;
-using System.Reactive;
-using System.Reactive.Subjects;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -14,6 +11,8 @@ namespace Deribit.S4KTNET.Core.AccountManagement
     public interface IDeribitAccountManagementService
     {
         Task<Position> GetPosition(GetPositionRequest request, CancellationToken ct = default);
+
+        Task<IList<Position>> GetPositions(GetPositionsRequest request, CancellationToken ct = default);
     }
 
     internal class DeribitAccountManagementService : IDeribitAccountManagementService
@@ -80,6 +79,25 @@ namespace Deribit.S4KTNET.Core.AccountManagement
             Position position = mapper.Map<Position>(positiondto);
             // return
             return position;
+        }
+
+        public async Task<IList<Position>> GetPositions(GetPositionsRequest request, CancellationToken ct)
+        {
+            // validate
+            new GetPositionsRequest.Validator().ValidateAndThrow(request);
+            // map request
+            GetPositionsRequestDto requestDto = mapper.Map<GetPositionsRequestDto>(request);
+            // execute request
+            var positiondtos = await this.rpcproxy.get_positions
+            (
+                requestDto.currency, 
+                requestDto.kind, 
+                ct
+            );
+            // map response
+            IList<Position> positions = mapper.Map<IList<Position>>(positiondtos);
+            // return
+            return positions;
         }
 
         //------------------------------------------------------------------------------------------------
