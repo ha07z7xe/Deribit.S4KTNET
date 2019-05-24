@@ -85,5 +85,19 @@ namespace Deribit.S4KTNET.Test.Integration
         }
 
         //----------------------------------------------------------------------------
+        // public/get_currencies
+        //----------------------------------------------------------------------------
+
+        [Test]
+        [Description("public/get_currencies")]
+        public async Task Test_getcurrencies_success()
+        {
+            // execute
+            var currencies = await deribit.MarketData.GetCurrencies();
+            // assert
+            Assert.That(currencies.Count, Is.GreaterThan(0));
+        }
+
+        //----------------------------------------------------------------------------
     }
 }

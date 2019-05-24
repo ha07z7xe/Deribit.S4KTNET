@@ -14,6 +14,8 @@ namespace Deribit.S4KTNET.Core.MarketData
         Task<IList<BookSummary>> GetBookSummaryByInstrument(GetBookSummaryByInstrumentRequest request, CancellationToken ct = default);
 
         Task<GetContractSizeResponse> GetContractSize(GetContractSizeRequest request, CancellationToken ct = default);
+
+        Task<IList<Currency>> GetCurrencies(CancellationToken ct = default);
     }
 
     internal class DeribitMarketDataService : IDeribitMarketDataService
@@ -94,6 +96,18 @@ namespace Deribit.S4KTNET.Core.MarketData
             // return
             return response;
         }
+
+        public async Task<IList<Currency>> GetCurrencies(CancellationToken ct)
+        {
+            // execute request
+            var responsedto = await this.rpcproxy.get_currencies(ct);
+            // map response
+            IList<Currency> response = mapper.Map<IList<Currency>>(responsedto);
+            // return
+            return response;
+        }
+
+
         //------------------------------------------------------------------------------------------------
     }
 }

@@ -286,7 +286,7 @@ namespace Deribit.S4KTNET.Test.Integration
             // execute
             var response = await this.deribit.Trading.CancelAllByCurrency(new CancelAllByCurrencyRequest
             {
-                currency = Currency.BTC,
+                currency = CurrencyCode.BTC,
             });
             // assert
             Assert.That(response.success, Is.True);

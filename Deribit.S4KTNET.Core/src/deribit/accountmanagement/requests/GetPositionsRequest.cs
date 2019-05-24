@@ -7,7 +7,7 @@ namespace Deribit.S4KTNET.Core.AccountManagement
 
     public class GetPositionsRequest : RequestBase
     {
-        public Currency currency { get; set; }
+        public CurrencyCode currency { get; set; }
 
         public InstrumentKind? kind { get; set; }
 
@@ -29,7 +29,7 @@ namespace Deribit.S4KTNET.Core.AccountManagement
         {
             public Validator()
             {
-                this.RuleFor(x => x.currency).NotEmpty().NotEqual(Currency.any);
+                this.RuleFor(x => x.currency).NotEmpty().NotEqual(CurrencyCode.any);
             }
         }
     }

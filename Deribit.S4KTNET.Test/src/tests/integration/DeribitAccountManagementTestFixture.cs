@@ -91,7 +91,7 @@ namespace Deribit.S4KTNET.Test.Integration
             // get position
             var positions = await this.deribit.AccountManagement.GetPositions(new GetPositionsRequest
             {
-                currency = Currency.BTC,
+                currency = CurrencyCode.BTC,
             });
             // assert
             foreach (var p in positions)

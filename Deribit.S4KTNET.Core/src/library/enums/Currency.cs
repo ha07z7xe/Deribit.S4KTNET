@@ -1,6 +1,6 @@
 namespace Deribit.S4KTNET.Core
 {
-    public enum Currency
+    public enum CurrencyCode
     {
         any = 0,
         BTC = 1,

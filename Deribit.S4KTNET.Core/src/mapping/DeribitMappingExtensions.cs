@@ -309,15 +309,28 @@ namespace Deribit.S4KTNET.Core.Mapping
             }
         }
 
-        public static string ToDeribitString(this Currency currency)
+        public static CurrencyCode ToCurrencyCode(this string currency)
         {
             switch (currency)
             {
-                case Currency.any:
+                case "BTC":
+                    return CurrencyCode.BTC;
+                case "ETH":
+                    return CurrencyCode.ETH;
+                default:
+                    throw new Exception();
+            }
+        }
+
+        public static string ToDeribitString(this CurrencyCode currency)
+        {
+            switch (currency)
+            {
+                case CurrencyCode.any:
                     return "any";
-                case Currency.BTC:
+                case CurrencyCode.BTC:
                     return "BTC";
-                case Currency.ETH:
+                case CurrencyCode.ETH:
                     return "ETH";
                 default:
                     throw new Exception();

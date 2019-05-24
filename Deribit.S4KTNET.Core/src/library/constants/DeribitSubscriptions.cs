@@ -89,13 +89,13 @@ namespace Deribit.S4KTNET.Core
             
             // https://docs.deribit.com/v2/#user-orders-kind-currency-interval
             public static string orders(string instrument, InstrumentKind instrumentKind, 
-                Currency currency, Interval interval)
+                CurrencyCode currency, Interval interval)
             {
                 return $"user.orders.{instrument}.{instrumentKind}.{currency}.{interval.ToDeribitString()}";
             }
 
             // https://docs.deribit.com/v2/#user-portfolio-currency
-            public static string portfolio(Currency currency)
+            public static string portfolio(CurrencyCode currency)
             {
                 return $"user.portfolio.{currency}";
             }
@@ -107,7 +107,7 @@ namespace Deribit.S4KTNET.Core
             }
 
             // https://docs.deribit.com/v2/#user-trades-kind-currency-interval
-            public static string trades(string instrument, Currency currency, Interval interval)
+            public static string trades(string instrument, CurrencyCode currency, Interval interval)
             {
                 return $"user.trades.{instrument}.{currency}.{interval.ToDeribitString()}";
             }

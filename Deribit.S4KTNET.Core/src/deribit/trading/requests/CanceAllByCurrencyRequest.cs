@@ -7,7 +7,7 @@ namespace Deribit.S4KTNET.Core.Trading
 
     public class CancelAllByCurrencyRequest : RequestBase
     {
-        public Currency currency { get; set; }
+        public CurrencyCode currency { get; set; }
 
         public InstrumentKind? kind { get; set; }
 
