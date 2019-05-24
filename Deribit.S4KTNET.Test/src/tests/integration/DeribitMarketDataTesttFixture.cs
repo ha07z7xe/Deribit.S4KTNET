@@ -54,15 +54,34 @@ namespace Deribit.S4KTNET.Test.Integration
         [Description("public/get_contract_size")]
         public async Task Test_getcontractsize_success()
         {
-            // execute
-            var btcperpsize = await deribit.MarketData.GetContractSize
-                (new GetContractSizeRequest()
-                {
-                    instrument_name = DeribitInstruments.Perpetual.BTCPERPETUAL,
-                });
-            // assert
-            new GetContractSizeResponse.Validator().ValidateAndThrow(btcperpsize);
-            Assert.That(btcperpsize.contract_size, Is.EqualTo(10));
+            // btc perp
+            {
+                // execute
+                var btcperpsize = await deribit.MarketData.GetContractSize
+                    (new GetContractSizeRequest()
+                    {
+                        instrument_name = DeribitInstruments.Perpetual.BTCPERPETUAL,
+                    });
+                // assert
+                new GetContractSizeResponse.Validator().ValidateAndThrow(btcperpsize);
+                var expectedsize = DeribitContracts.ByInstrumentName[DeribitInstruments.Perpetual.BTCPERPETUAL].ContractSize;
+                Assert.That(btcperpsize.contract_size, Is.EqualTo(expectedsize));
+            }
+            // wait
+            await Task.Delay(1 << 9);
+            // eth perp
+            {
+                // execute
+                var ethperpsize = await deribit.MarketData.GetContractSize
+                    (new GetContractSizeRequest()
+                    {
+                        instrument_name = DeribitInstruments.Perpetual.ETHPERPETUAL,
+                    });
+                // assert
+                new GetContractSizeResponse.Validator().ValidateAndThrow(ethperpsize);
+                var expectedsize = DeribitContracts.ByInstrumentName[DeribitInstruments.Perpetual.ETHPERPETUAL].ContractSize;
+                Assert.That(ethperpsize.contract_size, Is.EqualTo(expectedsize));
+            }
         }
 
         //----------------------------------------------------------------------------
