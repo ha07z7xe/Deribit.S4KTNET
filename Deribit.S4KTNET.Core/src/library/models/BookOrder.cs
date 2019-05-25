@@ -50,7 +50,7 @@ namespace Deribit.S4KTNET.Core
             public Validator()
             {
                 this.RuleFor(x => x.price).NotEmpty();
-                this.RuleFor(x => x.amount).NotEmpty();
+                //this.RuleFor(x => x.amount).NotEmpty();
             }
         }
     }
