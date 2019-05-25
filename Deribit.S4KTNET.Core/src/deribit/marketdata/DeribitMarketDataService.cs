@@ -20,6 +20,8 @@ namespace Deribit.S4KTNET.Core.MarketData
         Task<GetIndexResponse> GetIndex(GetIndexRequest request, CancellationToken ct = default);
 
         Task<IList<Instrument>> GetInstruments(GetInstrumentsRequest request, CancellationToken ct = default);
+
+        Task<GetLastTradesByInstrumentResponse> GetLastTradesByInstrument(GetLastTradesByInstrumentRequest request, CancellationToken ct = default);
     }
 
     internal class DeribitMarketDataService : IDeribitMarketDataService
@@ -143,6 +145,31 @@ namespace Deribit.S4KTNET.Core.MarketData
             );
             // map response
             IList<Instrument> response = mapper.Map<IList<Instrument>>(responsedto);
+            // return
+            return response;
+        }
+
+        public async Task<GetLastTradesByInstrumentResponse> GetLastTradesByInstrument(GetLastTradesByInstrumentRequest request, CancellationToken ct)
+        {
+            // validate request
+            new GetLastTradesByInstrumentRequest.Validator().ValidateAndThrow(request);
+            // map request
+            var reqdto = this.mapper.Map<GetLastTradesByInstrumentRequestDto>(request);
+            // execute request
+            var responsedto = await this.rpcproxy.get_last_trades_by_instrument
+            (
+                instrument_name: reqdto.instrument_name,
+                start_seq: reqdto.start_seq,
+                end_seq: reqdto.end_seq,
+                count: reqdto.count,
+                include_old: reqdto.include_old,
+                sorting: reqdto.sorting,
+                ct
+            );
+            // map response
+            GetLastTradesByInstrumentResponse response = mapper.Map<GetLastTradesByInstrumentResponse>(responsedto);
+            // validate response
+            new GetLastTradesByInstrumentResponse.Validator().ValidateAndThrow(response);
             // return
             return response;
         }

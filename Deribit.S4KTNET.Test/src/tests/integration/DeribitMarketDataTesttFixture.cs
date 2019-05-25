@@ -137,5 +137,25 @@ namespace Deribit.S4KTNET.Test.Integration
         }
 
         //----------------------------------------------------------------------------
+        // public/get_last_trades_by_instrument
+        //----------------------------------------------------------------------------
+
+        [Test]
+        [Description("public/get_last_trades_by_instrument")]
+        public async Task Test_getlasttradesbyinstrument_success()
+        {
+            // form request
+            var request = new GetLastTradesByInstrumentRequest()
+            {
+                instrument_name = DeribitInstruments.Perpetual.BTCPERPETUAL,
+            };
+            // execute
+            var response = await deribit.MarketData.GetLastTradesByInstrument(request);
+            // assert
+            new GetLastTradesByInstrumentResponse.Validator().ValidateAndThrow(response);
+            Assert.That(response.trades.Count, Is.GreaterThan(0));
+        }
+
+        //----------------------------------------------------------------------------
     }
 }

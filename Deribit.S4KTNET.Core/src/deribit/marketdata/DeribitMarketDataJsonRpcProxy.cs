@@ -35,5 +35,17 @@ namespace Deribit.S4KTNET.Core.JsonRpc
 
         [JsonRpcMethod("public/get_instruments")]
         Task<InstrumentDto[]> get_instruments(string currency, string kind, bool expired, CancellationToken ct);
+
+        [JsonRpcMethod("public/get_last_trades_by_instrument")]
+        Task<GetLastTradesByInstrumentResponseDto> get_last_trades_by_instrument
+        (
+            string instrument_name,
+            int? start_seq,
+            int? end_seq,
+            int? count,
+            bool? include_old,
+            string sorting,
+            CancellationToken ct
+        );
     }
 }
