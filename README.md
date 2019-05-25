@@ -13,7 +13,12 @@ Deribit Websocket library for .NET.
 
 # Installation
 
+### Nuget packages:
+* https://www.nuget.org/packages/Deribit.S4KTNET.Core/
 
+```
+Install-Package Deribit.S4KTNET.Core 
+```
 
 # Usage
 * Namespaces

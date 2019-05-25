@@ -141,7 +141,7 @@ namespace Deribit.S4KTNET.Core.SessionManagement
             // response to heartbeat
             if (!this.deribit.deribitconfig.NoRespondHeartbeats)
             {
-                deribit.Supporting.Test(new Supporting.TestRequest());
+                _ = deribit.Supporting.Test(new Supporting.TestRequest());
             }
             // raise
             this.HeartbeatSubject.OnNext(new Unit());

@@ -124,9 +124,12 @@ namespace Deribit.S4KTNET.Core.JsonRpc
         // connection
         //------------------------------------------------------------------------------------------------
 
-        public async Task Connect(CancellationToken ct)
+        public Task Connect(CancellationToken ct)
         {
-            this.JsonRpc.StartListening();
+            return Task.Run(() =>
+            {
+                this.JsonRpc.StartListening();
+            });
         }
 
         //------------------------------------------------------------------------------------------------
