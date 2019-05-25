@@ -157,5 +157,27 @@ namespace Deribit.S4KTNET.Test.Integration
         }
 
         //----------------------------------------------------------------------------
+        // public/get_order_book
+        //----------------------------------------------------------------------------
+
+        [Test]
+        [Description("public/get_order_book")]
+        public async Task Test_getorderbook_success()
+        {
+            // form request
+            var request = new GetOrderBookRequest
+            {
+                instrument_name = DeribitInstruments.Perpetual.BTCPERPETUAL,
+            };
+            // execute
+            OrderBook book = await deribit.MarketData.GetOrderBook(request);
+            // assert
+            new OrderBook.Validator().ValidateAndThrow(book);
+            Assert.That(book.bids.Count, Is.Not.Zero);
+            Assert.That(book.asks.Count, Is.Not.Zero);
+            Assert.That(book.instrument_name, Is.EqualTo(request.instrument_name));
+        }
+
+        //----------------------------------------------------------------------------
     }
 }

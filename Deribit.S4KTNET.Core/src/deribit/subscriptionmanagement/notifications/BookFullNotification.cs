@@ -54,9 +54,9 @@ namespace Deribit.S4KTNET.Core.SubscriptionManagement
 
     public class BookFullData
     {
-        public IList<BookFullOrder> asks { get; set; }
+        public IList<BookOrder> asks { get; set; }
 
-        public IList<BookFullOrder> bids { get; set; }
+        public IList<BookOrder> bids { get; set; }
 
         public long change_id { get; set; }
 
@@ -83,7 +83,7 @@ namespace Deribit.S4KTNET.Core.SubscriptionManagement
         {
             public Validator()
             {
-                var v2 = new BookFullOrder.Validator();
+                var v2 = new BookOrder.Validator();
                 this.RuleForEach(x => x.asks).SetValidator(v2);
                 this.RuleForEach(x => x.bids).SetValidator(v2);
             }
@@ -107,43 +107,5 @@ namespace Deribit.S4KTNET.Core.SubscriptionManagement
 
         // "snapshot" | "change"
         public string type { get; set; }
-    }
-
-
-    public class BookFullOrder
-    {
-        public BookFullOrderAction action { get; set; }
-
-        public decimal price { get; set; }
-
-        public decimal amount { get; set; }
-
-        internal class Profile : AutoMapper.Profile
-        {
-            public Profile()
-            {
-                this.CreateMap<object[], BookFullOrder>()
-                    .ForMember(d => d.action, o => o.MapFrom(s => Enum.Parse(typeof(BookFullOrderAction), (string) s[0])))
-                    .ForMember(d => d.price, o => o.MapFrom(s => s[1]))
-                    .ForMember(d => d.amount, o => o.MapFrom(s => s[2]));
-            }
-        }
-
-        internal class Validator : AbstractValidator<BookFullOrder>
-        {
-            public Validator()
-            {
-                this.RuleFor(x => x.price).NotEmpty();
-                this.RuleFor(x => x.action).NotEqual(BookFullOrderAction.unknown);
-            }
-        }
-    }
-
-    public enum BookFullOrderAction
-    {
-        unknown,
-        @new,
-        change,
-        delete,
     }
 }

@@ -47,5 +47,8 @@ namespace Deribit.S4KTNET.Core.JsonRpc
             string sorting,
             CancellationToken ct
         );
+
+        [JsonRpcMethod("public/get_order_book")]
+        Task<OrderBookDto> get_order_book(string instrument_name, int? depth, CancellationToken ct);
     }
 }

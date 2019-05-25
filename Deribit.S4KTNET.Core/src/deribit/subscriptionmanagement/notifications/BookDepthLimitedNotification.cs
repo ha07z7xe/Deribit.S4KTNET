@@ -63,9 +63,9 @@ namespace Deribit.S4KTNET.Core.SubscriptionManagement
 
     public class BookDepthLimitedData
     {
-        public IList<BookDepthLimitedOrder> asks { get; set; }
+        public IList<BookOrder> asks { get; set; }
 
-        public IList<BookDepthLimitedOrder> bids { get; set; }
+        public IList<BookOrder> bids { get; set; }
 
         public long change_id { get; set; }
 
@@ -87,7 +87,7 @@ namespace Deribit.S4KTNET.Core.SubscriptionManagement
         {
             public Validator()
             {
-                var v2 = new BookDepthLimitedOrder.Validator();
+                var v2 = new BookOrder.Validator();
                 this.RuleForEach(x => x.asks).SetValidator(v2);
                 this.RuleForEach(x => x.bids).SetValidator(v2);
             }
@@ -109,28 +109,4 @@ namespace Deribit.S4KTNET.Core.SubscriptionManagement
     }
 
 
-    public class BookDepthLimitedOrder
-    {
-        public decimal price { get; set; }
-
-        public decimal amount { get; set; }
-
-        internal class Profile : AutoMapper.Profile
-        {
-            public Profile()
-            {
-                this.CreateMap<object[], BookDepthLimitedOrder>()
-                    .ForMember(d => d.price, o => o.MapFrom(s => s[0]))
-                    .ForMember(d => d.amount, o => o.MapFrom(s => s[1]));
-            }
-        }
-
-        internal class Validator : AbstractValidator<BookDepthLimitedOrder>
-        {
-            public Validator()
-            {
-                this.RuleFor(x => x.price).NotEmpty();
-            }
-        }
-    }
 }

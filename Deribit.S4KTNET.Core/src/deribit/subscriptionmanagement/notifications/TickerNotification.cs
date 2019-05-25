@@ -39,6 +39,7 @@ namespace Deribit.S4KTNET.Core.SubscriptionManagement
     public class TickerData
     {
         public decimal ask_iv { get; set; }
+
         public decimal best_ask_amount { get; set; }
 
         public decimal best_ask_price { get; set; }
@@ -113,6 +114,7 @@ namespace Deribit.S4KTNET.Core.SubscriptionManagement
     public class TickerDataDto
     {
         public decimal ask_iv { get; set; }
+        
         public decimal best_ask_amount { get; set; }
 
         public decimal best_ask_price { get; set; }
