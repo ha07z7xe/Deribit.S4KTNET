@@ -26,6 +26,7 @@ namespace Deribit.S4KTNET.Core.SubscriptionManagement
         IObservable<TickerNotification> TickerStream { get; }
         IObservable<TradeNotification> TradeStream { get; }
         IObservable<UserOrdersNotification> UserOrdersStream { get; }
+        IObservable<UserPortfolioNotification> UserPortfolioStream { get; }
         //------------------------------------------------------------------------------------------------
         // subscribe / unsubscribe
         //------------------------------------------------------------------------------------------------
@@ -65,6 +66,9 @@ namespace Deribit.S4KTNET.Core.SubscriptionManagement
 
         public IObservable<UserOrdersNotification> UserOrdersStream => UserOrdersSubject;
         private readonly ISubject<UserOrdersNotification> UserOrdersSubject = new Subject<UserOrdersNotification>();
+
+        public IObservable<UserPortfolioNotification> UserPortfolioStream => UserPortfolioSubject;
+        private readonly ISubject<UserPortfolioNotification> UserPortfolioSubject = new Subject<UserPortfolioNotification>();
         //------------------------------------------------------------------------------------------------
         // dependencies
         //------------------------------------------------------------------------------------------------
@@ -304,6 +308,17 @@ namespace Deribit.S4KTNET.Core.SubscriptionManagement
                     new UserOrdersNotification.Validator().ValidateAndThrow(noti);
                     // raise
                     this.UserOrdersSubject.OnNext(noti);
+                }
+                else if (channel.StartsWith(DeribitChannelPrefix.userportfolio))
+                {
+                    // deserialize
+                    var dto = e.ToObject<UserPortfolioNotificationDto>(jsonser);
+                    // map
+                    var noti = this.mapper.Map<UserPortfolioNotification>(dto);
+                    // validate
+                    new UserPortfolioNotification.Validator().ValidateAndThrow(noti);
+                    // raise
+                    this.UserPortfolioSubject.OnNext(noti);
                 }
                 else
                 {

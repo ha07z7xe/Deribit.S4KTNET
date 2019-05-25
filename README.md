@@ -205,9 +205,9 @@ See the sample client `Deribit.S4KTNET.Sample`.
 | Notifications | [quote.{instrument_name}](https://docs.deribit.com/v2/#quote-instrument_name) | ✔ |  |
 | Notifications | [ticker.{instrument_name}.{interval}](https://docs.deribit.com/v2/#ticker-instrument_name-interval) | ✔ |  |
 | Notifications | [trades.{instrument_name}.{interval}](https://docs.deribit.com/v2/#trades-instrument_name-interval) | ○ | partially tested |
-| Notifications | [user.orders.{instrument_name}.{interval}](https://docs.deribit.com/v2/#user-orders-instrument_name-interval) | ✗ | todo (high) |
-| Notifications | [user.orders.{kind}.{currency}.{interval}](https://docs.deribit.com/v2/#user-orders-kind-currency-interval) | ✗ | todo (high) |
-| Notifications | [user.portfolio.{currency}](https://docs.deribit.com/v2/#user-portfolio-currency) | ✗ | todo (high) |
+| Notifications | [user.orders.{instrument_name}.{interval}](https://docs.deribit.com/v2/#user-orders-instrument_name-interval) | ✔ | |
+| Notifications | [user.orders.{kind}.{currency}.{interval}](https://docs.deribit.com/v2/#user-orders-kind-currency-interval) | ✔ | |
+| Notifications | [user.portfolio.{currency}](https://docs.deribit.com/v2/#user-portfolio-currency) | ✔ | |
 | Notifications | [user.trades.{instrument_name}.{interval}](https://docs.deribit.com/v2/#user-trades-instrument_name-interval) | ✗ | todo (high) |
 | Notifications | [user.trades.{kind}.{currency}.{interval}](https://docs.deribit.com/v2/#user-trades-kind-currency-interval) | ✗ | todo (high) |
 

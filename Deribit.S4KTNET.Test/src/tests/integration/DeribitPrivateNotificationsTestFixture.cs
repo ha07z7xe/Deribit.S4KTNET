@@ -14,7 +14,8 @@ namespace Deribit.S4KTNET.Test.Integration
     [Parallelizable(ParallelScope.Children)]
     class DeribitPrivateNotificationsTestFixture : DeribitIntegrationTestFixtureBase,
         IObserver<AnnouncementsNotification>,
-        IObserver<UserOrdersNotification>
+        IObserver<UserOrdersNotification>,
+        IObserver<UserPortfolioNotification>
     {
         //----------------------------------------------------------------------------
         // configuration
@@ -31,6 +32,7 @@ namespace Deribit.S4KTNET.Test.Integration
         private static readonly string[] channels = new string[]
         {
             DeribitSubscriptions.user.orders(DeribitInstruments.Perpetual.BTCPERPETUAL, Interval._100ms),
+            DeribitSubscriptions.user.portfolio(CurrencyCode.BTC),
         };
 
         //----------------------------------------------------------------------------
@@ -39,6 +41,7 @@ namespace Deribit.S4KTNET.Test.Integration
 
         private int announcementsnotificationcount = 0;
         private int userordersnotificationcount = 0;
+        private int userportfoliosnotificationcount = 0;
 
         //----------------------------------------------------------------------------
         // lifecycle
@@ -47,6 +50,7 @@ namespace Deribit.S4KTNET.Test.Integration
         [OneTimeSetUp]
         public new async Task OneTimeSetUp()
         {
+            Assert.That(this.deribit.Authentication.IsAuthenticated);
             SubscribeResponse subscriberesponse = await deribit.SubscriptionManagement
                 .SubscribePrivate(new SubscribeRequest()
             {
@@ -104,7 +108,6 @@ namespace Deribit.S4KTNET.Test.Integration
         public async Task UserOrdersStream()
         {
             Assert.That(channels.Any(c => c.StartsWith(DeribitChannelPrefix.userorders)));
-            Assert.That(deribit.Authentication.IsAuthenticated);
             using (var sub = this.deribit.SubscriptionManagement.UserOrdersStream.Subscribe(this))
             {
                 // make an order
@@ -116,6 +119,8 @@ namespace Deribit.S4KTNET.Test.Integration
                     label = "mylabel",
                     price = 2000,
                 });
+                // wait
+                await Task.Delay(shortwait);
             }
             Assert.That(this.userordersnotificationcount, Is.GreaterThan(0));
         }
@@ -124,6 +129,36 @@ namespace Deribit.S4KTNET.Test.Integration
         {
             Log.Information($"{value.channel} | Received {nameof(UserOrdersNotification)} {value.sequencenumber}");
             Interlocked.Increment(ref this.userordersnotificationcount);
+        }
+
+        //----------------------------------------------------------------------------
+        // user.portfolio
+        //----------------------------------------------------------------------------
+
+        [Test]
+        public async Task UserPortfolioStream()
+        {
+            Assert.That(channels.Any(c => c.StartsWith(DeribitChannelPrefix.userportfolio)));
+            using (var sub = this.deribit.SubscriptionManagement.UserPortfolioStream.Subscribe(this))
+            {
+                // make an order
+                await this.deribit.Trading.Buy(new Core.Trading.BuySellRequest()
+                {
+                    instrument_name = DeribitInstruments.Perpetual.BTCPERPETUAL,
+                    amount = 210,
+                    type = OrderType.market,
+                    label = "mylabel",
+                });
+                // wait
+                await Task.Delay(shortwait);
+            }
+            Assert.That(this.userportfoliosnotificationcount, Is.GreaterThan(0));
+        }
+
+        public void OnNext(UserPortfolioNotification value)
+        {
+            Log.Information($"{value.channel} | Received {nameof(UserPortfolioNotification)} {value.sequencenumber}");
+            Interlocked.Increment(ref this.userportfoliosnotificationcount);
         }
 
         //----------------------------------------------------------------------------
