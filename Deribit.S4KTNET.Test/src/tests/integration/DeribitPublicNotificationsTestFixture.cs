@@ -12,8 +12,7 @@ namespace Deribit.S4KTNET.Test.Integration
     [TestFixture]
     [Category(TestCategories.integration)]
     [Parallelizable(ParallelScope.Children)]
-    class NotificationsTestFixture : DeribitIntegrationTestFixtureBase,
-        IObserver<AnnouncementsNotification>,
+    class DeribitPublicNotificationsTestFixture : DeribitIntegrationTestFixtureBase,
         IObserver<BookDepthLimitedNotification>,
         IObserver<BookFullNotification>,
         IObserver<DeribitPriceIndexNotification>,
@@ -41,14 +40,13 @@ namespace Deribit.S4KTNET.Test.Integration
             DeribitSubscriptions.deribit_price_index(DeribitIndices.btc_usd),
             DeribitSubscriptions.quote(DeribitInstruments.Perpetual.BTCPERPETUAL),
             DeribitSubscriptions.ticker(DeribitInstruments.Perpetual.BTCPERPETUAL, Interval._100ms),
-            DeribitSubscriptions.trades(DeribitInstruments.Perpetual.BTCPERPETUAL, Interval._100ms),
+            DeribitSubscriptions.trades(DeribitInstruments.Perpetual.BTCPERPETUAL, Interval._100ms)
         };
 
         //----------------------------------------------------------------------------
         // state
         //----------------------------------------------------------------------------
 
-        private int announcementnotificationcount = 0;
         private int bookdepthlimitednotificationcount = 0;
         private int bookfullnotificationcount = 0;
         private int deribitpriceindexnotificationcount = 0;
@@ -61,7 +59,7 @@ namespace Deribit.S4KTNET.Test.Integration
         //----------------------------------------------------------------------------
 
         [OneTimeSetUp]
-        public async Task OneTimeSetUp()
+        public new async Task OneTimeSetUp()
         {
             SubscribeResponse subscriberesponse = await deribit.SubscriptionManagement
                 .SubscribePublic(new SubscribeRequest()
@@ -72,7 +70,7 @@ namespace Deribit.S4KTNET.Test.Integration
         }
 
         [OneTimeTearDown]
-        public async Task OneTimeTearDown()
+        public new async Task OneTimeTearDown()
         {
             UnsubscribeResponse unsubscriberesponse = await deribit.SubscriptionManagement
                 .UnsubscribePublic(new UnsubscribeRequest()
@@ -82,28 +80,16 @@ namespace Deribit.S4KTNET.Test.Integration
             Assert.That(unsubscriberesponse.subscribed_channels.Length, Is.EqualTo(channels.Length));
         }
 
-        //----------------------------------------------------------------------------
-        // announcements
-        //----------------------------------------------------------------------------
-
-        [Test]
-        [Retry(3)]
-        [Ignore("unauthorized")]
-        public async Task TestAnnouncementsStream()
-        {
-            Assert.That(channels.Any(c => c.StartsWith(DeribitChannelPrefix.announcements)));
-            using (var sub = this.deribit.SubscriptionManagement.AnnouncementsStream.Subscribe(this))
-            {
-                await Task.Delay(shortwait);
-            }
-            //Assert.That(this.announcementnotificationcount, Is.GreaterThan(0));
-        }
-
-        public void OnNext(AnnouncementsNotification value)
-        {
-            Log.Information($"{value.channel} | Received {nameof(AnnouncementsNotification)} {value.sequencenumber}");
-            Interlocked.Increment(ref this.announcementnotificationcount);
-        }
+        //[TearDown]
+        //public new void TearDown()
+        //{
+        //    this.bookdepthlimitednotificationcount = 0;
+        //    this.bookfullnotificationcount = 0;
+        //    this.deribitpriceindexnotificationcount = 0;
+        //    this.quotenotificationcount = 0;
+        //    this.tickernotificationcount = 0;
+        //    this.tradenotificationcount = 0;
+        //}
 
         //----------------------------------------------------------------------------
         // book depth limited

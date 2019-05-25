@@ -25,6 +25,7 @@ namespace Deribit.S4KTNET.Core.SubscriptionManagement
         IObservable<QuoteNotification> QuoteStream { get; }
         IObservable<TickerNotification> TickerStream { get; }
         IObservable<TradeNotification> TradeStream { get; }
+        IObservable<UserOrdersNotification> UserOrdersStream { get; }
         //------------------------------------------------------------------------------------------------
         // subscribe / unsubscribe
         //------------------------------------------------------------------------------------------------
@@ -62,6 +63,8 @@ namespace Deribit.S4KTNET.Core.SubscriptionManagement
         public IObservable<TradeNotification> TradeStream => TradeSubject;
         private readonly ISubject<TradeNotification> TradeSubject = new Subject<TradeNotification>();
 
+        public IObservable<UserOrdersNotification> UserOrdersStream => UserOrdersSubject;
+        private readonly ISubject<UserOrdersNotification> UserOrdersSubject = new Subject<UserOrdersNotification>();
         //------------------------------------------------------------------------------------------------
         // dependencies
         //------------------------------------------------------------------------------------------------
@@ -290,6 +293,17 @@ namespace Deribit.S4KTNET.Core.SubscriptionManagement
                     new TradeNotification.Validator().ValidateAndThrow(noti);
                     // raise
                     this.TradeSubject.OnNext(noti);
+                }
+                else if (channel.StartsWith(DeribitChannelPrefix.userorders))
+                {
+                    // deserialize
+                    var dto = e.ToObject<UserOrdersNotificationDto>(jsonser);
+                    // map
+                    var noti = this.mapper.Map<UserOrdersNotification>(dto);
+                    // validate
+                    new UserOrdersNotification.Validator().ValidateAndThrow(noti);
+                    // raise
+                    this.UserOrdersSubject.OnNext(noti);
                 }
                 else
                 {

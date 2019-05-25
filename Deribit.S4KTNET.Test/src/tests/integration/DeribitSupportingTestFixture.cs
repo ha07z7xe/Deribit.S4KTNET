@@ -9,7 +9,7 @@ namespace Deribit.S4KTNET.Test.Integration
 {
     [TestFixture]
     [Category(TestCategories.integration)]
-    class SupportingTestFixture : DeribitIntegrationTestFixtureBase
+    class DeribitSupportingTestFixture : DeribitIntegrationTestFixtureBase
     {
         //----------------------------------------------------------------------------
         // public/test

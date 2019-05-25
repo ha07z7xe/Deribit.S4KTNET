@@ -9,7 +9,7 @@ namespace Deribit.S4KTNET.Test.Integration
 {
     [TestFixture]
     [Category(TestCategories.integration)]
-    class TradingTestFixture : DeribitIntegrationTestFixtureBase
+    class DeribitTradingTestFixture : DeribitIntegrationTestFixtureBase
     {
         //----------------------------------------------------------------------------
         // state

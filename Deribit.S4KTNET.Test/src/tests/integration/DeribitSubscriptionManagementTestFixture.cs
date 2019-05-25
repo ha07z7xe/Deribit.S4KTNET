@@ -10,7 +10,7 @@ namespace Deribit.S4KTNET.Test.Integration
 {
     [TestFixture]
     [Category(TestCategories.integration)]
-    class SubscriptionManagementTestFixture : DeribitIntegrationTestFixtureBase
+    class DeribitSubscriptionManagementTestFixture : DeribitIntegrationTestFixtureBase
     {
         private static readonly string[] channels = new string[]
         {

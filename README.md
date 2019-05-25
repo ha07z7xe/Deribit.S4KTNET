@@ -128,8 +128,8 @@ See the sample client `Deribit.S4KTNET.Sample`.
 | Supporting | [public/test](https://docs.deribit.com/v2/#public-test) | ✔ | |
 | Subscriptions | [public/subscribe](https://docs.deribit.com/v2/#public-subscribe) | ✔ | |
 | Subscriptions | [public/unsubscribe](https://docs.deribit.com/v2/#public-unsubscribe) | ✔ | |
-| Subscriptions | [private/subscribe](https://docs.deribit.com/v2/#private-subscribe) | ✗ | todo (high) |
-| Subscriptions | [private/unsubscribe](https://docs.deribit.com/v2/#private-unsubscribe) | ✗ | todo (high) |
+| Subscriptions | [private/subscribe](https://docs.deribit.com/v2/#private-subscribe) | ✔ | |
+| Subscriptions | [private/unsubscribe](https://docs.deribit.com/v2/#private-unsubscribe) | ✔ | |
 | AccountManagement | [public/get_announcements](https://docs.deribit.com/v2/#public-get_announcements) | ✗ | |
 | AccountManagement | private/change_subaccount_name | ✗ | |
 | AccountManagement | private/create_subaccount | ✗ | |

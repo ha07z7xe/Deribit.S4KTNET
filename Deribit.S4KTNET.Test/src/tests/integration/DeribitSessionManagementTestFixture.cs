@@ -13,7 +13,7 @@ namespace Deribit.S4KTNET.Test.Integration
 {
     [TestFixture]
     [Category(TestCategories.integration)]
-    class SessionManagementTestFixture : DeribitIntegrationTestFixtureBase, IObserver<rx.Unit>
+    class DeribitSessionManagementTestFixture : DeribitIntegrationTestFixtureBase, IObserver<rx.Unit>
     {
         //----------------------------------------------------------------------------
         // state
