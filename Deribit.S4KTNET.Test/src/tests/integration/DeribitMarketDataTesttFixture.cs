@@ -116,5 +116,26 @@ namespace Deribit.S4KTNET.Test.Integration
         }
 
         //----------------------------------------------------------------------------
+        // public/get_instruments
+        //----------------------------------------------------------------------------
+
+        [Test]
+        [Description("public/get_instruments")]
+        public async Task Test_getinstruments_success()
+        {
+            // execute
+            var instruments = await deribit.MarketData.GetInstruments(new GetInstrumentsRequest()
+            {
+                currency = CurrencyCode.BTC,
+            });
+            // assert
+            Assert.That(instruments.Count, Is.GreaterThan(0));
+            foreach (var instrument in instruments)
+            {
+                Assert.That(instrument.IsActive);
+            }
+        }
+
+        //----------------------------------------------------------------------------
     }
 }

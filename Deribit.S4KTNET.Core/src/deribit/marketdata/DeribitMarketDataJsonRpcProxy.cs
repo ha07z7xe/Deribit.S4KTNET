@@ -32,5 +32,8 @@ namespace Deribit.S4KTNET.Core.JsonRpc
 
         [JsonRpcMethod("public/get_index")]
         Task<GetIndexResponseDto> get_index(string currency, CancellationToken ct);
+
+        [JsonRpcMethod("public/get_instruments")]
+        Task<InstrumentDto[]> get_instruments(string currency, string kind, bool expired, CancellationToken ct);
     }
 }

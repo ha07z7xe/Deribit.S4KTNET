@@ -163,7 +163,7 @@ deribit.Dispose();
 | MarketData | [public/get_funding_chart_data](https://docs.deribit.com/v2/#public-get_funding_chart_data) | ✗ | todo |
 | MarketData | [public/get_historical_volatility](https://docs.deribit.com/v2/#public-get_historical_volatility) | ✗ | todo |
 | MarketData | [public/get_index](https://docs.deribit.com/v2/#public-get_index) | ✔ | |
-| MarketData | [public/get_instruments](https://docs.deribit.com/v2/#public-get_instruments) | ✗ | todo (high) |
+| MarketData | [public/get_instruments](https://docs.deribit.com/v2/#public-get_instruments) | ✔ | |
 | MarketData | [public/get_last_settlements_by_currency](https://docs.deribit.com/v2/#public-get_last_settlements_by_currency) | ✗ | todo |
 | MarketData | [public/get_last_settlements_by_instrument](https://docs.deribit.com/v2/#public-get_last_settlements_by_instrument) | ✗ | todo |
 | MarketData | [public/get_last_trades_by_currency](https://docs.deribit.com/v2/#public-get_last_trades_by_currency) | ✗ | todo |
