@@ -318,4 +318,3 @@ This library was written with extensive defensive programming through validation
 Take appropriate security measures to protect yourself from malicious code:
 * Do not trust the binaries. Compile from source.
 * Do not store plaintext api secrets in source control.
-* Firewall your boxes
