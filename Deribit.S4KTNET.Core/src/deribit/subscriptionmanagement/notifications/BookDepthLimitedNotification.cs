@@ -51,6 +51,7 @@ namespace Deribit.S4KTNET.Core.SubscriptionManagement
         {
             public Validator()
             {
+                this.RuleFor(x => x.channelprefix).Equal(DeribitChannelPrefix.book);
                 this.RuleFor(x => x.data).SetValidator(new BookDepthLimitedData.Validator());
             }
         }

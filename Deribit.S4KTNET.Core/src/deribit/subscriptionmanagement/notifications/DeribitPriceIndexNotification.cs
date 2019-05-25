@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using Deribit.S4KTNET.Core.Mapping;
+using FluentValidation;
 
 namespace Deribit.S4KTNET.Core.SubscriptionManagement
 {
@@ -22,7 +23,10 @@ namespace Deribit.S4KTNET.Core.SubscriptionManagement
 
         internal class Validator : FluentValidation.AbstractValidator<DeribitPriceIndexNotification>
         {
-
+            public Validator()
+            {
+                this.RuleFor(x => x.channelprefix).Equal(DeribitChannelPrefix.deribit_price_index);
+            }
         }
     }
 

@@ -41,7 +41,7 @@ namespace Deribit.S4KTNET.Core.Authentication
             {
                 this.RuleFor(x => x.refresh_token).NotEmpty();
                 this.RuleFor(x => x.expires_at).GreaterThanOrEqualTo(DateTime.UtcNow);
-                this.RuleFor(x => x.token_type).Equals("bearer");
+                this.RuleFor(x => x.token_type).Equal("bearer");
             }
         }
     }

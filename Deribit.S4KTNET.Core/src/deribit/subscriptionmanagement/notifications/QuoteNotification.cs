@@ -26,6 +26,7 @@ namespace Deribit.S4KTNET.Core.SubscriptionManagement
         {
             public Validator()
             {
+                this.RuleFor(x => x.channelprefix).Equal(DeribitChannelPrefix.quote);
                 this.RuleFor(x => x.data).SetValidator(new QuoteData.Validator());
             }
         }
