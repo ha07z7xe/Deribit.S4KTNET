@@ -15,6 +15,8 @@ namespace Deribit.S4KTNET.Core.Trading
 
         public decimal index_price { get; set; }
 
+        public string instrument_name { get; set; }
+
         public decimal iv { get; set; }
 
         public string label { get; set; }
