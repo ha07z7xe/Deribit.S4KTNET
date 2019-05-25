@@ -41,7 +41,7 @@ namespace Deribit.S4KTNET.Test.Integration
             DeribitSubscriptions.deribit_price_index(DeribitIndices.btc_usd),
             DeribitSubscriptions.quote(DeribitInstruments.Perpetual.BTCPERPETUAL),
             DeribitSubscriptions.ticker(DeribitInstruments.Perpetual.BTCPERPETUAL, Interval._100ms),
-            //DeribitSubscriptions.trades(DeribitInstruments.Perpetual.BTCPERPETRUAL, Interval._100ms),
+            DeribitSubscriptions.trades(DeribitInstruments.Perpetual.BTCPERPETUAL, Interval._100ms),
         };
 
         //----------------------------------------------------------------------------
