@@ -15,6 +15,7 @@ namespace Deribit.S4KTNET.Test.Integration
     class DeribitPrivateNotificationsTestFixture : DeribitIntegrationTestFixtureBase,
         IObserver<AnnouncementsNotification>,
         IObserver<UserOrdersNotification>,
+        IObserver<UserTradesNotification>,
         IObserver<UserPortfolioNotification>
     {
         //----------------------------------------------------------------------------
@@ -32,6 +33,7 @@ namespace Deribit.S4KTNET.Test.Integration
         private static readonly string[] channels = new string[]
         {
             DeribitSubscriptions.user.orders(DeribitInstruments.Perpetual.BTCPERPETUAL, Interval._100ms),
+            DeribitSubscriptions.user.trades(DeribitInstruments.Perpetual.BTCPERPETUAL, Interval._100ms),
             DeribitSubscriptions.user.portfolio(CurrencyCode.BTC),
         };
 
@@ -42,6 +44,7 @@ namespace Deribit.S4KTNET.Test.Integration
         private int announcementsnotificationcount = 0;
         private int userordersnotificationcount = 0;
         private int userportfoliosnotificationcount = 0;
+        private int usertradesnotificationcount = 0;
 
         //----------------------------------------------------------------------------
         // lifecycle
@@ -159,6 +162,36 @@ namespace Deribit.S4KTNET.Test.Integration
         {
             Log.Information($"{value.channel} | Received {nameof(UserPortfolioNotification)} {value.sequencenumber}");
             Interlocked.Increment(ref this.userportfoliosnotificationcount);
+        }
+
+        //----------------------------------------------------------------------------
+        // user.trades
+        //----------------------------------------------------------------------------
+
+        [Test]
+        public async Task UserTradesStream()
+        {
+            Assert.That(channels.Any(c => c.StartsWith(DeribitChannelPrefix.usertrades)));
+            using (var sub = this.deribit.SubscriptionManagement.UserTradesStream.Subscribe(this))
+            {
+                // make an trade
+                await this.deribit.Trading.Buy(new Core.Trading.BuySellRequest()
+                {
+                    instrument_name = DeribitInstruments.Perpetual.BTCPERPETUAL,
+                    amount = 930,
+                    type = OrderType.market,
+                    label = "mylabel",
+                });
+                // wait
+                await Task.Delay(shortwait);
+            }
+            Assert.That(this.usertradesnotificationcount, Is.GreaterThan(0));
+        }
+
+        public void OnNext(UserTradesNotification value)
+        {
+            Log.Information($"{value.channel} | Received {nameof(UserTradesNotification)} {value.sequencenumber}");
+            Interlocked.Increment(ref this.usertradesnotificationcount);
         }
 
         //----------------------------------------------------------------------------

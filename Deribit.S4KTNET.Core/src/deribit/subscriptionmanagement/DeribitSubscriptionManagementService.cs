@@ -27,6 +27,7 @@ namespace Deribit.S4KTNET.Core.SubscriptionManagement
         IObservable<TradeNotification> TradeStream { get; }
         IObservable<UserOrdersNotification> UserOrdersStream { get; }
         IObservable<UserPortfolioNotification> UserPortfolioStream { get; }
+        IObservable<UserTradesNotification> UserTradesStream { get; }
         //------------------------------------------------------------------------------------------------
         // subscribe / unsubscribe
         //------------------------------------------------------------------------------------------------
@@ -69,6 +70,10 @@ namespace Deribit.S4KTNET.Core.SubscriptionManagement
 
         public IObservable<UserPortfolioNotification> UserPortfolioStream => UserPortfolioSubject;
         private readonly ISubject<UserPortfolioNotification> UserPortfolioSubject = new Subject<UserPortfolioNotification>();
+
+        public IObservable<UserTradesNotification> UserTradesStream => UserTradesSubject;
+        private readonly ISubject<UserTradesNotification> UserTradesSubject = new Subject<UserTradesNotification>();
+
         //------------------------------------------------------------------------------------------------
         // dependencies
         //------------------------------------------------------------------------------------------------
@@ -319,6 +324,17 @@ namespace Deribit.S4KTNET.Core.SubscriptionManagement
                     new UserPortfolioNotification.Validator().ValidateAndThrow(noti);
                     // raise
                     this.UserPortfolioSubject.OnNext(noti);
+                }
+                else if (channel.StartsWith(DeribitChannelPrefix.usertrades))
+                {
+                    // deserialize
+                    var dto = e.ToObject<UserTradesNotificationDto>(jsonser);
+                    // map
+                    var noti = this.mapper.Map<UserTradesNotification>(dto);
+                    // validate
+                    new UserTradesNotification.Validator().ValidateAndThrow(noti);
+                    // raise
+                    this.UserTradesSubject.OnNext(noti);
                 }
                 else
                 {
