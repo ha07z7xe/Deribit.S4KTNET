@@ -93,6 +93,10 @@ await deribit.Trading.buy(new BuySellRequest()
 deribit.Dispose();
 ```
 
+## Sample Code
+
+See the sample client `Deribit.S4KTNET.Sample`.
+
 # Coverage
 
 ## Rest Api
