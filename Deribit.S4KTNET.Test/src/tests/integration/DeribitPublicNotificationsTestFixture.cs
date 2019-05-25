@@ -97,7 +97,6 @@ namespace Deribit.S4KTNET.Test.Integration
 
         [Test]
         [Retry(3)]
-        [Ignore("unauthorized")]
         public async Task BookDepthLimitedStream()
         {
             Assert.That(channels.Any(c => c.StartsWith(DeribitChannelPrefix.book)));

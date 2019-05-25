@@ -193,7 +193,7 @@ See the sample client `Deribit.S4KTNET.Sample`.
 | Wallet | [private/get_withdrawals](https://docs.deribit.com/v2/#private-get_withdrawals) | ✗ | |
 | Wallet | [private/withdraw](https://docs.deribit.com/v2/#private-withdraw) | ✗ | |
 | Notifications | [announcements](https://docs.deribit.com/v2/#announcements) | ○ | partially tested |
-| Notifications | [book.{instrument_name}.{group}.{depth}.{interval}](https://docs.deribit.com/v2/#book-instrument_name-group-depth-interval) | ○ | partially tested |
+| Notifications | [book.{instrument_name}.{group}.{depth}.{interval}](https://docs.deribit.com/v2/#book-instrument_name-group-depth-interval) | ✔ | |
 | Notifications | [book.{instrument_name}.{interval}](https://docs.deribit.com/v2/#book-instrument_name-interval) | ✔ |  |
 | Notifications | [deribit_price_index.{index_name}](https://docs.deribit.com/v2/#deribit_price_index-index_name) | ✔ |  |
 | Notifications | [deribit_price_ranking.{index_name}](https://docs.deribit.com/v2/#deribit_price_ranking-index_name) | ✗ | todo |

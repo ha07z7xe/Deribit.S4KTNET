@@ -35,7 +35,7 @@ namespace Deribit.S4KTNET.Sample
             await TestSupportingApiAsync();
 
             //// test subscription management
-            //await TestSubscriptionManagementApiAsync();
+            await TestSubscriptionManagementApiAsync();
 
             // test heartbeats
             await TestHeartbeatsAsync();
@@ -128,7 +128,7 @@ namespace Deribit.S4KTNET.Sample
         {
             // public/set_heartbeat
             {
-                SetHeartbeatResponse setheartbeatresponse = await deribit.SessionManagement
+                var setheartbeatresponse = await deribit.SessionManagement
                     .SetHeartbeat(new SetHeartbeatRequest()
                     {
                         interval = 10,
@@ -136,7 +136,7 @@ namespace Deribit.S4KTNET.Sample
             }
 
             // wait
-            await Task.Delay(36 * 1000);
+            await Task.Delay(13 * 1000);
 
             // public/disable_heartbeat
             {
