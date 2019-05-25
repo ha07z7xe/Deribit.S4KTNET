@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Threading;
 using Deribit.S4KTNET.Core.Mapping;
+using Deribit.S4KTNET.Core.MarketData;
 using FluentValidation;
 
 namespace Deribit.S4KTNET.Core.SubscriptionManagement
 {
     // https://docs.deribit.com/v2/#quote-instrument_name
 
-    public class QuoteNotification : SubscriptionNotification<QuoteData>
+    public class QuoteNotification : SubscriptionNotification<Quote>
     {
         internal class Profile : AutoMapper.Profile
         {
@@ -18,7 +19,7 @@ namespace Deribit.S4KTNET.Core.SubscriptionManagement
                 this.CreateMap<QuoteNotificationDto, QuoteNotification>()
                     .ForMember(d => d.channelprefix, o => o.MapFrom(s => DeribitChannelPrefix.quote))
                     .ForMember(d => d.sequencenumber, o => o.MapFrom(s => Interlocked.Increment(ref sequencenumber)))
-                    .IncludeBase(typeof(SubscriptionNotificationDto<QuoteDataDto>), typeof(SubscriptionNotification<QuoteData>));
+                    .IncludeBase(typeof(SubscriptionNotificationDto<QuoteDto>), typeof(SubscriptionNotification<Quote>));
             }
         }
 
@@ -27,65 +28,13 @@ namespace Deribit.S4KTNET.Core.SubscriptionManagement
             public Validator()
             {
                 this.RuleFor(x => x.channelprefix).Equal(DeribitChannelPrefix.quote);
-                this.RuleFor(x => x.data).SetValidator(new QuoteData.Validator());
+                this.RuleFor(x => x.data).SetValidator(new Quote.Validator());
             }
         }
     }
 
-    public class QuoteNotificationDto : SubscriptionNotificationDto<QuoteDataDto>
+    public class QuoteNotificationDto : SubscriptionNotificationDto<QuoteDto>
     {
         
-    }
-
-    public class QuoteData
-    {
-        public decimal best_ask_amount { get; set; }
-
-        public decimal best_ask_price { get; set; }
-
-        public decimal best_bid_amount { get; set; }
-
-        public decimal best_bid_price { get; set; }
-
-        public string instrument_name { get; set; }
-
-        public DateTime timestamp { get; set; }
-
-        internal class Profile : AutoMapper.Profile
-        {
-            public Profile()
-            {
-                this.CreateMap<QuoteDataDto, QuoteData>()
-                    .ForMember(d => d.timestamp, 
-                    o => o.ConvertUsing<UnixTimestampMillisValueConverter, long>(s => s.timestamp));
-            }
-        }
-
-        internal class Validator : FluentValidation.AbstractValidator<QuoteData>
-        {
-            public Validator()
-            {
-                this.RuleFor(x => x.best_ask_amount).GreaterThan(0);
-                this.RuleFor(x => x.best_bid_amount).GreaterThan(0);
-                this.RuleFor(x => x.best_ask_price).GreaterThan(x => x.best_bid_price);
-                this.RuleFor(x => x.best_bid_price).GreaterThan(0);
-                this.RuleFor(x => x.best_ask_price).GreaterThan(0);
-            }
-        }
-    }
-
-    public class QuoteDataDto
-    {
-        public decimal best_ask_amount { get; set; }
-
-        public decimal best_ask_price { get; set; }
-
-        public decimal best_bid_amount { get; set; }
-
-        public decimal best_bid_price { get; set; }
-
-        public string instrument_name { get; set; }
-
-        public long timestamp { get; set; }
     }
 }
