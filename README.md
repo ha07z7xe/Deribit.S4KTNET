@@ -1,5 +1,3 @@
-**This library is a work in progress and may be force-pushed**
-
 # Deribit.S4KTNET
 
 Deribit Websocket library for .NET.
