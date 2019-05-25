@@ -1,13 +1,21 @@
 **This library is a work in progress and may be force-pushed**
 
 # Deribit.S4KTNET
-Deribit Rest and Websocket library
 
-* only supports v2
-* only supports web sockets 
-* does not support rest or FIX api
+Deribit Websocket library for .NET.
+
+## Functionality
+* Supports Api V2.0.0
+* Supports WebSocket Api
+* Does not support rest or FIX api
+
+## Links
+* https://docs.deribit.com/v2/#deribit-api-v2-0-0
+* https://test.deribit.com/ 
 
 # Installation
+
+
 
 # Usage
 * Namespaces
@@ -203,7 +211,7 @@ deribit.Dispose();
 
 # Authentication
 
-Private methods require authentication. The library supports all 3 authentication flows available.
+Private methods require authentication. The library attempts to support all authentication flows available.
 
 `SecureString` is not supported, as the credentials are exposed in memory through the websocket libraries anyway.
 
@@ -236,7 +244,7 @@ var request = new AuthRequest()
 // execute request
 deribit.Authentication.Auth(request);
 ```
-## Authentication - signed
+## Authentication - via signed client credentials
 
 **This flow is not computing the correct signature, for reasons unknown. PR fix welcome.**
 
@@ -298,9 +306,16 @@ deribit.SessionManagement.SetHeartbeat(new SetHeartbeatRequest()
 Rx observables are synchronous by default. That means your observer code is called on the same thread the message is received on the websocket feed.
 Be sure to unblock the thread as soon as possible.
 
+Rx supports customizable stream synchronization:
 * http://introtorx.com/Content/v1.0.10621.0/15_SchedulingAndThreading.html
+
+# Performance
+
+This library was written with extensive defensive programming through validation checks, at the expense of cpu/memory performance. If you need the extra performance you can remove this validation. I can help with that.
 
 # Security
 
-* Do NOT trust the binaries with your keys
-* compile from source
+Take appropriate security measures to protect yourself from malicious code:
+* Do not trust the binaries. Compile from source.
+* Do not store plaintext api secrets in source control.
+* Firewall your boxes
