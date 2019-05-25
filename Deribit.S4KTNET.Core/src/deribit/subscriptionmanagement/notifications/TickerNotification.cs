@@ -17,7 +17,7 @@ namespace Deribit.S4KTNET.Core.SubscriptionManagement
             public Profile()
             {
                 this.CreateMap<TickerNotificationDto, TickerNotification>()
-                    .ForMember(d => d.channelprefix, o => o.MapFrom(s => DeribitChannelPrefix.quote))
+                    .ForMember(d => d.channelprefix, o => o.MapFrom(s => DeribitChannelPrefix.ticker))
                     .ForMember(d => d.sequencenumber, o => o.MapFrom(s => Interlocked.Increment(ref sequencenumber)))
                     .IncludeBase(typeof(SubscriptionNotificationDto<TickerDto>), typeof(SubscriptionNotification<Ticker>));
             }

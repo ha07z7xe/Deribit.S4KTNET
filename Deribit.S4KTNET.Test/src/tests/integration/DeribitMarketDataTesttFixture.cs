@@ -179,5 +179,25 @@ namespace Deribit.S4KTNET.Test.Integration
         }
 
         //----------------------------------------------------------------------------
+        // public/ticker
+        //----------------------------------------------------------------------------
+
+        [Test]
+        [Description("public/ticker")]
+        public async Task Test_ticker_success()
+        {
+            // form request
+            var request = new TickerRequest
+            {
+                instrument_name = DeribitInstruments.Perpetual.BTCPERPETUAL,
+            };
+            // execute
+            Ticker ticker = await deribit.MarketData.Ticker(request);
+            // assert
+            new Ticker.Validator().ValidateAndThrow(ticker);
+            Assert.That(ticker.instrument_name, Is.EqualTo(request.instrument_name));
+        }
+
+        //----------------------------------------------------------------------------
     }
 }

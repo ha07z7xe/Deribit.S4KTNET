@@ -185,7 +185,7 @@ See the sample client `Deribit.S4KTNET.Sample`.
 | MarketData | [public/get_order_book](https://docs.deribit.com/v2/#public-get_order_book) | ✔ | |
 | MarketData | [public/get_trade_volumes](https://docs.deribit.com/v2/#public-get_trade_volumes) | ✗ | todo |
 | MarketData | [public/get_tradingview_chart_data](https://docs.deribit.com/v2/#public-get_tradingview_chart_data) | ✗ | |
-| MarketData | [public/ticker](https://docs.deribit.com/v2/#public-ticker) | ✗ | todo (high) |
+| MarketData | [public/ticker](https://docs.deribit.com/v2/#public-ticker) | ✔ | |
 | Wallet | [private/cancel_transfer_by_id](https://docs.deribit.com/v2/#private-cancel_transfer_by_id) | ✗ | |
 | Wallet | [private/cancel_withdrawal](https://docs.deribit.com/v2/#private-cancel_withdrawal) | ✗ | |
 | Wallet | [private/create_deposit_address](https://docs.deribit.com/v2/#private-create_deposit_address) | ✗ | |

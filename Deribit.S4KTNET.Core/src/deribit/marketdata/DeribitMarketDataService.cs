@@ -24,6 +24,8 @@ namespace Deribit.S4KTNET.Core.MarketData
         Task<GetLastTradesByInstrumentResponse> GetLastTradesByInstrument(GetLastTradesByInstrumentRequest request, CancellationToken ct = default);
 
         Task<OrderBook> GetOrderBook(GetOrderBookRequest request, CancellationToken ct = default);
+
+        Task<Ticker> Ticker(TickerRequest request, CancellationToken ct = default);
     }
 
     internal class DeribitMarketDataService : IDeribitMarketDataService
@@ -190,6 +192,22 @@ namespace Deribit.S4KTNET.Core.MarketData
             new OrderBook.Validator().ValidateAndThrow(book);
             // return
             return book;
+        }
+
+        public async Task<Ticker> Ticker(TickerRequest request, CancellationToken ct)
+        {
+            // validate request
+            new TickerRequest.Validator().ValidateAndThrow(request);
+            // map request
+            var reqdto = this.mapper.Map<TickerRequestDto>(request);
+            // execute request
+            var responsedto = await this.rpcproxy.ticker(reqdto.instrument_name, ct);
+            // map response
+            Ticker ticker = mapper.Map<Ticker>(responsedto);
+            // validate response
+            new Ticker.Validator().ValidateAndThrow(ticker);
+            // return
+            return ticker;
         }
 
         //------------------------------------------------------------------------------------------------

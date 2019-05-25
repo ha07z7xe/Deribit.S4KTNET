@@ -56,7 +56,7 @@ namespace Deribit.S4KTNET.Core
         public decimal underlying_price { get; set; }
 
 
-        internal class Validator : AbstractValidator<Ticker>
+        public class Validator : AbstractValidator<Ticker>
         {
             public Validator()
             {
