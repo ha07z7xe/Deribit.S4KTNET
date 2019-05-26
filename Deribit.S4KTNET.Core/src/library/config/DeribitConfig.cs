@@ -24,5 +24,10 @@ namespace Deribit.S4KTNET.Core
         /// Dont automatically respond to heartbeats
         /// </summary>
         public bool NoRespondHeartbeats { get; set; }
+
+        /// <summary>
+        /// Dont automatically reconnect on connectivity blip
+        /// </summary>
+        public bool NoAutoReconnect { get; set; }
     }
 }

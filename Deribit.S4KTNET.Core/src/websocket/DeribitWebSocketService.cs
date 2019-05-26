@@ -1,8 +1,6 @@
 ﻿using Autofac;
 using System;
-using System.Collections.Generic;
 using System.Net.WebSockets;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -20,10 +18,18 @@ namespace Deribit.S4KTNET.Core.WebSocket
     {
         ClientWebSocket ClientWebSocket { get; }
         Task Connect(CancellationToken ct);
+
+        event Action ReconnectionHappened;
     }
 
     internal class DeribitWebSocketService : IDeribitWebSocketService, IDisposable
     {
+        //------------------------------------------------------------------------------------------------
+        // events
+        //------------------------------------------------------------------------------------------------
+
+        public event Action ReconnectionHappened;
+
         //------------------------------------------------------------------------------------------------
         // configuration
         //------------------------------------------------------------------------------------------------
@@ -84,6 +90,7 @@ namespace Deribit.S4KTNET.Core.WebSocket
 
         public void Dispose()
         {
+            this.ClientWebSocket.Abort();
             this.ClientWebSocket.Dispose();
         }
 
@@ -106,7 +113,7 @@ namespace Deribit.S4KTNET.Core.WebSocket
                     throw new Exception();
             }
             // connect
-            this.logger.Information($"connecting to {wssurl}");
+            this.logger.Information($"Connecting to {wssurl}");
             await this.ClientWebSocket.ConnectAsync(new Uri(wssurl), ct);
         }
         //------------------------------------------------------------------------------------------------
