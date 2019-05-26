@@ -33,7 +33,7 @@ namespace Deribit.S4KTNET.Core.SubscriptionManagement
         }
     }
 
-    public class TickerNotificationDto : SubscriptionNotificationDto<TickerDto>
+    internal class TickerNotificationDto : SubscriptionNotificationDto<TickerDto>
     {
         
     }

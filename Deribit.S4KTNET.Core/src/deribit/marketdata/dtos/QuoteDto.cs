@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Deribit.S4KTNET.Core.MarketData
 {
-    public class QuoteDto
+    internal class QuoteDto
     {
         public decimal best_ask_amount { get; set; }
 

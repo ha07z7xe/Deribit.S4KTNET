@@ -33,7 +33,7 @@ namespace Deribit.S4KTNET.Core.MarketData
         }
     }
 
-    public class GetIndexResponseDto
+    internal class GetIndexResponseDto
     {
         public decimal? BTC { get; set; }
 

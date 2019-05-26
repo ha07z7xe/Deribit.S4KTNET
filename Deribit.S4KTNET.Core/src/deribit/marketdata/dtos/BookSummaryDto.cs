@@ -3,7 +3,7 @@ using System;
 
 namespace Deribit.S4KTNET.Core.MarketData
 {
-    public class BookSummaryDto
+    internal class BookSummaryDto
     {
         public decimal ask_price { get; set; }
 

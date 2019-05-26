@@ -34,7 +34,7 @@ namespace Deribit.S4KTNET.Core.Trading
         }
     }
 
-    public class GetMarginsResponseDto
+    internal class GetMarginsResponseDto
     {
         public decimal buy { get; set; }
 

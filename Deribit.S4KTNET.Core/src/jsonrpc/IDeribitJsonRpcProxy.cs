@@ -3,7 +3,7 @@
 namespace Deribit.S4KTNET.Core.JsonRpc
 {
     // https://github.com/microsoft/vs-streamjsonrpc/blob/master/doc/dynamicproxy.md
-    public partial interface IDeribitJsonRpcProxy
+    internal partial interface IDeribitJsonRpcProxy
     {
         /*
         

@@ -38,7 +38,7 @@ namespace Deribit.S4KTNET.Core.Trading
         }
     }
 
-    public class EditOrderRequestDto
+    internal class EditOrderRequestDto
     {
         public string order_id { get; set; }
 

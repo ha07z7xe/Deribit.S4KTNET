@@ -3,7 +3,7 @@ using System;
 
 namespace Deribit.S4KTNET.Core.Trading
 {
-    public class TradeDto
+    internal class TradeDto
     {
         public decimal amount { get; set; }
 

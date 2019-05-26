@@ -19,7 +19,7 @@ namespace Deribit.S4KTNET.Core.Supporting
         }
     }
 
-    public class HelloResponseDto
+    internal class HelloResponseDto
     {
         public string version { get; set; }
     }

@@ -26,7 +26,7 @@ namespace Deribit.S4KTNET.Core.MarketData
         }
     }
 
-    public class TickerRequestDto
+    internal class TickerRequestDto
     {
         public string instrument_name { get; set; }
     }

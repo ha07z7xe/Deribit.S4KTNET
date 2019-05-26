@@ -30,7 +30,7 @@ namespace Deribit.S4KTNET.Core.Trading
         }
     }
 
-    public class BuySellResponseDto
+    internal class BuySellResponseDto
     {
         public OrderDto order { get; set; }
 

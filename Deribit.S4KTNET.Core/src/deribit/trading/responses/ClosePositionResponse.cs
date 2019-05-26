@@ -30,7 +30,7 @@ namespace Deribit.S4KTNET.Core.Trading
         }
     }
 
-    public class ClosePositionResponseDto
+    internal class ClosePositionResponseDto
     {
         public OrderDto order { get; set; }
 

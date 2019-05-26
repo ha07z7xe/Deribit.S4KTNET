@@ -30,7 +30,7 @@ namespace Deribit.S4KTNET.Core.SubscriptionManagement
         }
     }
 
-    public class DeribitPriceIndexNotificationDto : SubscriptionNotificationDto<DeribitPriceIndexDataDto>
+    internal class DeribitPriceIndexNotificationDto : SubscriptionNotificationDto<DeribitPriceIndexDataDto>
     {
         
     }
@@ -54,7 +54,7 @@ namespace Deribit.S4KTNET.Core.SubscriptionManagement
         }
     }
 
-    public class DeribitPriceIndexDataDto
+    internal class DeribitPriceIndexDataDto
     {
         public string index_name { get; set; }
 

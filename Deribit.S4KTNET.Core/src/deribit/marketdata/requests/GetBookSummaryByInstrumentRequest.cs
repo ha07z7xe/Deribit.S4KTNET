@@ -26,7 +26,7 @@ namespace Deribit.S4KTNET.Core.MarketData
         }
     }
 
-    public class GetBookSummaryByInstrumentRequestDto
+    internal class GetBookSummaryByInstrumentRequestDto
     {
         public string instrument_name { get; set; }
     }

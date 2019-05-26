@@ -26,7 +26,7 @@ namespace Deribit.S4KTNET.Core.MarketData
         }
     }
 
-    public class GetContractSizeRequestDto
+    internal class GetContractSizeRequestDto
     {
         public string instrument_name { get; set; }
     }

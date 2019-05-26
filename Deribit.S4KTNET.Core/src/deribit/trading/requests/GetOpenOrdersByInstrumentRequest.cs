@@ -31,7 +31,7 @@ namespace Deribit.S4KTNET.Core.Trading
         }
     }
 
-    public class GetOpenOrdersByInstrumentRequestDto
+    internal class GetOpenOrdersByInstrumentRequestDto
     {
         public string instrument_name { get; set; }
 

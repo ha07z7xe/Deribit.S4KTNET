@@ -31,7 +31,7 @@ namespace Deribit.S4KTNET.Core.SubscriptionManagement
         }
     }
 
-    public class UserTradesNotificationDto : SubscriptionNotificationDto<TradeDto[]>
+    internal class UserTradesNotificationDto : SubscriptionNotificationDto<TradeDto[]>
     {
         
     }

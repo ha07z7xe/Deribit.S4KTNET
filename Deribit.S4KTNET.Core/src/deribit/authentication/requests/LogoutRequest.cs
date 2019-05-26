@@ -17,7 +17,7 @@ namespace Deribit.S4KTNET.Core.Authentication
         }
     }
 
-    public class LogoutRequestDto
+    internal class LogoutRequestDto
     {
 
     }

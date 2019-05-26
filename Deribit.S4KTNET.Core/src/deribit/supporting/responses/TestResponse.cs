@@ -21,7 +21,7 @@ namespace Deribit.S4KTNET.Core.Supporting
         }
     }
 
-    public class TestResponseDto
+    internal class TestResponseDto
     {
         public string version { get; set; }
     }

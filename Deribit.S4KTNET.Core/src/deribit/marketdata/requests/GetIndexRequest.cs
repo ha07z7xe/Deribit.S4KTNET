@@ -29,7 +29,7 @@ namespace Deribit.S4KTNET.Core.MarketData
         }
     }
 
-    public class GetIndexRequestDto
+    internal class GetIndexRequestDto
     {
         public string currency { get; set; }
     }

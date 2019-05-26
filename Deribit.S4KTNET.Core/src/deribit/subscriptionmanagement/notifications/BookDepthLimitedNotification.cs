@@ -57,7 +57,7 @@ namespace Deribit.S4KTNET.Core.SubscriptionManagement
         }
     }
 
-    public class BookDepthLimitedNotificationDto : SubscriptionNotificationDto<BookDepthLimitedDataDto>
+    internal class BookDepthLimitedNotificationDto : SubscriptionNotificationDto<BookDepthLimitedDataDto>
     {
         
     }
@@ -96,7 +96,7 @@ namespace Deribit.S4KTNET.Core.SubscriptionManagement
     }
 
 
-    public class BookDepthLimitedDataDto
+    internal class BookDepthLimitedDataDto
     {
         public IList<object[]> asks { get; set; }
 

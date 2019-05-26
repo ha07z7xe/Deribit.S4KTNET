@@ -25,7 +25,7 @@ namespace Deribit.S4KTNET.Core.AccountManagement
         }
     }
 
-    public class GetPositionRequestDto
+    internal class GetPositionRequestDto
     {
         public string instrument_name { get; set; }
     }

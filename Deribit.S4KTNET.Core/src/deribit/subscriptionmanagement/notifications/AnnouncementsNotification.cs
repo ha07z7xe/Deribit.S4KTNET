@@ -30,7 +30,7 @@ namespace Deribit.S4KTNET.Core.SubscriptionManagement
         }
     }
 
-    public class AnnouncementsNotificationDto : SubscriptionNotificationDto<AnnouncementsDataDto>
+    internal class AnnouncementsNotificationDto : SubscriptionNotificationDto<AnnouncementsDataDto>
     {
         
     }
@@ -62,7 +62,7 @@ namespace Deribit.S4KTNET.Core.SubscriptionManagement
         }
     }
 
-    public class AnnouncementsDataDto
+    internal class AnnouncementsDataDto
     {
         public string action { get; set; }
 

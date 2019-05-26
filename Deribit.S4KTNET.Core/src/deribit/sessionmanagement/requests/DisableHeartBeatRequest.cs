@@ -15,7 +15,7 @@ namespace Deribit.S4KTNET.Core.SessionManagement
         }
     }
 
-    public class DisableHeartbeatRequestDto
+    internal class DisableHeartbeatRequestDto
     {
         
     }

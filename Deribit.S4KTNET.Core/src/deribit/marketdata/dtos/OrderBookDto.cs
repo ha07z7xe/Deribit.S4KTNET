@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Deribit.S4KTNET.Core.MarketData
 {
-    public class OrderBookDto
+    internal class OrderBookDto
     {
         public decimal? ask_iv { get; set; }
 

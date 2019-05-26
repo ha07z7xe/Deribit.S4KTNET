@@ -72,7 +72,7 @@ namespace Deribit.S4KTNET.Core.Trading
         }
     }
 
-    public class BuySellRequestDto
+    internal class BuySellRequestDto
     {
         public string instrument_name { get; set; }
 

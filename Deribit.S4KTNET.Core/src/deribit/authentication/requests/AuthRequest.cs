@@ -99,7 +99,7 @@ namespace Deribit.S4KTNET.Core.Authentication
         }
     }
 
-    public class AuthRequestDto
+    internal class AuthRequestDto
     {
         public string grant_type { get; set; }
 
