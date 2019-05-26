@@ -31,7 +31,7 @@ namespace Deribit.S4KTNET.Core.SubscriptionManagement
         }
     }
 
-    internal class UserPortfolioNotificationDto : SubscriptionNotificationDto<UserPortfolioDataDto>
+    public class UserPortfolioNotificationDto : SubscriptionNotificationDto<UserPortfolioDataDto>
     {
         
     }
@@ -108,7 +108,7 @@ namespace Deribit.S4KTNET.Core.SubscriptionManagement
         }
     }
 
-    internal class UserPortfolioDataDto
+    public class UserPortfolioDataDto
     {
         public decimal available_funds { get; set; }
 

@@ -33,7 +33,7 @@ namespace Deribit.S4KTNET.Core.Trading
         }
     }
 
-    internal class GetMarginsRequestDto
+    public class GetMarginsRequestDto
     {
         public string instrument_name { get; set; }
 

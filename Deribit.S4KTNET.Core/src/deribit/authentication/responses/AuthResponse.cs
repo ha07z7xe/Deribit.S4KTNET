@@ -46,7 +46,7 @@ namespace Deribit.S4KTNET.Core.Authentication
         }
     }
 
-    internal class AuthResponseDto
+    public class AuthResponseDto
     {
         public string access_token { get; set; }
 

@@ -34,7 +34,7 @@ namespace Deribit.S4KTNET.Core.MarketData
         }
     }
 
-    internal class GetLastTradesByInstrumentResponseDto
+    public class GetLastTradesByInstrumentResponseDto
     {
         public bool has_more { get; set; }
 

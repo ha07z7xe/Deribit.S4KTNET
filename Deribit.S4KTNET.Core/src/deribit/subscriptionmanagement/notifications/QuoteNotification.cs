@@ -33,7 +33,7 @@ namespace Deribit.S4KTNET.Core.SubscriptionManagement
         }
     }
 
-    internal class QuoteNotificationDto : SubscriptionNotificationDto<QuoteDto>
+    public class QuoteNotificationDto : SubscriptionNotificationDto<QuoteDto>
     {
         
     }

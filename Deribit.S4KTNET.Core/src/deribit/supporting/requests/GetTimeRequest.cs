@@ -14,7 +14,7 @@ namespace Deribit.S4KTNET.Core.Supporting
 
     }
 
-    internal class GetTimeRequestDto
+    public class GetTimeRequestDto
     {
         
     }

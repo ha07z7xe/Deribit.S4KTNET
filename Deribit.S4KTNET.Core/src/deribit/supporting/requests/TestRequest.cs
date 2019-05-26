@@ -29,7 +29,7 @@ namespace Deribit.S4KTNET.Core.Supporting
 
     }
 
-    internal class TestRequestDto
+    public class TestRequestDto
     {
         public string expected_result { get; set; }
     }

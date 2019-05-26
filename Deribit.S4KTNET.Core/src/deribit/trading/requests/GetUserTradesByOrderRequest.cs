@@ -31,7 +31,7 @@ namespace Deribit.S4KTNET.Core.Trading
         }
     }
 
-    internal class GetUserTradesByOrderRequestDto
+    public class GetUserTradesByOrderRequestDto
     {
         public string order_id { get; set; }
 

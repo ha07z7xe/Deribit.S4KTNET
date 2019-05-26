@@ -3,7 +3,7 @@ using System;
 
 namespace Deribit.S4KTNET.Core.MarketData
 {
-    internal class InstrumentDto
+    public class InstrumentDto
     {
         public string base_currency { get; set; }
 

@@ -26,7 +26,7 @@ namespace Deribit.S4KTNET.Core.Trading
         }
     }
 
-    internal class CancelRequestDto
+    public class CancelRequestDto
     {
         public string order_id { get; set; }
     }

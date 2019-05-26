@@ -25,7 +25,7 @@ namespace Deribit.S4KTNET.Core.SessionManagement
         }
     }
 
-    internal class SetHeartbeatRequestDto
+    public class SetHeartbeatRequestDto
     {
         public int interval { get; set; }
     }

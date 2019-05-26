@@ -22,7 +22,7 @@ namespace Deribit.S4KTNET.Core
 
         IDeribitWebSocketService WebSocket { get; }
 
-        //IDeribitJsonRpcService JsonRpc { get; }
+        IDeribitJsonRpcService JsonRpc { get; }
 
         //------------------------------------------------------------------------------------------------
         // sub services
@@ -60,7 +60,7 @@ namespace Deribit.S4KTNET.Core
         public IDeribitWebSocketService WebSocket => this.WebSocket2;
         internal DeribitWebSocketService WebSocket2 { get; }
 
-        internal IDeribitJsonRpcService JsonRpc => this.JsonRpc2;
+        public IDeribitJsonRpcService JsonRpc => this.JsonRpc2;
         internal DeribitJsonRpcService JsonRpc2 { get; }
 
         public IDeribitAuthenticationService Authentication => this.Authentication2;

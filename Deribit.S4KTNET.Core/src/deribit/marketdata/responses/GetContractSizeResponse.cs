@@ -28,7 +28,7 @@ namespace Deribit.S4KTNET.Core.MarketData
         }
     }
 
-    internal class GetContractSizeResponseDto
+    public class GetContractSizeResponseDto
     {
         public int contract_size { get; set; }
     }

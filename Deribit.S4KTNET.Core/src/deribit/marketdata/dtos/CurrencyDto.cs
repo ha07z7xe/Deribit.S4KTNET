@@ -3,7 +3,7 @@ using System;
 
 namespace Deribit.S4KTNET.Core.MarketData
 {
-    internal class CurrencyDto
+    public class CurrencyDto
     {
         public string coin_type { get; set; }
 

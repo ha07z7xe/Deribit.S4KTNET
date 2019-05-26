@@ -29,7 +29,7 @@ namespace Deribit.S4KTNET.Core.MarketData
         }
     }
 
-    internal class GetOrderBookRequestDto
+    public class GetOrderBookRequestDto
     {
         public string instrument_name { get; set; }
 

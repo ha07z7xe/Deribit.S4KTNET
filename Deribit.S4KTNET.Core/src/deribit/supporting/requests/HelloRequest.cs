@@ -28,7 +28,7 @@ namespace Deribit.S4KTNET.Core.Supporting
         }
     }
 
-    internal class HelloRequestDto
+    public class HelloRequestDto
     {
         public string client_name { get; set; }
 

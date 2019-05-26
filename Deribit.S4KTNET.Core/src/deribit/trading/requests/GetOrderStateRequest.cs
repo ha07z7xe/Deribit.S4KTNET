@@ -26,7 +26,7 @@ namespace Deribit.S4KTNET.Core.Trading
         }
     }
 
-    internal class GetOrderStateRequestDto
+    public class GetOrderStateRequestDto
     {
         public string order_id { get; set; }
     }

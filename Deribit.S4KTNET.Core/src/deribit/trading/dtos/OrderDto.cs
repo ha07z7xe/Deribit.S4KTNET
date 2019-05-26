@@ -3,7 +3,7 @@ using System;
 
 namespace Deribit.S4KTNET.Core.Trading
 {
-    internal class OrderDto
+    public class OrderDto
     {
         public string advanced { get; set; }
 

@@ -33,7 +33,7 @@ namespace Deribit.S4KTNET.Core.Trading
         }
     }
 
-    internal class ClosePositionRequestDto
+    public class ClosePositionRequestDto
     {
         public string instrument_name { get; set; }
 

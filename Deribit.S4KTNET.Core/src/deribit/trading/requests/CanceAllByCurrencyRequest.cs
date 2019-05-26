@@ -37,7 +37,7 @@ namespace Deribit.S4KTNET.Core.Trading
         }
     }
 
-    internal class CancelAllByCurrencyRequestDto
+    public class CancelAllByCurrencyRequestDto
     {
         public string currency { get; set; }
 

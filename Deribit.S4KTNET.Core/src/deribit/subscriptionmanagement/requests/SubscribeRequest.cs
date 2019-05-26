@@ -25,7 +25,7 @@ namespace Deribit.S4KTNET.Core.SubscriptionManagement
         }
     }
 
-    internal class SubscribeRequestDto
+    public class SubscribeRequestDto
     {
         public string[] channels { get; set; }
     }

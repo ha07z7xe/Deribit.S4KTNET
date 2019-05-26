@@ -48,7 +48,7 @@ namespace Deribit.S4KTNET.Core.SubscriptionManagement
         }
     }
 
-    internal class BookFullNotificationDto : SubscriptionNotificationDto<BookFullDataDto>
+    public class BookFullNotificationDto : SubscriptionNotificationDto<BookFullDataDto>
     {
         
     }
@@ -92,7 +92,7 @@ namespace Deribit.S4KTNET.Core.SubscriptionManagement
     }
 
 
-    internal class BookFullDataDto
+    public class BookFullDataDto
     {
         public IList<object[]> asks { get; set; }
 

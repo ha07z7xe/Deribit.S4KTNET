@@ -34,7 +34,7 @@ namespace Deribit.S4KTNET.Core.AccountManagement
         }
     }
 
-    internal class GetPositionsRequestDto
+    public class GetPositionsRequestDto
     {
         public string currency { get; set; }
 

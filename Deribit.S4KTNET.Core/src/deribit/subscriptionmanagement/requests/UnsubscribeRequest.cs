@@ -25,7 +25,7 @@ namespace Deribit.S4KTNET.Core.SubscriptionManagement
         }
     }
 
-    internal class UnsubscribeRequestDto
+    public class UnsubscribeRequestDto
     {
         public string[] channels { get; set; }
     }

@@ -3,7 +3,7 @@ using System;
 
 namespace Deribit.S4KTNET.Core.Trading
 {
-    internal class PositionDto
+    public class PositionDto
     {
         public decimal average_price { get; set; }
 

@@ -29,7 +29,7 @@ namespace Deribit.S4KTNET.Core.Trading
         }
     }
 
-    internal class GetUserTradesByInstrumentResponseDto
+    public class GetUserTradesByInstrumentResponseDto
     {
         public bool has_more { get; set; }
 

@@ -18,7 +18,7 @@ namespace Deribit.S4KTNET.Core.SubscriptionManagement
         public TData data { get; set; }
     }
 
-    internal class SubscriptionNotificationDto<TData> //where TData : new()
+    public class SubscriptionNotificationDto<TData> //where TData : new()
     {
         public string channel { get; set; }
 
