@@ -16,7 +16,7 @@ namespace Deribit.S4KTNET.Core.WebSocket
 
     //------------------------------------------------------------------------------------------------
 
-    public interface IDeribitWebSocketService
+    public interface IDeribitWebSocketService : IDisposable
     {
         ClientWebSocket ClientWebSocket { get; }
         Task Connect(CancellationToken ct);

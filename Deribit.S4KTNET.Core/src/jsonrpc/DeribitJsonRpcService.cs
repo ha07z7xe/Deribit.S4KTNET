@@ -17,7 +17,7 @@ namespace Deribit.S4KTNET.Core.JsonRpc
 
     //------------------------------------------------------------------------------------------------
 
-    public interface IDeribitJsonRpcService
+    public interface IDeribitJsonRpcService : IDisposable
     {
         IDeribitJsonRpcProxy RpcProxy { get; }
         StreamJsonRpc.JsonRpc JsonRpc { get; }
