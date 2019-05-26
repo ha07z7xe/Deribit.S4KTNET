@@ -34,6 +34,8 @@ namespace Deribit.S4KTNET.Core
 
         IDeribitSessionManagementService SessionManagement { get; }
 
+        IDeribitSubscriptionManagementService SubscriptionManagement { get; }
+
         IDeribitSupportingService Supporting { get; }
 
         IDeribitTradingService Trading { get; }
@@ -70,11 +72,11 @@ namespace Deribit.S4KTNET.Core
         public IDeribitSessionManagementService SessionManagement => this.SessionManagement2;
         internal DeribitSessionManagementService SessionManagement2 { get; }
 
-        public IDeribitSupportingService Supporting => this.Supporting2;
-        internal DeribitSupportingService Supporting2 { get; }
-
         public IDeribitSubscriptionManagementService SubscriptionManagement => this.SubscriptionManagement2;
         internal DeribitSubscriptionManagementService SubscriptionManagement2 { get; }
+
+        public IDeribitSupportingService Supporting => this.Supporting2;
+        internal DeribitSupportingService Supporting2 { get; }
 
         public IDeribitTradingService Trading => this.Trading2;
         internal DeribitTradingService Trading2 { get; }
