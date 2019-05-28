@@ -23,7 +23,7 @@ namespace Deribit.S4KTNET.Core
 
         public decimal filled_amount { get; set; }
 
-        public decimal implv { get; set; }
+        public decimal? implv { get; set; }
 
         public string instrument_name { get; set; }
 
@@ -51,15 +51,15 @@ namespace Deribit.S4KTNET.Core
 
         public bool reduce_only { get; set; }
 
-        public decimal stop_price { get; set; }
+        public decimal? stop_price { get; set; }
 
         public OrderTimeInForce time_in_force { get; set; }
 
-        public OrderTriggerType trigger { get; set; }
+        public OrderTriggerType? trigger { get; set; }
 
         public bool triggered { get; set; }
 
-        public decimal usd { get; set; }
+        public decimal? usd { get; set; }
 
 
         internal class Validator : FluentValidation.AbstractValidator<Order>
