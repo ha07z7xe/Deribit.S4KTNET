@@ -158,6 +158,7 @@ See the sample client `Deribit.S4KTNET.Sample`.
 | Trading | [private/get_open_orders_by_currency](https://docs.deribit.com/v2/#private-get_open_orders_by_currency) | ✔ | |
 | Trading | [private/get_open_orders_by_instrument](https://docs.deribit.com/v2/#private-get_open_orders_by_instrument) | ✔ | |
 | Trading | [private/get_order_history_by_currency](https://docs.deribit.com/v2/#private-get_order_history_by_currency) | ✗ | todo |
+| Trading | [private/get_order_history_by_instrument](https://docs.deribit.com/v2/#private-get_order_history_by_instrument) | ✔ | |
 | Trading | [private/get_order_margin_by_ids](https://docs.deribit.com/v2/#private-get_order_margin_by_ids) | ✗ | todo |
 | Trading | [private/get_order_state](https://docs.deribit.com/v2/#private-get_order_state) | ✔ | |
 | Trading | [private/get_stop_order_history](https://docs.deribit.com/v2/#private-get_stop_order_history) | ✗ | todo |

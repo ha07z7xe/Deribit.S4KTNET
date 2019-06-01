@@ -33,6 +33,8 @@ namespace Deribit.S4KTNET.Core.Trading
 
         Task<IList<Order>> GetOpenOrdersByInstrument(GetOpenOrdersByInstrumentRequest request, CancellationToken ct = default);
 
+        Task<IList<Order>> GetOrderHistoryByInstrument(GetOrderHistoryByInstrumentRequest request, CancellationToken ct = default);
+
         Task<Order> GetOrderState(GetOrderStateRequest request, CancellationToken ct = default);
 
         Task<GetUserTradesByInstrumentResponse> GetUserTradesByInstrument(GetUserTradesByInstrumentRequest request, CancellationToken ct = default);
@@ -322,6 +324,35 @@ namespace Deribit.S4KTNET.Core.Trading
             (
                 instrument_name: reqdto.instrument_name,
                 type: reqdto.type,
+                ct
+            );
+            // map response
+            IList<Order> response = this.mapper.Map<IList<Order>>(responsedto);
+            // validate response
+            foreach (var order in response)
+            {
+                new Order.Validator().ValidateAndThrow(order);
+            }
+            // return
+            return response;
+        }
+
+        public async Task<IList<Order>> GetOrderHistoryByInstrument(GetOrderHistoryByInstrumentRequest request, CancellationToken ct)
+        {
+            // validate request
+            new GetOrderHistoryByInstrumentRequest.Validator().ValidateAndThrow(request);
+            // map request
+            var reqdto = this.mapper.Map<GetOrderHistoryByInstrumentRequestDto>(request);
+            // validate request
+            new GetOrderHistoryByInstrumentRequestDto.Validator().ValidateAndThrow(reqdto);
+            // execute request
+            var responsedto = await this.rpcproxy.get_order_history_by_instrument
+            (
+                instrument_name: reqdto.instrument_name,
+                count: reqdto.count,
+                offset: reqdto.offset,
+                include_old: reqdto.include_old,
+                include_unified: reqdto.include_unified,
                 ct
             );
             // map response

@@ -128,6 +128,17 @@ namespace Deribit.S4KTNET.Core.JsonRpc
             CancellationToken ct
         );
 
+        [JsonRpcMethod("private/get_order_history_by_instrument")]
+        Task<OrderDto[]> get_order_history_by_instrument
+        (
+            string instrument_name,
+            int? count,
+            int? offset,
+            bool? include_old,
+            bool? include_unified,
+            CancellationToken ct
+        );
+
         [JsonRpcMethod("private/get_order_state")]
         Task<OrderDto> get_order_state
         (

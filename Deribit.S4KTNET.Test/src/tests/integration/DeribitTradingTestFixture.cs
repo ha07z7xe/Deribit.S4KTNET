@@ -442,6 +442,48 @@ namespace Deribit.S4KTNET.Test.Integration
         }
 
         //----------------------------------------------------------------------------
+        // private/get_order_history_by_instrument
+        //----------------------------------------------------------------------------
+
+        [Test]
+        public async Task Test_getorderhistorybyinstrument()
+        {
+            // cleanup
+            await this.deribit.Trading.CancelAll();
+            // wait
+            await Task.Delay(1 << 9);
+            // submit orders
+            await this.deribit.Trading.Buy(new BuySellRequest
+            {
+                instrument_name = DeribitInstruments.Perpetual.BTCPERPETUAL,
+                type = OrderType.market,
+                amount = 20,
+            });
+            await this.deribit.Trading.Sell(new BuySellRequest
+            {
+                instrument_name = DeribitInstruments.Perpetual.BTCPERPETUAL,
+                type = OrderType.market,
+                amount = 20,
+            });
+            // wait
+            await Task.Delay(1 << 9);
+            // form request
+            var request = new GetOrderHistoryByInstrumentRequest()
+            {
+                instrument_name = DeribitInstruments.Perpetual.BTCPERPETUAL,
+                count = 2,
+            };
+            // execute
+            var response = await this.deribit.Trading.GetOrderHistoryByInstrument(request);
+            // assert
+            Assert.That(response.Count, Is.EqualTo(2));
+            // wait
+            await Task.Delay(1 << 9);
+            // cleanup
+            await this.deribit.Trading.CancelAll();
+        }
+
+        //----------------------------------------------------------------------------
         // private/get_order_state
         //----------------------------------------------------------------------------
 
