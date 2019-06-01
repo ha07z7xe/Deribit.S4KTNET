@@ -19,7 +19,7 @@ namespace Deribit.S4KTNET.Core.WebSocket
         ClientWebSocket ClientWebSocket { get; }
         Task Connect(CancellationToken ct);
 
-        event Action ReconnectionHappened;
+        event Action<ReconnectionType> ReconnectionHappened;
     }
 
     internal class DeribitWebSocketService : IDeribitWebSocketService, IDisposable
@@ -28,7 +28,7 @@ namespace Deribit.S4KTNET.Core.WebSocket
         // events
         //------------------------------------------------------------------------------------------------
 
-        public event Action ReconnectionHappened;
+        public event Action<ReconnectionType> ReconnectionHappened;
 
         //------------------------------------------------------------------------------------------------
         // configuration
@@ -115,6 +115,7 @@ namespace Deribit.S4KTNET.Core.WebSocket
             // connect
             this.logger.Information($"Connecting to {wssurl}");
             await this.ClientWebSocket.ConnectAsync(new Uri(wssurl), ct);
+            this.ReconnectionHappened?.Invoke(ReconnectionType.Initial);
         }
         //------------------------------------------------------------------------------------------------
     }
