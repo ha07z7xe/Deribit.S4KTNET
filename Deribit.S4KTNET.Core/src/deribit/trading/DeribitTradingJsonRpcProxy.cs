@@ -111,6 +111,15 @@ namespace Deribit.S4KTNET.Core.JsonRpc
             CancellationToken ct
         );
 
+        [JsonRpcMethod("private/get_open_orders_by_currency")]
+        Task<OrderDto[]> get_open_orders_by_currency
+        (
+            string currency,
+            string kind,
+            string type,
+            CancellationToken ct
+        );
+
         [JsonRpcMethod("private/get_open_orders_by_instrument")]
         Task<OrderDto[]> get_open_orders_by_instrument
         (

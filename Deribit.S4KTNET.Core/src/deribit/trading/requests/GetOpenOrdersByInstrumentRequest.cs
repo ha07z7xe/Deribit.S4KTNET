@@ -3,7 +3,7 @@ using FluentValidation;
 
 namespace Deribit.S4KTNET.Core.Trading
 {
-    // https://docs.deribit.com/v2/#private-get_open_orders_by_currency
+    // https://docs.deribit.com/v2/#private-get_open_orders_by_instrument
 
     public class GetOpenOrdersByInstrumentRequest : RequestBase
     {
@@ -36,5 +36,15 @@ namespace Deribit.S4KTNET.Core.Trading
         public string instrument_name { get; set; }
 
         public string type { get; set; }
+
+        internal class Validator : FluentValidation.AbstractValidator<GetOpenOrdersByInstrumentRequestDto>
+        {
+            public Validator()
+            {
+                this.RuleFor(x => x.instrument_name).NotEmpty();
+                this.RuleFor(x => x.type).Must(x => x == null || x == "all" || x == "limit"
+                    || x == "stop_all" || x == "stop_limit" || x == "stop_market");
+            }
+        }
     }
 }

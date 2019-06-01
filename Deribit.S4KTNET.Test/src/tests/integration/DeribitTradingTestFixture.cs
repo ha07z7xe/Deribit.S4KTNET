@@ -356,6 +356,49 @@ namespace Deribit.S4KTNET.Test.Integration
         }
 
         //----------------------------------------------------------------------------
+        // private/get_open_orders_by_currency
+        //----------------------------------------------------------------------------
+
+        [Test]
+        public async Task Test_getopenordersbycurrency()
+        {
+            // cleanup
+            await this.deribit.Trading.CancelAll();
+            // wait
+            await Task.Delay(1 << 9);
+            // submit orders
+            await this.deribit.Trading.Buy(new BuySellRequest
+            {
+                instrument_name = DeribitInstruments.Perpetual.BTCPERPETUAL,
+                type = OrderType.limit,
+                amount = 20,
+                price = 500,
+            });
+            await this.deribit.Trading.Sell(new BuySellRequest
+            {
+                instrument_name = DeribitInstruments.Perpetual.BTCPERPETUAL,
+                type = OrderType.limit,
+                amount = 50,
+                price = 30000,
+            });
+            // wait
+            await Task.Delay(1 << 9);
+            // form request
+            var request = new GetOpenOrdersByCurrencyRequest()
+            {
+                currency = CurrencyCode.BTC,
+            };
+            // execute
+            var response = await this.deribit.Trading.GetOpenOrdersByCurrency(request);
+            // assert
+            Assert.That(response.Count, Is.EqualTo(2));
+            // wait
+            await Task.Delay(1 << 9);
+            // cleanup
+            await this.deribit.Trading.CancelAll();
+        }
+
+        //----------------------------------------------------------------------------
         // private/get_open_orders_by_instrument
         //----------------------------------------------------------------------------
 
@@ -397,7 +440,6 @@ namespace Deribit.S4KTNET.Test.Integration
             // cleanup
             await this.deribit.Trading.CancelAll();
         }
-
 
         //----------------------------------------------------------------------------
         // private/get_order_state

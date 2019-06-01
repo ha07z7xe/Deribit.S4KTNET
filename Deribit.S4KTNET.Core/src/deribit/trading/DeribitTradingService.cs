@@ -29,6 +29,8 @@ namespace Deribit.S4KTNET.Core.Trading
 
         Task<GetMarginsResponse> GetMargins(GetMarginsRequest request, CancellationToken ct = default);
 
+        Task<IList<Order>> GetOpenOrdersByCurrency(GetOpenOrdersByCurrencyRequest request, CancellationToken ct = default);
+
         Task<IList<Order>> GetOpenOrdersByInstrument(GetOpenOrdersByInstrumentRequest request, CancellationToken ct = default);
 
         Task<Order> GetOrderState(GetOrderStateRequest request, CancellationToken ct = default);
@@ -278,6 +280,33 @@ namespace Deribit.S4KTNET.Core.Trading
             GetMarginsResponse response = this.mapper.Map<GetMarginsResponse>(responsedto);
             // validate response
             new GetMarginsResponse.Validator().ValidateAndThrow(response);
+            // return
+            return response;
+        }
+
+        public async Task<IList<Order>> GetOpenOrdersByCurrency(GetOpenOrdersByCurrencyRequest request, CancellationToken ct)
+        {
+            // validate request
+            new GetOpenOrdersByCurrencyRequest.Validator().ValidateAndThrow(request);
+            // map request
+            var reqdto = this.mapper.Map<GetOpenOrdersByCurrencyRequestDto>(request);
+            // validate request
+            new GetOpenOrdersByCurrencyRequestDto.Validator().ValidateAndThrow(reqdto);
+            // execute request
+            var responsedto = await this.rpcproxy.get_open_orders_by_currency
+            (
+                currency: reqdto.currency,
+                kind: reqdto.kind,
+                type: reqdto.type,
+                ct
+            );
+            // map response
+            IList<Order> response = this.mapper.Map<IList<Order>>(responsedto);
+            // validate response
+            foreach (var order in response)
+            {
+                new Order.Validator().ValidateAndThrow(order);
+            }
             // return
             return response;
         }
