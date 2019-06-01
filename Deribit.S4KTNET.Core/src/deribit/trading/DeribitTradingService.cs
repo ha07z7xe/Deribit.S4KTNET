@@ -33,6 +33,8 @@ namespace Deribit.S4KTNET.Core.Trading
 
         Task<IList<Order>> GetOpenOrdersByInstrument(GetOpenOrdersByInstrumentRequest request, CancellationToken ct = default);
 
+        Task<IList<Order>> GetOrderHistoryByCurrency(GetOrderHistoryByCurrencyRequest request, CancellationToken ct = default);
+
         Task<IList<Order>> GetOrderHistoryByInstrument(GetOrderHistoryByInstrumentRequest request, CancellationToken ct = default);
 
         Task<Order> GetOrderState(GetOrderStateRequest request, CancellationToken ct = default);
@@ -324,6 +326,36 @@ namespace Deribit.S4KTNET.Core.Trading
             (
                 instrument_name: reqdto.instrument_name,
                 type: reqdto.type,
+                ct
+            );
+            // map response
+            IList<Order> response = this.mapper.Map<IList<Order>>(responsedto);
+            // validate response
+            foreach (var order in response)
+            {
+                new Order.Validator().ValidateAndThrow(order);
+            }
+            // return
+            return response;
+        }
+
+        public async Task<IList<Order>> GetOrderHistoryByCurrency(GetOrderHistoryByCurrencyRequest request, CancellationToken ct)
+        {
+            // validate request
+            new GetOrderHistoryByCurrencyRequest.Validator().ValidateAndThrow(request);
+            // map request
+            var reqdto = this.mapper.Map<GetOrderHistoryByCurrencyRequestDto>(request);
+            // validate request
+            new GetOrderHistoryByCurrencyRequestDto.Validator().ValidateAndThrow(reqdto);
+            // execute request
+            var responsedto = await this.rpcproxy.get_order_history_by_currency
+            (
+                currency: reqdto.currency,
+                kind: reqdto.kind,
+                count: reqdto.count,
+                offset: reqdto.offset,
+                include_old: reqdto.include_old,
+                include_unified: reqdto.include_unified,
                 ct
             );
             // map response
