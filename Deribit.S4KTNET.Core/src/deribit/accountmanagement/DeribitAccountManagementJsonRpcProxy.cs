@@ -1,8 +1,5 @@
-﻿using Deribit.S4KTNET.Core.Supporting;
-using Deribit.S4KTNET.Core.Trading;
-using Newtonsoft.Json.Linq;
+﻿using Deribit.S4KTNET.Core.AccountManagement;
 using StreamJsonRpc;
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -22,6 +19,9 @@ namespace Deribit.S4KTNET.Core.JsonRpc
         Methods may accept a CancellationToken as the last parameter.
 
         */
+
+        [JsonRpcMethod("private/get_account_summary")]
+        Task<AccountDto> get_account_summary(string currency, bool? extended, CancellationToken ct);
 
         [JsonRpcMethod("private/get_position")]
         Task<PositionDto> get_position(string instrument_name, CancellationToken ct);

@@ -10,6 +10,8 @@ namespace Deribit.S4KTNET.Core.AccountManagement
 {
     public interface IDeribitAccountManagementService
     {
+        Task<Account> GetAccountSummary(GetAccountSummaryRequest request, CancellationToken ct = default);
+
         Task<Position> GetPosition(GetPositionRequest request, CancellationToken ct = default);
 
         Task<IList<Position>> GetPositions(GetPositionsRequest request, CancellationToken ct = default);
@@ -66,6 +68,22 @@ namespace Deribit.S4KTNET.Core.AccountManagement
         //------------------------------------------------------------------------------------------------
         // api
         //------------------------------------------------------------------------------------------------
+
+        public async Task<Account> GetAccountSummary(GetAccountSummaryRequest request, CancellationToken ct)
+        {
+            // validate
+            new GetAccountSummaryRequest.Validator().ValidateAndThrow(request);
+            // map request
+            GetAccountSummaryRequestDto requestDto = mapper.Map<GetAccountSummaryRequestDto>(request);
+            // execute request
+            var accountdto = await this.rpcproxy.get_account_summary(requestDto.currency, requestDto.extended, ct);
+            // map response
+            Account account = mapper.Map<Account>(accountdto);
+            // validate response
+            new Account.Validator().ValidateAndThrow(account);
+            // return
+            return account;
+        }
 
         public async Task<Position> GetPosition(GetPositionRequest request, CancellationToken ct)
         {

@@ -34,6 +34,24 @@ namespace Deribit.S4KTNET.Test.Integration
         }
 
         //----------------------------------------------------------------------------
+        // private/get_account_summary
+        //----------------------------------------------------------------------------
+
+        [Test]
+        [Description("private/get_account_summary")]
+        public async Task Test_getaccountsummary_success()
+        {
+            // get account
+            var account = await this.deribit.AccountManagement.GetAccountSummary(new GetAccountSummaryRequest
+            {
+                currency = CurrencyCode.BTC,
+            });
+            // assert
+            new Account.Validator().ValidateAndThrow(account);
+            Assert.That(account.currency, Is.EqualTo(CurrencyCode.BTC));
+        }
+
+        //----------------------------------------------------------------------------
         // private/get_position
         //----------------------------------------------------------------------------
 

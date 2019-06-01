@@ -134,7 +134,7 @@ See the sample client `Deribit.S4KTNET.Sample`.
 | AccountManagement | private/change_subaccount_name | ✗ | |
 | AccountManagement | private/create_subaccount | ✗ | |
 | AccountManagement | private/diable_tfa_for_subaccount | ✗ | |
-| AccountManagement | private/get_account_summary | ✗ | |
+| AccountManagement | private/get_account_summary | ✔ | |
 | AccountManagement | private/get_email_language | ✗ | |
 | AccountManagement | private/get_new_announcements | ✗ | |
 | AccountManagement | [private/get_position](https://docs.deribit.com/v2/#private-get_position) | ✔ | |
