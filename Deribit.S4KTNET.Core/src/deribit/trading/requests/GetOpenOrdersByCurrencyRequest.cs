@@ -9,7 +9,7 @@ namespace Deribit.S4KTNET.Core.Trading
     {
         public CurrencyCode currency { get; set; }
 
-        public InstrumentKind kind { get; set; }
+        public InstrumentKind? kind { get; set; }
 
         public string type { get; set; }
 
@@ -20,7 +20,11 @@ namespace Deribit.S4KTNET.Core.Trading
             {
                 this.CreateMap<GetOpenOrdersByCurrencyRequest, GetOpenOrdersByCurrencyRequestDto>()
                     .ForMember(d => d.currency, o => o.MapFrom(s => s.currency.ToDeribitString()))
-                    .ForMember(d => d.kind, o => o.MapFrom(s => s.kind.ToDeribitString()))
+                    .ForMember(d => d.kind, o => 
+                    {
+                        o.PreCondition(s => s.kind.HasValue);
+                        o.MapFrom(s => s.kind.Value.ToDeribitString());
+                    })
                     .AfterMap((s, d, r) =>
                     {
                         if (d.kind == "any")
