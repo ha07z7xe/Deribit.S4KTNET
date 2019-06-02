@@ -1,7 +1,7 @@
 using Deribit.S4KTNET.Core.Mapping;
 using System;
 
-namespace Deribit.S4KTNET.Core.MarketData
+namespace Deribit.S4KTNET.Core
 {
     public class BookSummaryDto
     {

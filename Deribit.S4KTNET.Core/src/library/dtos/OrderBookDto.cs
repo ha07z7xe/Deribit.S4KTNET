@@ -2,7 +2,7 @@ using Deribit.S4KTNET.Core.Mapping;
 using System;
 using System.Collections.Generic;
 
-namespace Deribit.S4KTNET.Core.MarketData
+namespace Deribit.S4KTNET.Core
 {
     public class OrderBookDto
     {
