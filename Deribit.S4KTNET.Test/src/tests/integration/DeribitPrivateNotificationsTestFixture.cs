@@ -32,8 +32,8 @@ namespace Deribit.S4KTNET.Test.Integration
 
         private static readonly string[] channels = new string[]
         {
-            DeribitSubscriptions.user.orders(DeribitInstruments.Perpetual.BTCPERPETUAL, Interval._100ms),
-            DeribitSubscriptions.user.trades(DeribitInstruments.Perpetual.BTCPERPETUAL, Interval._100ms),
+            DeribitSubscriptions.user.orders(DeribitInstruments.Perpetual.BTCPERPETUAL, Interval.raw),
+            DeribitSubscriptions.user.trades(DeribitInstruments.Perpetual.BTCPERPETUAL, Interval.raw),
             DeribitSubscriptions.user.portfolio(CurrencyCode.BTC),
         };
 
@@ -114,13 +114,20 @@ namespace Deribit.S4KTNET.Test.Integration
             using (var sub = this.deribit.SubscriptionManagement.UserOrdersStream.Subscribe(this))
             {
                 // make an order
-                await this.deribit.Trading.Buy(new Core.Trading.BuySellRequest()
+                var buysellresponse = await this.deribit.Trading.Buy(new Core.Trading.BuySellRequest()
                 {
                     instrument_name = DeribitInstruments.Perpetual.BTCPERPETUAL,
                     amount = 10,
                     type = OrderType.limit,
                     label = "mylabel",
                     price = 2000,
+                });
+                // wait
+                await Task.Delay(shortwait);
+                // cancel order
+                await this.deribit.Trading.Cancel(new Core.Trading.CancelRequest
+                {
+                    order_id = buysellresponse.order.order_id,
                 });
                 // wait
                 await Task.Delay(shortwait);

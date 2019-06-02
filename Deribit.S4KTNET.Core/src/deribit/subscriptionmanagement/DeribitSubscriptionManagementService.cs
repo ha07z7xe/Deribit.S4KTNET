@@ -90,6 +90,12 @@ namespace Deribit.S4KTNET.Core.SubscriptionManagement
         private readonly JsonSerializer jsonser = new JsonSerializer();
 
         //------------------------------------------------------------------------------------------------
+        // locks
+        //------------------------------------------------------------------------------------------------
+
+        private readonly object notificationhandlesynclock = new object();
+
+        //------------------------------------------------------------------------------------------------
         // construction
         //------------------------------------------------------------------------------------------------
 
@@ -209,7 +215,7 @@ namespace Deribit.S4KTNET.Core.SubscriptionManagement
 
         private void handle_notification(object sender, JToken e)
         {
-            lock (this) // REMOVE THIS!
+            lock (this.notificationhandlesynclock) // REMOVE THIS!
             {
                 // get channel name
                 string channel = (string) e["channel"];
