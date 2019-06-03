@@ -76,7 +76,7 @@ namespace Deribit.S4KTNET.Test.Integration
             // cleanup
             var response2 = await this.deribit.Trading.CancelAll();
             // assert
-            Assert.That(response2.success, Is.True);
+            Assert.That(response2.cancelledcount, Is.GreaterThan(0));
         }
 
         [Test]
@@ -140,7 +140,7 @@ namespace Deribit.S4KTNET.Test.Integration
             // cleanup
             var response2 = await this.deribit.Trading.CancelAll();
             // assert
-            Assert.That(response2.success, Is.True);
+            Assert.That(response2.cancelledcount, Is.GreaterThan(0));
         }
         
         [Test]
@@ -199,7 +199,7 @@ namespace Deribit.S4KTNET.Test.Integration
             // cleanup
             var response2 = await this.deribit.Trading.CancelAll();
             // assert
-            Assert.That(response2.success, Is.True);
+            Assert.That(response2.cancelledcount, Is.GreaterThan(0));
         }
 
         //----------------------------------------------------------------------------
@@ -249,7 +249,7 @@ namespace Deribit.S4KTNET.Test.Integration
             // cleanup
             var response2 = await this.deribit.Trading.CancelAll();
             // assert
-            Assert.That(response2.success, Is.True);
+            Assert.That(response2.cancelledcount, Is.GreaterThan(0));
         }
 
         //----------------------------------------------------------------------------
@@ -257,10 +257,40 @@ namespace Deribit.S4KTNET.Test.Integration
         //----------------------------------------------------------------------------
 
         [Test]
-        [Ignore("skipped")]
         public async Task Test_cancel()
         {
-            
+            //----------------------------------------------------------------------------
+            // submit bid
+            //----------------------------------------------------------------------------
+            // form request
+            BuySellRequest req = new BuySellRequest()
+            {
+                instrument_name = DeribitInstruments.Perpetual.BTCPERPETUAL,
+                amount = 30,
+                type = OrderType.limit,
+                label = "mylabel",
+                price = 1100,
+                post_only = true,
+            };
+            // execute
+            BuySellResponse response = await this.deribit.Trading.Buy(req);
+            Assert.That(response.order, Is.Not.Null);
+            // wait 
+            await Task.Delay(1 << 9);
+            //----------------------------------------------------------------------------
+            // cancel bid
+            //----------------------------------------------------------------------------
+            // form request
+            CancelRequest req2 = new CancelRequest()
+            {
+                order_id = response.order.order_id,
+            };
+            // execute request
+            Order cancelledorder = await this.deribit.Trading.Cancel(req2);
+            // assert
+            Assert.That(cancelledorder.order_id, Is.EqualTo(response.order.order_id));
+            Assert.That(cancelledorder.order_state, Is.EqualTo(OrderState.cancelled));
+            //----------------------------------------------------------------------------
         }
 
         //----------------------------------------------------------------------------
@@ -270,10 +300,41 @@ namespace Deribit.S4KTNET.Test.Integration
         [Test]
         public async Task Test_cancelall()
         {
+            //----------------------------------------------------------------------------
+            // submit bid
+            //----------------------------------------------------------------------------
+            // form request
+            BuySellRequest req = new BuySellRequest()
+            {
+                instrument_name = DeribitInstruments.Perpetual.BTCPERPETUAL,
+                amount = 20,
+                type = OrderType.limit,
+                label = "mylabel",
+                price = 1520,
+                post_only = true,
+            };
             // execute
-            var response = await this.deribit.Trading.CancelAll();
+            BuySellResponse response = await this.deribit.Trading.Buy(req);
+            Assert.That(response.order, Is.Not.Null);
+            //----------------------------------------------------------------------------
+            // cancel all
+            //----------------------------------------------------------------------------
+            // wait 
+            await Task.Delay(1 << 9);
+            // execute
+            var response2 = await this.deribit.Trading.CancelAll();
             // assert
-            Assert.That(response.success, Is.True);
+            Assert.That(response2.cancelledcount, Is.GreaterThan(0));
+            //----------------------------------------------------------------------------
+            // cancel all again
+            //----------------------------------------------------------------------------
+            // wait 
+            await Task.Delay(1 << 9);
+            // execute
+            var response3 = await this.deribit.Trading.CancelAll();
+            // assert
+            Assert.That(response3.cancelledcount, Is.EqualTo(0));
+            //----------------------------------------------------------------------------
         }
 
         //----------------------------------------------------------------------------
@@ -283,13 +344,34 @@ namespace Deribit.S4KTNET.Test.Integration
         [Test]
         public async Task Test_cancelallbycurrency()
         {
+            //----------------------------------------------------------------------------
+            // submit bid
+            //----------------------------------------------------------------------------
+            // form request
+            BuySellRequest req = new BuySellRequest()
+            {
+                instrument_name = DeribitInstruments.Perpetual.BTCPERPETUAL,
+                amount = 30,
+                type = OrderType.limit,
+                label = "mylabel",
+                price = 1010,
+                post_only = true,
+            };
             // execute
-            var response = await this.deribit.Trading.CancelAllByCurrency(new CancelAllByCurrencyRequest
+            BuySellResponse response = await this.deribit.Trading.Buy(req);
+            Assert.That(response.order, Is.Not.Null);
+            //----------------------------------------------------------------------------
+            // cancel all
+            //----------------------------------------------------------------------------
+            // wait 
+            await Task.Delay(1 << 9);
+            // execute
+            var response2 = await this.deribit.Trading.CancelAllByCurrency(new CancelAllByCurrencyRequest
             {
                 currency = CurrencyCode.BTC,
             });
             // assert
-            Assert.That(response.success, Is.True);
+            Assert.That(response2.cancelledcount, Is.GreaterThan(0));
         }
 
         //----------------------------------------------------------------------------
@@ -299,13 +381,34 @@ namespace Deribit.S4KTNET.Test.Integration
         [Test]
         public async Task Test_cancelallbyinstrument()
         {
+            //----------------------------------------------------------------------------
+            // submit bid
+            //----------------------------------------------------------------------------
+            // form request
+            BuySellRequest req = new BuySellRequest()
+            {
+                instrument_name = DeribitInstruments.Perpetual.BTCPERPETUAL,
+                amount = 40,
+                type = OrderType.limit,
+                label = "mylabel",
+                price = 930,
+                post_only = true,
+            };
             // execute
-            var response = await this.deribit.Trading.CancelAllByInstrument(new CancelAllByInstrumentRequest
+            BuySellResponse response = await this.deribit.Trading.Buy(req);
+            Assert.That(response.order, Is.Not.Null);
+            //----------------------------------------------------------------------------
+            // cancel all
+            //----------------------------------------------------------------------------
+            // wait 
+            await Task.Delay(1 << 9);
+            // execute
+            var response2 = await this.deribit.Trading.CancelAllByInstrument(new CancelAllByInstrumentRequest
             {
                 instrument_name = DeribitInstruments.Perpetual.BTCPERPETUAL,
             });
             // assert
-            Assert.That(response.success, Is.True);
+            Assert.That(response2.cancelledcount, Is.GreaterThan(0));
         }
 
         //----------------------------------------------------------------------------

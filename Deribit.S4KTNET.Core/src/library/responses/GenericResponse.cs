@@ -1,6 +1,6 @@
 namespace Deribit.S4KTNET.Core
 {
-    public class GenericResponse
+    public class GenericResponse : ResponseBase
     {
         public string message { get; set; }
 

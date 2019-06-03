@@ -19,11 +19,11 @@ namespace Deribit.S4KTNET.Core.Trading
 
         Task<Order> Cancel(CancelRequest request, CancellationToken ct = default);
 
-        Task<GenericResponse> CancelAll(CancellationToken ct = default);
+        Task<CancelOrdersResponse> CancelAll(CancellationToken ct = default);
 
-        Task<GenericResponse> CancelAllByCurrency(CancelAllByCurrencyRequest request, CancellationToken ct = default);
+        Task<CancelOrdersResponse> CancelAllByCurrency(CancelAllByCurrencyRequest request, CancellationToken ct = default);
 
-        Task<GenericResponse> CancelAllByInstrument(CancelAllByInstrumentRequest request, CancellationToken ct = default);
+        Task<CancelOrdersResponse> CancelAllByInstrument(CancelAllByInstrumentRequest request, CancellationToken ct = default);
 
         Task<ClosePositionResponse> ClosePosition(ClosePositionRequest request, CancellationToken ct = default);
 
@@ -189,17 +189,17 @@ namespace Deribit.S4KTNET.Core.Trading
             return order;
         }
 
-        public async Task<GenericResponse> CancelAll(CancellationToken ct)
+        public async Task<CancelOrdersResponse> CancelAll(CancellationToken ct)
         {
             // execute request
             var responsedto = await this.rpcproxy.cancel_all(ct);
             // map response
-            GenericResponse response = this.mapper.Map<GenericResponse>(responsedto);
+            CancelOrdersResponse response = this.mapper.Map<CancelOrdersResponse>(responsedto);
             // return
             return response;
         }
 
-        public async Task<GenericResponse> CancelAllByCurrency(CancelAllByCurrencyRequest request, CancellationToken ct)
+        public async Task<CancelOrdersResponse> CancelAllByCurrency(CancelAllByCurrencyRequest request, CancellationToken ct)
         {
             // validate request
             new CancelAllByCurrencyRequest.Validator().ValidateAndThrow(request);
@@ -216,12 +216,12 @@ namespace Deribit.S4KTNET.Core.Trading
                 ct
             );
             // map response
-            GenericResponse response = this.mapper.Map<GenericResponse>(responsedto);
+            CancelOrdersResponse response = this.mapper.Map<CancelOrdersResponse>(responsedto);
             // return
             return response;
         }
 
-        public async Task<GenericResponse> CancelAllByInstrument(CancelAllByInstrumentRequest request, CancellationToken ct)
+        public async Task<CancelOrdersResponse> CancelAllByInstrument(CancelAllByInstrumentRequest request, CancellationToken ct)
         {
             // validate request
             new CancelAllByInstrumentRequest.Validator().ValidateAndThrow(request);
@@ -237,7 +237,7 @@ namespace Deribit.S4KTNET.Core.Trading
                 ct
             );
             // map response
-            GenericResponse response = this.mapper.Map<GenericResponse>(responsedto);
+            CancelOrdersResponse response = this.mapper.Map<CancelOrdersResponse>(responsedto);
             // return
             return response;
         }

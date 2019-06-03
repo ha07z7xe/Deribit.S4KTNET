@@ -74,10 +74,10 @@ namespace Deribit.S4KTNET.Core.JsonRpc
         Task<OrderDto> cancel(string order_id, CancellationToken ct);
 
         [JsonRpcMethod("private/cancel_all")]
-        Task<string> cancel_all(CancellationToken ct);
+        Task<int> cancel_all(CancellationToken ct);
 
         [JsonRpcMethod("private/cancel_all_by_currency")]
-        Task<string> cancel_all_by_currency
+        Task<int> cancel_all_by_currency
         (
             string currency,
             string kind,
@@ -86,7 +86,7 @@ namespace Deribit.S4KTNET.Core.JsonRpc
         );
 
         [JsonRpcMethod("private/cancel_all_by_instrument")]
-        Task<string> cancel_all_by_instrument
+        Task<int> cancel_all_by_instrument
         (
             string instrument_name,
             string type,
