@@ -68,6 +68,7 @@ namespace Deribit.S4KTNET.Core
                     .ForMember(d => d.direction, o => o.MapFrom(s => s.direction.ToBuySell()))
                     .ForMember(d => d.order_state, o => o.MapFrom(s => s.order_state.ToOrderState()))
                     .ForMember(d => d.order_type, o => o.MapFrom(s => s.order_type.ToOrderType()))
+                    .ForMember(d => d.label, o => o.PreCondition(s => !string.IsNullOrEmpty(s.label)))
                     .ForMember(d => d.original_order_type, o => o.MapFrom(s => s.original_order_type.ToOrderType()))
                     .ForMember(d => d.time_in_force, o => o.MapFrom(s => s.time_in_force.ToOrderTimeInForce()))
                     .ForMember(d => d.trigger, o => o.MapFrom(s => s.trigger.ToOrderTriggerType()))
