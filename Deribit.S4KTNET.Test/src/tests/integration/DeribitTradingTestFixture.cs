@@ -167,6 +167,62 @@ namespace Deribit.S4KTNET.Test.Integration
             Assert.That(response.order.order_id, Is.Not.Null);
         }
 
+        [Test]
+        [Description("private/buy (reduceonly)")]
+        public async Task Test_buy_reduceonly()
+        {
+            // close existing position
+            await this.deribit.Trading.ClosePosition(new ClosePositionRequest()
+            {
+                instrument_name = DeribitInstruments.Perpetual.BTCPERPETUAL,
+                type = "market",
+            });
+            // wait
+            await Task.Delay(1 << 9);
+            // open long position
+            BuySellResponse buysellresponse = await this.deribit.Trading.Buy(new BuySellRequest
+            {
+                instrument_name = DeribitInstruments.Perpetual.BTCPERPETUAL,
+                amount = 20,
+                type = OrderType.market,
+            });
+            Assert.That(buysellresponse.order, Is.Not.Null);
+            // wait
+            await Task.Delay(1 << 9);
+            // try increase position
+            buysellresponse = await this.deribit.Trading.Buy(new BuySellRequest
+            {
+                instrument_name = DeribitInstruments.Perpetual.BTCPERPETUAL,
+                amount = 20,
+                type = OrderType.market,
+                reduce_only = true,
+            });
+            // assert
+            Assert.That(buysellresponse.rejected, Is.True);
+            Assert.That(buysellresponse.message.Contains("reduce_only"));
+            // wait
+            await Task.Delay(1 << 9);
+            // try reduce position
+            buysellresponse = await this.deribit.Trading.Sell(new BuySellRequest
+            {
+                instrument_name = DeribitInstruments.Perpetual.BTCPERPETUAL,
+                amount = 10,
+                type = OrderType.market,
+                reduce_only = true,
+            });
+            // assert
+            Assert.That(buysellresponse.order, Is.Not.Null);
+            Assert.That(buysellresponse.rejected, Is.False);
+            // wait
+            await Task.Delay(1 << 9);
+            // cleanup
+            await this.deribit.Trading.ClosePosition(new ClosePositionRequest()
+            {
+                instrument_name = DeribitInstruments.Perpetual.BTCPERPETUAL,
+                type = "market",
+            });
+        }
+
         //----------------------------------------------------------------------------
         // private/sell
         //----------------------------------------------------------------------------
@@ -200,6 +256,62 @@ namespace Deribit.S4KTNET.Test.Integration
             var response2 = await this.deribit.Trading.CancelAll();
             // assert
             Assert.That(response2.cancelledcount, Is.GreaterThan(0));
+        }
+
+        [Test]
+        [Description("private/sell (reduceonly)")]
+        public async Task Test_sell_reduceonly()
+        {
+            // close existing position
+            await this.deribit.Trading.ClosePosition(new ClosePositionRequest()
+            {
+                instrument_name = DeribitInstruments.Perpetual.BTCPERPETUAL,
+                type = "market",
+            });
+            // wait
+            await Task.Delay(1 << 9);
+            // open short position
+            BuySellResponse sellsellresponse = await this.deribit.Trading.Sell(new BuySellRequest
+            {
+                instrument_name = DeribitInstruments.Perpetual.BTCPERPETUAL,
+                amount = 20,
+                type = OrderType.market,
+            });
+            Assert.That(sellsellresponse.order, Is.Not.Null);
+            // wait
+            await Task.Delay(1 << 9);
+            // try increase position
+            sellsellresponse = await this.deribit.Trading.Sell(new BuySellRequest
+            {
+                instrument_name = DeribitInstruments.Perpetual.BTCPERPETUAL,
+                amount = 20,
+                type = OrderType.market,
+                reduce_only = true,
+            });
+            // assert
+            Assert.That(sellsellresponse.rejected, Is.True);
+            Assert.That(sellsellresponse.message.Contains("reduce_only"));
+            // wait
+            await Task.Delay(1 << 9);
+            // try reduce position
+            sellsellresponse = await this.deribit.Trading.Buy(new BuySellRequest
+            {
+                instrument_name = DeribitInstruments.Perpetual.BTCPERPETUAL,
+                amount = 10,
+                type = OrderType.market,
+                reduce_only = true,
+            });
+            // assert
+            Assert.That(sellsellresponse.order, Is.Not.Null);
+            Assert.That(sellsellresponse.rejected, Is.False);
+            // wait
+            await Task.Delay(1 << 9);
+            // cleanup
+            await this.deribit.Trading.ClosePosition(new ClosePositionRequest()
+            {
+                instrument_name = DeribitInstruments.Perpetual.BTCPERPETUAL,
+                type = "market",
+            });
         }
 
         //----------------------------------------------------------------------------
@@ -435,6 +547,30 @@ namespace Deribit.S4KTNET.Test.Integration
             });
             // assert
             new ClosePositionResponse.Validator().ValidateAndThrow(response);
+            Assert.That(response.already_closed, Is.False);
+        }
+
+        [Test]
+        public async Task Test_closeposition_noexistingposition()
+        {
+            // close position
+            var response = await this.deribit.Trading.ClosePosition(new ClosePositionRequest
+            {
+                instrument_name = DeribitInstruments.Perpetual.BTCPERPETUAL,
+                type = "market",
+            });
+            new ClosePositionResponse.Validator().ValidateAndThrow(response);
+            // wait
+            await Task.Delay(1 << 9);
+            // close position
+            response = await this.deribit.Trading.ClosePosition(new ClosePositionRequest
+            {
+                instrument_name = DeribitInstruments.Perpetual.BTCPERPETUAL,
+                type = "market",
+            });
+            // assert
+            new ClosePositionResponse.Validator().ValidateAndThrow(response);
+            Assert.That(response.already_closed, Is.True);
         }
 
         //----------------------------------------------------------------------------

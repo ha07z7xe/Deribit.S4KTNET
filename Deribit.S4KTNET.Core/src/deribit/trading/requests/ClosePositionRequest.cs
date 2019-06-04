@@ -26,7 +26,8 @@ namespace Deribit.S4KTNET.Core.Trading
             public Validator()
             {
                 this.RuleFor(x => x.instrument_name).NotEmpty();
-                this.RuleFor(x => x.type).NotEmpty().Must(x => x == "limit" || x == "market");
+                this.RuleFor(x => x.type).NotEmpty().Must(x => x == "limit" || x == "market")
+                    .WithMessage(x => @"type == [ ""limit"" | ""market"" ]");
                 this.RuleFor(x => x.price).NotEmpty().When(x => x.type == "limit");
                 this.RuleFor(x => x.price).Null().When(x => x.type != "limit");
             }

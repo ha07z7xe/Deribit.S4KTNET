@@ -39,7 +39,9 @@ namespace Deribit.S4KTNET.Core.Trading
             {
                 this.RuleFor(x => x.currency).NotEmpty().NotEqual(CurrencyCode.any);
                 this.RuleFor(x => x.type).Must(x => x == null || x == "all" || x == "limit"
-                    || x == "stop_all" || x == "stop_limit" || x == "stop_market");
+                    || x == "stop_all" || x == "stop_limit" || x == "stop_market")
+                    .WithMessage(x => @"type == [ ""all"" | ""limit"" | ""stop_all"" | ""stop_limit"" | ""stop_market"" ]");
+                ;
             }
         }
     }

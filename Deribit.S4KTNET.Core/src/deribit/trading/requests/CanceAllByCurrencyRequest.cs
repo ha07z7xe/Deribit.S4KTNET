@@ -32,7 +32,10 @@ namespace Deribit.S4KTNET.Core.Trading
         {
             public Validator()
             {
-                this.RuleFor(x => x.type).Must(x => x == null || x == "all" || x == "limit" || x == "stop");
+                this.RuleFor(x => x.type)
+                    .Must(x => x == null || x == "all" || x == "limit" || x == "stop")
+                    .WithMessage(x => @"type == [ ""all"" | ""limit"" | ""stop"" ]");
+                ;
             }
         }
     }

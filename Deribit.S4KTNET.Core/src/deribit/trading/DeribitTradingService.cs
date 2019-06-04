@@ -2,6 +2,7 @@
 using AutoMapper;
 using Deribit.S4KTNET.Core.JsonRpc;
 using FluentValidation;
+using StreamJsonRpc;
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -95,22 +96,34 @@ namespace Deribit.S4KTNET.Core.Trading
             // map request
             BuySellRequestDto reqdto = mapper.Map<BuySellRequestDto>(request);
             // execute request
-            var responsedto = await this.rpcproxy.buy
-            (
-                instrument_name: reqdto.instrument_name,
-                amount: reqdto.amount,
-                type: reqdto.type,
-                label: reqdto.label,
-                price: reqdto.price,
-                time_in_force: reqdto.time_in_force,
-                max_show: reqdto.max_show,
-                post_only: reqdto.post_only,
-                reduce_only: reqdto.reduce_only,
-                stop_price: reqdto.stop_price,
-                trigger: reqdto.trigger,
-                advanced: reqdto.advanced,
-                ct: ct
-            );
+            BuySellResponseDto responsedto;
+            try
+            {
+                responsedto = await this.rpcproxy.buy
+                (
+                    instrument_name: reqdto.instrument_name,
+                    amount: reqdto.amount,
+                    type: reqdto.type,
+                    label: reqdto.label,
+                    price: reqdto.price,
+                    time_in_force: reqdto.time_in_force,
+                    max_show: reqdto.max_show,
+                    post_only: reqdto.post_only,
+                    reduce_only: reqdto.reduce_only,
+                    stop_price: reqdto.stop_price,
+                    trigger: reqdto.trigger,
+                    advanced: reqdto.advanced,
+                    ct: ct
+                );
+            }
+            catch (RemoteInvocationException rie) when (rie.Message.Contains("other_reject"))
+            {
+                return new BuySellResponse()
+                {
+                    rejected = true,
+                    message = rie.Message,
+                };
+            }
             // map response
             BuySellResponse response = mapper.Map<BuySellResponse>(responsedto);
             // validate
@@ -126,22 +139,34 @@ namespace Deribit.S4KTNET.Core.Trading
             // map request
             BuySellRequestDto reqdto = mapper.Map<BuySellRequestDto>(request);
             // execute request
-            var responsedto = await this.rpcproxy.sell
-            (
-                instrument_name: reqdto.instrument_name,
-                amount: reqdto.amount,
-                type: reqdto.type,
-                label: reqdto.label,
-                price: reqdto.price,
-                time_in_force: reqdto.time_in_force,
-                max_show: reqdto.max_show,
-                post_only: reqdto.post_only,
-                reduce_only: reqdto.reduce_only,
-                stop_price: reqdto.stop_price,
-                trigger: reqdto.trigger,
-                advanced: reqdto.advanced,
-                ct: ct
-            );
+            BuySellResponseDto responsedto;
+            try
+            {
+                responsedto = await this.rpcproxy.sell
+                (
+                    instrument_name: reqdto.instrument_name,
+                    amount: reqdto.amount,
+                    type: reqdto.type,
+                    label: reqdto.label,
+                    price: reqdto.price,
+                    time_in_force: reqdto.time_in_force,
+                    max_show: reqdto.max_show,
+                    post_only: reqdto.post_only,
+                    reduce_only: reqdto.reduce_only,
+                    stop_price: reqdto.stop_price,
+                    trigger: reqdto.trigger,
+                    advanced: reqdto.advanced,
+                    ct: ct
+                );
+            }
+            catch (RemoteInvocationException rie) when (rie.Message.Contains("other_reject"))
+            {
+                return new BuySellResponse()
+                {
+                    rejected = true,
+                    message = rie.Message,
+                };
+            }
             // map response
             BuySellResponse response = mapper.Map<BuySellResponse>(responsedto);
             // validate
@@ -251,13 +276,24 @@ namespace Deribit.S4KTNET.Core.Trading
             // validate request dto
             new ClosePositionRequestDto.Validator().ValidateAndThrow(reqdto);
             // execute request
-            var responsedto = await this.rpcproxy.close_position
-            (
-                instrument_name: reqdto.instrument_name,
-                type: reqdto.type,
-                price: reqdto.price,
-                ct
-            );
+            ClosePositionResponseDto responsedto;
+            try
+            {
+                responsedto = await this.rpcproxy.close_position
+                (
+                    instrument_name: reqdto.instrument_name,
+                    type: reqdto.type,
+                    price: reqdto.price,
+                    ct
+                );
+            }
+            catch (RemoteInvocationException rie) when (rie.Message.Contains("already_closed"))
+            {
+                return new ClosePositionResponse()
+                {
+                    already_closed = true,
+                };
+            }
             // map response
             ClosePositionResponse response = this.mapper.Map<ClosePositionResponse>(responsedto);
             // validate response
