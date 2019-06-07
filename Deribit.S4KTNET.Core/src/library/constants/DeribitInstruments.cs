@@ -36,7 +36,7 @@ namespace Deribit.S4KTNET.Core
                     InstrumentName = DeribitInstruments.Perpetual.BTCPERPETUAL,
                     QuoteCurrency = "USD",
                     Url = "https://www.deribit.com/pages/docs/perpetual",
-                    TickSize = 0.25m,
+                    TickSize = 0.5m,
                     ContractSize = 10,
                     TakerFee = 0.00075m,
                     MakerFee = -0.00025m,

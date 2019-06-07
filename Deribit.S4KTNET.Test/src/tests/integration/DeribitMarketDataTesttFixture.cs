@@ -133,6 +133,15 @@ namespace Deribit.S4KTNET.Test.Integration
             foreach (var instrument in instruments)
             {
                 Assert.That(instrument.IsActive);
+                if (DeribitInstruments.ByInstrumentName.TryGetValue(instrument.InstrumentName, out var ei))
+                {
+                    Assert.That(instrument.InstrumentName, Is.EqualTo(ei.InstrumentName));
+                    Assert.That(instrument.TickSize, Is.EqualTo(ei.TickSize));
+                    Assert.That(instrument.QuoteCurrency, Is.EqualTo(ei.QuoteCurrency));
+                    Assert.That(instrument.ContractSize, Is.EqualTo(ei.ContractSize));
+                    //Assert.That(instrument.TakerFee, Is.EqualTo(ei.TakerFee));
+                    //Assert.That(instrument.MakerFee, Is.EqualTo(ei.MakerFee));
+                }
             }
         }
 
