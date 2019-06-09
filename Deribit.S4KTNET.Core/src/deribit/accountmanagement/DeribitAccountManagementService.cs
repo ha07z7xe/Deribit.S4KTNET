@@ -2,6 +2,7 @@
 using AutoMapper;
 using Deribit.S4KTNET.Core.JsonRpc;
 using FluentValidation;
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -15,6 +16,9 @@ namespace Deribit.S4KTNET.Core.AccountManagement
         Task<Position> GetPosition(GetPositionRequest request, CancellationToken ct = default);
 
         Task<IList<Position>> GetPositions(GetPositionsRequest request, CancellationToken ct = default);
+
+        // not implemented fully
+        //Task<IList<Account>> GetSubAccounts(GetSubAccountsRequest request, CancellationToken ct = default);
     }
 
     internal class DeribitAccountManagementService : IDeribitAccountManagementService
@@ -116,6 +120,26 @@ namespace Deribit.S4KTNET.Core.AccountManagement
             IList<Position> positions = mapper.Map<IList<Position>>(positiondtos);
             // return
             return positions;
+        }
+
+        public async Task<IList<Account>> GetSubAccounts(GetSubAccountsRequest request, CancellationToken ct)
+        {
+            // not implemented fully
+            throw new NotImplementedException();
+            // validate
+            new GetSubAccountsRequest.Validator().ValidateAndThrow(request);
+            // map request
+            GetSubAccountsRequestDto requestDto = mapper.Map<GetSubAccountsRequestDto>(request);
+            // execute request
+            var accountdtos = await this.rpcproxy.get_subaccounts
+            (
+                with_portfolio: requestDto.with_portfolio,
+                ct: ct
+            );
+            // map response
+            IList<Account> accounts = mapper.Map<IList<Account>>(accountdtos);
+            // return
+            return accounts;
         }
 
         //------------------------------------------------------------------------------------------------

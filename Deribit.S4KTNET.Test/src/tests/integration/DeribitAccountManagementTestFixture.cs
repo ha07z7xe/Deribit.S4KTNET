@@ -127,5 +127,27 @@ namespace Deribit.S4KTNET.Test.Integration
         }
 
         //----------------------------------------------------------------------------
+        // private/get_subaccounts
+        //----------------------------------------------------------------------------
+
+        [Test, Order(1)]
+        [Description("private/get_subaccounts")]
+        [Ignore("Not Implemented")]
+        public async Task Test_getsubaccounts_success()
+        {
+            //// get subaccounts
+            //var subaccounts = await this.deribit.AccountManagement.GetSubAccounts(new GetSubAccountsRequest
+            //{
+            //    with_portfolio = true,
+            //});
+            //// assert
+            //Assert.That(subaccounts.Count, Is.GreaterThan(0));
+            //foreach (var a in subaccounts)
+            //{
+            //    new Account.Validator().ValidateAndThrow(a);
+            //}
+        }
+
+        //----------------------------------------------------------------------------
     }
 }

@@ -28,5 +28,8 @@ namespace Deribit.S4KTNET.Core.JsonRpc
 
         [JsonRpcMethod("private/get_positions")]
         Task<PositionDto[]> get_positions(string currency, string kind, CancellationToken ct);
+
+        [JsonRpcMethod("private/get_subaccounts")]
+        Task<AccountDto[]> get_subaccounts(bool? with_portfolio, CancellationToken ct);
     }
 }

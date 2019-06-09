@@ -53,6 +53,8 @@ namespace Deribit.S4KTNET.Core
                     .ForMember(d => d.OptionType, o => o.MapFrom(s => s.option_type))
                     .ForMember(d => d.SettlementPeriod, o => o.MapFrom(s => s.settlement_period))
                     .ForMember(d => d.Strike, o => o.MapFrom(s => s.strike))
+                    .ForMember(d => d.MaxOrders, o => o.Ignore())
+                    .ForMember(d => d.MaxAlgoOrders, o => o.Ignore())
                     ;
             }
         }

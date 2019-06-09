@@ -16,6 +16,11 @@ namespace Deribit.S4KTNET.Core.AccountManagement
                 this.CreateMap<GetSubAccountsRequest, GetSubAccountsRequestDto>();
             }
         }
+
+        internal class Validator : FluentValidation.AbstractValidator<GetSubAccountsRequest>
+        {
+
+        }
     }
 
     public class GetSubAccountsRequestDto
