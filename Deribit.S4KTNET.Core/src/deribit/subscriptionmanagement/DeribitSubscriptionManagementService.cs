@@ -311,14 +311,28 @@ namespace Deribit.S4KTNET.Core.SubscriptionManagement
                 }
                 else if (channel.StartsWith(DeribitChannelPrefix.userorders))
                 {
-                    // deserialize
-                    var dto = e.ToObject<UserOrdersNotificationDto>(jsonser);
-                    // map
-                    var noti = this.mapper.Map<UserOrdersNotification>(dto);
-                    // validate
-                    new UserOrdersNotification.Validator().ValidateAndThrow(noti);
-                    // raise
-                    this.UserOrdersSubject.OnNext(noti);
+                    try
+                    {
+                        // deserialize
+                        var dto = e.ToObject<UserOrdersNotificationDto>(jsonser);
+                        // map
+                        var noti = this.mapper.Map<UserOrdersNotification>(dto);
+                        // validate
+                        new UserOrdersNotification.Validator().ValidateAndThrow(noti);
+                        // raise
+                        this.UserOrdersSubject.OnNext(noti);
+                    }
+                    catch (JsonSerializationException)
+                    {
+                        // deserialize
+                        var dto = e.ToObject<UserOrderNotificationDto>(jsonser);
+                        // map
+                        var noti = this.mapper.Map<UserOrdersNotification>(dto);
+                        // validate
+                        new UserOrdersNotification.Validator().ValidateAndThrow(noti);
+                        // raise
+                        this.UserOrdersSubject.OnNext(noti);
+                    }
                 }
                 else if (channel.StartsWith(DeribitChannelPrefix.userportfolio))
                 {
@@ -333,14 +347,28 @@ namespace Deribit.S4KTNET.Core.SubscriptionManagement
                 }
                 else if (channel.StartsWith(DeribitChannelPrefix.usertrades))
                 {
-                    // deserialize
-                    var dto = e.ToObject<UserTradesNotificationDto>(jsonser);
-                    // map
-                    var noti = this.mapper.Map<UserTradesNotification>(dto);
-                    // validate
-                    new UserTradesNotification.Validator().ValidateAndThrow(noti);
-                    // raise
-                    this.UserTradesSubject.OnNext(noti);
+                    try
+                    {
+                        // deserialize
+                        var dto = e.ToObject<UserTradesNotificationDto>(jsonser);
+                        // map
+                        var noti = this.mapper.Map<UserTradesNotification>(dto);
+                        // validate
+                        new UserTradesNotification.Validator().ValidateAndThrow(noti);
+                        // raise
+                        this.UserTradesSubject.OnNext(noti);
+                    }
+                    catch (JsonSerializationException)
+                    {
+                        // deserialize
+                        var dto = e.ToObject<UserTradeNotificationDto>(jsonser);
+                        // map
+                        var noti = this.mapper.Map<UserTradesNotification>(dto);
+                        // validate
+                        new UserTradesNotification.Validator().ValidateAndThrow(noti);
+                        // raise
+                        this.UserTradesSubject.OnNext(noti);
+                    }
                 }
                 else
                 {

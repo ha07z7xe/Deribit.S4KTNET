@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System.Collections.Generic;
+using System.Threading;
 using Deribit.S4KTNET.Core.Trading;
 using FluentValidation;
 
@@ -18,6 +19,12 @@ namespace Deribit.S4KTNET.Core.SubscriptionManagement
                     .ForMember(d => d.channelprefix, o => o.MapFrom(s => DeribitChannelPrefix.usertrades))
                     .ForMember(d => d.sequencenumber, o => o.MapFrom(s => Interlocked.Increment(ref sequencenumber)))
                     .IncludeBase(typeof(SubscriptionNotificationDto<TradeDto[]>), typeof(SubscriptionNotification<Trade[]>));
+
+                this.CreateMap<UserTradeNotificationDto, UserTradesNotification>()
+                    .ForMember(d => d.channelprefix, o => o.MapFrom(s => DeribitChannelPrefix.userorders))
+                    .ForMember(d => d.sequencenumber, o => o.MapFrom(s => Interlocked.Increment(ref sequencenumber)))
+                    .ForMember(d => d.data, o => o.MapFrom(s => new List<TradeDto> { s.data }))
+                    .IncludeBase(typeof(SubscriptionNotificationDto<TradeDto>), typeof(SubscriptionNotification<Trade[]>));
             }
         }
 
@@ -35,4 +42,11 @@ namespace Deribit.S4KTNET.Core.SubscriptionManagement
     {
         
     }
+
+    public class UserTradeNotificationDto : SubscriptionNotificationDto<TradeDto>
+    {
+
+    }
+
+
 }

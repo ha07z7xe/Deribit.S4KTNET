@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using Deribit.S4KTNET.Core.Mapping;
 using Deribit.S4KTNET.Core.MarketData;
@@ -21,6 +22,12 @@ namespace Deribit.S4KTNET.Core.SubscriptionManagement
                     .ForMember(d => d.channelprefix, o => o.MapFrom(s => DeribitChannelPrefix.userorders))
                     .ForMember(d => d.sequencenumber, o => o.MapFrom(s => Interlocked.Increment(ref sequencenumber)))
                     .IncludeBase(typeof(SubscriptionNotificationDto<OrderDto[]>), typeof(SubscriptionNotification<Order[]>));
+
+                this.CreateMap<UserOrderNotificationDto, UserOrdersNotification>()
+                    .ForMember(d => d.channelprefix, o => o.MapFrom(s => DeribitChannelPrefix.userorders))
+                    .ForMember(d => d.sequencenumber, o => o.MapFrom(s => Interlocked.Increment(ref sequencenumber)))
+                    .ForMember(d => d.data, o => o.MapFrom(s => new List<OrderDto> { s.data }))
+                    .IncludeBase(typeof(SubscriptionNotificationDto<OrderDto>), typeof(SubscriptionNotification<Order[]>));
             }
         }
 
@@ -37,5 +44,11 @@ namespace Deribit.S4KTNET.Core.SubscriptionManagement
     public class UserOrdersNotificationDto : SubscriptionNotificationDto<OrderDto[]>
     {
         
+    }
+
+
+    public class UserOrderNotificationDto : SubscriptionNotificationDto<OrderDto>
+    {
+
     }
 }
