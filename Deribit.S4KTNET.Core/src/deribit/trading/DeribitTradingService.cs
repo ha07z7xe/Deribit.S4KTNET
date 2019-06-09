@@ -130,6 +130,14 @@ namespace Deribit.S4KTNET.Core.Trading
                     message = rie.Message,
                 };
             }
+            catch (RemoteInvocationException rie) when (rie.Message.Contains("max_open_orders_per_instrument"))
+            {
+                return new BuySellResponse()
+                {
+                    rejected = true,
+                    message = rie.Message,
+                };
+            }
             // map response
             BuySellResponse response = mapper.Map<BuySellResponse>(responsedto);
             // validate
@@ -166,6 +174,14 @@ namespace Deribit.S4KTNET.Core.Trading
                 );
             }
             catch (RemoteInvocationException rie) when (rie.Message.Contains("other_reject"))
+            {
+                return new BuySellResponse()
+                {
+                    rejected = true,
+                    message = rie.Message,
+                };
+            }
+            catch (RemoteInvocationException rie) when (rie.Message.Contains("max_open_orders_per_instrument"))
             {
                 return new BuySellResponse()
                 {
