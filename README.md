@@ -139,7 +139,7 @@ See the sample client `Deribit.S4KTNET.Sample`.
 | AccountManagement | private/get_new_announcements | ✗ | |
 | AccountManagement | [private/get_position](https://docs.deribit.com/v2/#private-get_position) | ✔ | |
 | AccountManagement | [private/get_positions](https://docs.deribit.com/v2/#private-get_positions) | ✔ | |
-| AccountManagement | private/get_subaccounts | ✗ | |
+| AccountManagement | [private/get_subaccounts](https://docs.deribit.com/v2/#private-get_subaccounts) | ✗ | todo |
 | AccountManagement | private/set_announcement_as_read | ✗ | |
 | AccountManagement | private/set_email_for_subaccount | ✗ | |
 | AccountManagement | private/set_email_language | ✗ | |
