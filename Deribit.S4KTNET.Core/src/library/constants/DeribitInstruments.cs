@@ -40,6 +40,7 @@ namespace Deribit.S4KTNET.Core
                     ContractSize = 10,
                     TakerFee = 0.00075m,
                     MakerFee = -0.00025m,
+                    MaxOrders = 100,
                 },
                 [DeribitInstruments.Perpetual.ETHPERPETUAL] = new Instrument
                 {
@@ -50,6 +51,7 @@ namespace Deribit.S4KTNET.Core
                     ContractSize = 1,
                     TakerFee = 0.00075m,
                     MakerFee = -0.00025m,
+                    MaxOrders = 100,
                 },
             };
     }

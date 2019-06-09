@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Deribit.S4KTNET.Core
+﻿namespace Deribit.S4KTNET.Core
 {
     public class DeribitConfig
     {

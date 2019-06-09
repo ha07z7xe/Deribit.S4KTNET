@@ -22,6 +22,10 @@ namespace Deribit.S4KTNET.Core
 
         public decimal MakerFee { get; set; }
 
+        public int MaxOrders { get; set; }
+
+        public int MaxAlgoOrders { get; set; }
+
         public DateTime CreationTimestamp { get; set; }
 
         public DateTime ExpirationTimestamp { get; set; }
