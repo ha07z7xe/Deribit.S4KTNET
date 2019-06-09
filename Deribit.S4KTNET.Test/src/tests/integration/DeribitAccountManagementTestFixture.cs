@@ -64,7 +64,7 @@ namespace Deribit.S4KTNET.Test.Integration
             {
                 instrument_name = DeribitInstruments.Perpetual.BTCPERPETUAL,
                 type = OrderType.market,
-                amount = 820,
+                amount = 30,
             };
             var order = (await this.deribit.Trading.Buy(buysellrequest)).order;
             // wait
@@ -102,7 +102,7 @@ namespace Deribit.S4KTNET.Test.Integration
             {
                 instrument_name = DeribitInstruments.Perpetual.BTCPERPETUAL,
                 type = OrderType.market,
-                amount = 910,
+                amount = 20,
             });
             // wait
             await Task.Delay(1 << 9);

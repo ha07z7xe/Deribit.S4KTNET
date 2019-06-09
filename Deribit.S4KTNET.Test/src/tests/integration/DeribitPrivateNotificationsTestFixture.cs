@@ -155,7 +155,7 @@ namespace Deribit.S4KTNET.Test.Integration
                 await this.deribit.Trading.Buy(new Core.Trading.BuySellRequest()
                 {
                     instrument_name = DeribitInstruments.Perpetual.BTCPERPETUAL,
-                    amount = 210,
+                    amount = 10,
                     type = OrderType.market,
                     label = "mylabel",
                 });
@@ -185,7 +185,7 @@ namespace Deribit.S4KTNET.Test.Integration
                 await this.deribit.Trading.Buy(new Core.Trading.BuySellRequest()
                 {
                     instrument_name = DeribitInstruments.Perpetual.BTCPERPETUAL,
-                    amount = 930,
+                    amount = 20,
                     type = OrderType.market,
                     label = "mylabel",
                 });

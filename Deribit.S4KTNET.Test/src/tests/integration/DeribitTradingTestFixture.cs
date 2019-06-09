@@ -500,7 +500,7 @@ namespace Deribit.S4KTNET.Test.Integration
             BuySellRequest req = new BuySellRequest()
             {
                 instrument_name = DeribitInstruments.Perpetual.BTCPERPETUAL,
-                amount = 40,
+                amount = 30,
                 type = OrderType.limit,
                 label = "mylabel",
                 price = 930,
@@ -617,7 +617,7 @@ namespace Deribit.S4KTNET.Test.Integration
             {
                 instrument_name = DeribitInstruments.Perpetual.BTCPERPETUAL,
                 type = OrderType.limit,
-                amount = 50,
+                amount = 10,
                 price = 30000,
             });
             // wait
@@ -660,7 +660,7 @@ namespace Deribit.S4KTNET.Test.Integration
             {
                 instrument_name = DeribitInstruments.Perpetual.BTCPERPETUAL,
                 type = OrderType.limit,
-                amount = 50,
+                amount = 30,
                 price = 30000,
             });
             // wait
@@ -809,7 +809,7 @@ namespace Deribit.S4KTNET.Test.Integration
             {
                 instrument_name = DeribitInstruments.Perpetual.BTCPERPETUAL,
                 type = OrderType.market,
-                amount = 1000,
+                amount = 20,
             });
             // wait
             await Task.Delay(1 << 9);
@@ -843,7 +843,7 @@ namespace Deribit.S4KTNET.Test.Integration
             {
                 instrument_name = DeribitInstruments.Perpetual.BTCPERPETUAL,
                 type = OrderType.market,
-                amount = 1250,
+                amount = 10,
             });
             var order = buysellresponse.order;
             // wait

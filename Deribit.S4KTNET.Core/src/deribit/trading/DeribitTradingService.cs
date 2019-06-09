@@ -57,6 +57,12 @@ namespace Deribit.S4KTNET.Core.Trading
         private readonly StreamJsonRpc.JsonRpc jsonrpc;
 
         //------------------------------------------------------------------------------------------------
+        // fields
+        //------------------------------------------------------------------------------------------------
+
+        private DeribitEnvironment environment => this.deribit.deribitconfig.Environment;
+
+        //------------------------------------------------------------------------------------------------
         // construction
         //------------------------------------------------------------------------------------------------
 
@@ -216,55 +222,126 @@ namespace Deribit.S4KTNET.Core.Trading
 
         public async Task<CancelOrdersResponse> CancelAll(CancellationToken ct)
         {
-            // execute request
-            var responsedto = await this.rpcproxy.cancel_all(ct);
-            // map response
-            CancelOrdersResponse response = this.mapper.Map<CancelOrdersResponse>(responsedto);
-            // return
-            return response;
+            if (this.deribit.deribitconfig.Environment == DeribitEnvironment.Test)
+            {
+                // execute request
+                var responsedto = await this.rpcproxy.cancel_all_testnet(ct);
+                // map response
+                CancelOrdersResponse response = this.mapper.Map<CancelOrdersResponse>(responsedto);
+                // return
+                return response;
+            }
+            else if (this.deribit.deribitconfig.Environment == DeribitEnvironment.Live)
+            {
+                // execute request
+                var responsedto = await this.rpcproxy.cancel_all_livenet(ct);
+                // map response
+                CancelOrdersResponse response = this.mapper.Map<CancelOrdersResponse>(responsedto);
+                // return
+                return response;
+            }
+            else
+            {
+                throw new Exception();
+            }
         }
 
         public async Task<CancelOrdersResponse> CancelAllByCurrency(CancelAllByCurrencyRequest request, CancellationToken ct)
         {
-            // validate request
-            new CancelAllByCurrencyRequest.Validator().ValidateAndThrow(request);
-            // map request
-            var reqdto = this.mapper.Map<CancelAllByCurrencyRequestDto>(request);
-            // validate request dto
-            new CancelAllByCurrencyRequestDto.Validator().ValidateAndThrow(reqdto);
-            // execute request
-            var responsedto = await this.rpcproxy.cancel_all_by_currency
-            (
-                currency: reqdto.currency,
-                kind: reqdto.kind,
-                type: reqdto.type,
-                ct
-            );
-            // map response
-            CancelOrdersResponse response = this.mapper.Map<CancelOrdersResponse>(responsedto);
-            // return
-            return response;
+            if (this.environment == DeribitEnvironment.Test)
+            {
+                // validate request
+                new CancelAllByCurrencyRequest.Validator().ValidateAndThrow(request);
+                // map request
+                var reqdto = this.mapper.Map<CancelAllByCurrencyRequestDto>(request);
+                // validate request dto
+                new CancelAllByCurrencyRequestDto.Validator().ValidateAndThrow(reqdto);
+                // execute request
+                var responsedto = await this.rpcproxy.cancel_all_by_currency_testnet
+                (
+                    currency: reqdto.currency,
+                    kind: reqdto.kind,
+                    type: reqdto.type,
+                    ct
+                );
+                // map response
+                CancelOrdersResponse response = this.mapper.Map<CancelOrdersResponse>(responsedto);
+                // return
+                return response;
+            }
+            else if (this.environment == DeribitEnvironment.Live)
+            {
+                // validate request
+                new CancelAllByCurrencyRequest.Validator().ValidateAndThrow(request);
+                // map request
+                var reqdto = this.mapper.Map<CancelAllByCurrencyRequestDto>(request);
+                // validate request dto
+                new CancelAllByCurrencyRequestDto.Validator().ValidateAndThrow(reqdto);
+                // execute request
+                var responsedto = await this.rpcproxy.cancel_all_by_currency_livenet
+                (
+                    currency: reqdto.currency,
+                    kind: reqdto.kind,
+                    type: reqdto.type,
+                    ct
+                );
+                // map response
+                CancelOrdersResponse response = this.mapper.Map<CancelOrdersResponse>(responsedto);
+                // return
+                return response;
+            }
+            else
+            {
+                throw new Exception();
+            }
         }
 
         public async Task<CancelOrdersResponse> CancelAllByInstrument(CancelAllByInstrumentRequest request, CancellationToken ct)
         {
-            // validate request
-            new CancelAllByInstrumentRequest.Validator().ValidateAndThrow(request);
-            // map request
-            var reqdto = this.mapper.Map<CancelAllByInstrumentRequestDto>(request);
-            // validate request dto
-            new CancelAllByInstrumentRequestDto.Validator().ValidateAndThrow(reqdto);
-            // execute request
-            var responsedto = await this.rpcproxy.cancel_all_by_instrument
-            (
-                instrument_name: reqdto.instrument_name,
-                type: reqdto.type,
-                ct
-            );
-            // map response
-            CancelOrdersResponse response = this.mapper.Map<CancelOrdersResponse>(responsedto);
-            // return
-            return response;
+            if (this.environment == DeribitEnvironment.Test)
+            {
+                // validate request
+                new CancelAllByInstrumentRequest.Validator().ValidateAndThrow(request);
+                // map request
+                var reqdto = this.mapper.Map<CancelAllByInstrumentRequestDto>(request);
+                // validate request dto
+                new CancelAllByInstrumentRequestDto.Validator().ValidateAndThrow(reqdto);
+                // execute request
+                var responsedto = await this.rpcproxy.cancel_all_by_instrument_testnet
+                (
+                    instrument_name: reqdto.instrument_name,
+                    type: reqdto.type,
+                    ct
+                );
+                // map response
+                CancelOrdersResponse response = this.mapper.Map<CancelOrdersResponse>(responsedto);
+                // return
+                return response;
+            }
+            else if (this.environment == DeribitEnvironment.Live)
+            {
+                // validate request
+                new CancelAllByInstrumentRequest.Validator().ValidateAndThrow(request);
+                // map request
+                var reqdto = this.mapper.Map<CancelAllByInstrumentRequestDto>(request);
+                // validate request dto
+                new CancelAllByInstrumentRequestDto.Validator().ValidateAndThrow(reqdto);
+                // execute request
+                var responsedto = await this.rpcproxy.cancel_all_by_instrument_livenet
+                (
+                    instrument_name: reqdto.instrument_name,
+                    type: reqdto.type,
+                    ct
+                );
+                // map response
+                CancelOrdersResponse response = this.mapper.Map<CancelOrdersResponse>(responsedto);
+                // return
+                return response;
+            }
+            else
+            {
+                throw new Exception();
+            }
         }
 
         public async Task<ClosePositionResponse> ClosePosition(ClosePositionRequest request, CancellationToken ct)
@@ -287,7 +364,11 @@ namespace Deribit.S4KTNET.Core.Trading
                     ct
                 );
             }
-            catch (RemoteInvocationException rie) when (rie.Message.Contains("already_closed"))
+            catch (RemoteInvocationException rie) when 
+            (
+                rie.Message.Contains("already_closed") // test
+                //|| rie.Message == "internal_server_error"  // live
+            )
             {
                 return new ClosePositionResponse()
                 {

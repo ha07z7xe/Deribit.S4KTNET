@@ -16,6 +16,7 @@ namespace Deribit.S4KTNET.Test.Integration
 
         protected IConfigurationRoot configurationRoot;
         protected DeribitCredentials deribitcredentials;
+        protected DeribitEnvironment deribitenvironment;
 
         //----------------------------------------------------------------------------
         // components
@@ -31,18 +32,25 @@ namespace Deribit.S4KTNET.Test.Integration
         [OneTimeSetUp]
         public async Task OneTimeSetUp()
         {
-            // create config
-            deribitconfig = new DeribitConfig
-            {
-                Environment = DeribitEnvironment.Test,
-                EnableJsonRpcTracing = true,
-            };
-
             // read config
             this.configurationRoot =
                 new ConfigurationBuilder()
-                    .AddJsonFile("config/secrets.json", true)
+                    .AddJsonFile("config/config.json", false)
+                    .AddJsonFile("config/secrets.json", false)
                     .Build();
+
+            // determine environment
+            if (this.configurationRoot["deribit:environment"] == "live")
+                this.deribitenvironment = DeribitEnvironment.Live;
+            else
+                this.deribitenvironment = DeribitEnvironment.Test;
+
+            // create config
+            deribitconfig = new DeribitConfig
+            {
+                Environment = this.deribitenvironment,
+                EnableJsonRpcTracing = true,
+            };
 
             // bind credentials
             this.deribitcredentials = this.configurationRoot

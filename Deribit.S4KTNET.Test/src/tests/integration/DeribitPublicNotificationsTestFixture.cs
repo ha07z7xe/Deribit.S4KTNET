@@ -207,7 +207,7 @@ namespace Deribit.S4KTNET.Test.Integration
 
         [Test]
         [Retry(3)]
-        [Ignore("Deribit is not sending data. It is the testnet afterall.")]
+        [Ignore("Deribit is not sending data. It is the testnet afterall. This passes in live.")]
         public async Task TradeStream()
         {
             Assert.That(channels.Any(c => c.StartsWith(DeribitChannelPrefix.trades)));
