@@ -47,7 +47,7 @@ namespace Deribit.S4KTNET.Core
 
         public string state { get; set; }
 
-        public object stats { get; set; }
+        public TickerStats stats { get; set; }
 
         public DateTime timestamp { get; set; }
 
@@ -66,6 +66,26 @@ namespace Deribit.S4KTNET.Core
                 this.RuleFor(x => x.best_ask_price).GreaterThan(x => x.best_bid_price);
                 this.RuleFor(x => x.best_bid_price).GreaterThan(0);
                 this.RuleFor(x => x.best_ask_price).GreaterThan(0);
+                this.RuleFor(x => x.stats).SetValidator(new TickerStats.Validator());
+            }
+        }
+    }
+
+    public class TickerStats
+    {
+        public decimal high { get; set; }
+
+        public decimal low { get; set; }
+
+        public decimal volume { get; set; }
+
+        public class Validator : AbstractValidator<TickerStats>
+        {
+            public Validator()
+            {
+                this.RuleFor(x => x.high).GreaterThan(0);
+                this.RuleFor(x => x.low).GreaterThan(0);
+                this.RuleFor(x => x.volume).GreaterThan(0);
             }
         }
     }

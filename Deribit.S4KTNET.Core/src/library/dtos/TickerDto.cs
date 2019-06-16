@@ -48,7 +48,7 @@ namespace Deribit.S4KTNET.Core
 
         public string state { get; set; }
 
-        public object stats { get; set; }
+        public TickerStatsDto stats { get; set; }
 
         public long timestamp { get; set; }
 
@@ -63,6 +63,24 @@ namespace Deribit.S4KTNET.Core
             {
                 this.CreateMap<TickerDto, Ticker>()
                     .ForMember(x => x.timestamp, o => o.ConvertUsing<UnixTimestampMillisValueConverter, long>(s => s.timestamp))
+                    ;
+            }
+        }
+    }
+
+    public class TickerStatsDto
+    {
+        public decimal high { get; set; }
+
+        public decimal low { get; set; }
+
+        public decimal volume { get; set; }
+
+        internal class Profile : AutoMapper.Profile
+        {
+            public Profile()
+            {
+                this.CreateMap<TickerStatsDto, TickerStats>()
                     ;
             }
         }
