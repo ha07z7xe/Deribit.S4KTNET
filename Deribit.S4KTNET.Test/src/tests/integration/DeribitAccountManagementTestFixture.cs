@@ -126,6 +126,31 @@ namespace Deribit.S4KTNET.Test.Integration
             });
         }
 
+
+        [Test, Order(1)]
+        [Description("private/get_positions (no position)")]
+        public async Task Test_getpositions_noposition()
+        {
+            //// close positions
+            //await this.deribit.Trading.ClosePosition(new ClosePositionRequest
+            //{
+            //    instrument_name = DeribitInstruments.Perpetual.BTCPERPETUAL,
+            //    type = "market",
+            //});
+            //// wait
+            //await Task.Delay(1 << 9);
+            // get positions
+            var positions = await this.deribit.AccountManagement.GetPositions(new GetPositionsRequest
+            {
+                currency = CurrencyCode.BTC,
+            });
+            // assert
+            foreach (var p in positions)
+            {
+                new Position.Validator().ValidateAndThrow(p);
+            }
+        }
+
         //----------------------------------------------------------------------------
         // private/get_subaccounts
         //----------------------------------------------------------------------------
