@@ -89,6 +89,33 @@ namespace Deribit.S4KTNET.Test.Integration
             });
         }
 
+
+        [Test, Order(1)]
+        [Description("private/get_position (no position)")]
+        public async Task Test_getposition_noposition()
+        {
+            //// open position
+            //var buysellrequest = new BuySellRequest
+            //{
+            //    instrument_name = DeribitInstruments.Perpetual.BTCPERPETUAL,
+            //    type = OrderType.market,
+            //    amount = 30,
+            //};
+            //var order = (await this.deribit.Trading.Buy(buysellrequest)).order;
+            //// wait
+            //await Task.Delay(1 << 9);
+            // get position
+            var position = await this.deribit.AccountManagement.GetPosition(new GetPositionRequest
+            {
+                instrument_name = DeribitInstruments.Perpetual.BTCPERPETUAL,
+            });
+            // assert
+            new Position.Validator().ValidateAndThrow(position);
+            Assert.That(position.size == 0);
+            Assert.That(position.direction == BuySell.Neutral);
+            Assert.That(position.instrument_name == DeribitInstruments.Perpetual.BTCPERPETUAL);
+        }
+
         //----------------------------------------------------------------------------
         // private/get_positions
         //----------------------------------------------------------------------------
@@ -115,6 +142,8 @@ namespace Deribit.S4KTNET.Test.Integration
             foreach (var p in positions)
             {
                 new Position.Validator().ValidateAndThrow(p);
+                Assert.That(p.size == 0);
+                Assert.That(p.direction == BuySell.Neutral);
             }
             // wait
             await Task.Delay(1 << 9);
