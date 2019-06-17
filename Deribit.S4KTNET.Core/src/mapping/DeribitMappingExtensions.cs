@@ -117,6 +117,10 @@ namespace Deribit.S4KTNET.Core.Mapping
         {
             switch (buysell)
             {
+                case null:
+                case "zero":
+                case "":
+                    return BuySell.Neutral;
                 case "buy":
                 case "Buy":
                     return BuySell.Buy;
