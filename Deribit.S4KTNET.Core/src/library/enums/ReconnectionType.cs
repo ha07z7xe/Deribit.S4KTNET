@@ -1,4 +1,4 @@
-namespace Deribit.S4KTNET.Core.WebSocket
+namespace Deribit.S4KTNET.Core
 {
     public enum ReconnectionType
     {

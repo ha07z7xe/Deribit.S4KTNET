@@ -36,19 +36,17 @@ namespace Deribit.S4KTNET.Core.MarketData
 
         private readonly DeribitService deribit;
         private readonly IMapper mapper;
-        private readonly IDeribitJsonRpcProxy rpcproxy;
-        private readonly StreamJsonRpc.JsonRpc jsonrpc;
+        private readonly IDeribitJsonRpcService jsonrpc;
 
         //------------------------------------------------------------------------------------------------
         // construction
         //------------------------------------------------------------------------------------------------
 
-        public DeribitMarketDataService(DeribitService deribit, IMapper mapper, 
-            IDeribitJsonRpcProxy rpcproxy, StreamJsonRpc.JsonRpc jsonrpc)
+        public DeribitMarketDataService(DeribitService deribit, IMapper mapper,
+            IDeribitJsonRpcService jsonrpc)
         {
             this.deribit = deribit;
             this.mapper = mapper;
-            this.rpcproxy = rpcproxy;
             this.jsonrpc = jsonrpc;
         }
 
@@ -78,7 +76,7 @@ namespace Deribit.S4KTNET.Core.MarketData
             // map request
             var reqdto = this.mapper.Map<GetBookSummaryByInstrumentRequestDto>(request);
             // execute request
-            var responsedto = await this.rpcproxy.get_book_summary_by_instrument(reqdto.instrument_name, ct);
+            var responsedto = await this.jsonrpc.RpcProxy.get_book_summary_by_instrument(reqdto.instrument_name, ct);
             // map response
             IList<BookSummary> response = mapper.Map<IList<BookSummary>>(responsedto);
             // validate response
@@ -98,7 +96,7 @@ namespace Deribit.S4KTNET.Core.MarketData
             // map request
             var reqdto = this.mapper.Map<GetContractSizeRequestDto>(request);
             // execute request
-            var responsedto = await this.rpcproxy.get_contract_size(reqdto.instrument_name, ct);
+            var responsedto = await this.jsonrpc.RpcProxy.get_contract_size(reqdto.instrument_name, ct);
             // map response
             GetContractSizeResponse response = mapper.Map<GetContractSizeResponse>(responsedto);
             // validate response
@@ -110,7 +108,7 @@ namespace Deribit.S4KTNET.Core.MarketData
         public async Task<IList<Currency>> GetCurrencies(CancellationToken ct)
         {
             // execute request
-            var responsedto = await this.rpcproxy.get_currencies(ct);
+            var responsedto = await this.jsonrpc.RpcProxy.get_currencies(ct);
             // map response
             IList<Currency> response = mapper.Map<IList<Currency>>(responsedto);
             // return
@@ -124,7 +122,7 @@ namespace Deribit.S4KTNET.Core.MarketData
             // map request
             var reqdto = this.mapper.Map<GetIndexRequestDto>(request);
             // execute request
-            var responsedto = await this.rpcproxy.get_index(reqdto.currency, ct);
+            var responsedto = await this.jsonrpc.RpcProxy.get_index(reqdto.currency, ct);
             // map response
             GetIndexResponse response = mapper.Map<GetIndexResponse>(responsedto);
             // validate response
@@ -140,7 +138,7 @@ namespace Deribit.S4KTNET.Core.MarketData
             // map request
             var reqdto = this.mapper.Map<GetInstrumentsRequestDto>(request);
             // execute request
-            var responsedto = await this.rpcproxy.get_instruments
+            var responsedto = await this.jsonrpc.RpcProxy.get_instruments
             (
                 currency: reqdto.currency,
                 kind: reqdto.kind,
@@ -160,7 +158,7 @@ namespace Deribit.S4KTNET.Core.MarketData
             // map request
             var reqdto = this.mapper.Map<GetLastTradesByInstrumentRequestDto>(request);
             // execute request
-            var responsedto = await this.rpcproxy.get_last_trades_by_instrument
+            var responsedto = await this.jsonrpc.RpcProxy.get_last_trades_by_instrument
             (
                 instrument_name: reqdto.instrument_name,
                 start_seq: reqdto.start_seq,
@@ -185,7 +183,7 @@ namespace Deribit.S4KTNET.Core.MarketData
             // map request
             var reqdto = this.mapper.Map<GetOrderBookRequestDto>(request);
             // execute request
-            var responsedto = await this.rpcproxy.get_order_book(reqdto.instrument_name, reqdto.depth, ct);
+            var responsedto = await this.jsonrpc.RpcProxy.get_order_book(reqdto.instrument_name, reqdto.depth, ct);
             // map response
             OrderBook book = mapper.Map<OrderBook>(responsedto);
             // validate response
@@ -201,7 +199,7 @@ namespace Deribit.S4KTNET.Core.MarketData
             // map request
             var reqdto = this.mapper.Map<TickerRequestDto>(request);
             // execute request
-            var responsedto = await this.rpcproxy.ticker(reqdto.instrument_name, ct);
+            var responsedto = await this.jsonrpc.RpcProxy.ticker(reqdto.instrument_name, ct);
             // map response
             Ticker ticker = mapper.Map<Ticker>(responsedto);
             // validate response

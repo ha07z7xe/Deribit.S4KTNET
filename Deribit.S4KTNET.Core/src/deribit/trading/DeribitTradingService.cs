@@ -53,8 +53,7 @@ namespace Deribit.S4KTNET.Core.Trading
 
         private readonly DeribitService deribit;
         private readonly IMapper mapper;
-        private readonly IDeribitJsonRpcProxy rpcproxy;
-        private readonly StreamJsonRpc.JsonRpc jsonrpc;
+        private readonly IDeribitJsonRpcService jsonrpc;
 
         //------------------------------------------------------------------------------------------------
         // fields
@@ -66,12 +65,11 @@ namespace Deribit.S4KTNET.Core.Trading
         // construction
         //------------------------------------------------------------------------------------------------
 
-        public DeribitTradingService(DeribitService deribit, IMapper mapper, 
-            IDeribitJsonRpcProxy rpcproxy, StreamJsonRpc.JsonRpc jsonrpc)
+        public DeribitTradingService(DeribitService deribit, IMapper mapper,
+            IDeribitJsonRpcService jsonrpc)
         {
             this.deribit = deribit;
             this.mapper = mapper;
-            this.rpcproxy = rpcproxy;
             this.jsonrpc = jsonrpc;
         }
         
@@ -105,7 +103,7 @@ namespace Deribit.S4KTNET.Core.Trading
             BuySellResponseDto responsedto;
             try
             {
-                responsedto = await this.rpcproxy.buy
+                responsedto = await this.jsonrpc.RpcProxy.buy
                 (
                     instrument_name: reqdto.instrument_name,
                     amount: reqdto.amount,
@@ -164,7 +162,7 @@ namespace Deribit.S4KTNET.Core.Trading
             BuySellResponseDto responsedto;
             try
             {
-                responsedto = await this.rpcproxy.sell
+                responsedto = await this.jsonrpc.RpcProxy.sell
                 (
                     instrument_name: reqdto.instrument_name,
                     amount: reqdto.amount,
@@ -220,7 +218,7 @@ namespace Deribit.S4KTNET.Core.Trading
             // map request
             EditOrderRequestDto reqdto = mapper.Map<EditOrderRequestDto>(request);
             // execute request
-            var responsedto = await this.rpcproxy.edit
+            var responsedto = await this.jsonrpc.RpcProxy.edit
             (
                 order_id: reqdto.order_id,
                 amount: reqdto.amount,
@@ -245,7 +243,7 @@ namespace Deribit.S4KTNET.Core.Trading
             // map request
             CancelRequestDto reqdto = mapper.Map<CancelRequestDto>(request);
             // execute request
-            var orderdto = await this.rpcproxy.cancel(reqdto.order_id, ct);
+            var orderdto = await this.jsonrpc.RpcProxy.cancel(reqdto.order_id, ct);
             // map response
             Order order = mapper.Map<Order>(orderdto);
             // return
@@ -257,7 +255,7 @@ namespace Deribit.S4KTNET.Core.Trading
             if (this.deribit.deribitconfig.Environment == DeribitEnvironment.Test)
             {
                 // execute request
-                var responsedto = await this.rpcproxy.cancel_all_testnet(ct);
+                var responsedto = await this.jsonrpc.RpcProxy.cancel_all_testnet(ct);
                 // map response
                 CancelOrdersResponse response = this.mapper.Map<CancelOrdersResponse>(responsedto);
                 // return
@@ -266,7 +264,7 @@ namespace Deribit.S4KTNET.Core.Trading
             else if (this.deribit.deribitconfig.Environment == DeribitEnvironment.Live)
             {
                 // execute request
-                var responsedto = await this.rpcproxy.cancel_all_livenet(ct);
+                var responsedto = await this.jsonrpc.RpcProxy.cancel_all_livenet(ct);
                 // map response
                 CancelOrdersResponse response = this.mapper.Map<CancelOrdersResponse>(responsedto);
                 // return
@@ -289,7 +287,7 @@ namespace Deribit.S4KTNET.Core.Trading
                 // validate request dto
                 new CancelAllByCurrencyRequestDto.Validator().ValidateAndThrow(reqdto);
                 // execute request
-                var responsedto = await this.rpcproxy.cancel_all_by_currency_testnet
+                var responsedto = await this.jsonrpc.RpcProxy.cancel_all_by_currency_testnet
                 (
                     currency: reqdto.currency,
                     kind: reqdto.kind,
@@ -310,7 +308,7 @@ namespace Deribit.S4KTNET.Core.Trading
                 // validate request dto
                 new CancelAllByCurrencyRequestDto.Validator().ValidateAndThrow(reqdto);
                 // execute request
-                var responsedto = await this.rpcproxy.cancel_all_by_currency_livenet
+                var responsedto = await this.jsonrpc.RpcProxy.cancel_all_by_currency_livenet
                 (
                     currency: reqdto.currency,
                     kind: reqdto.kind,
@@ -339,7 +337,7 @@ namespace Deribit.S4KTNET.Core.Trading
                 // validate request dto
                 new CancelAllByInstrumentRequestDto.Validator().ValidateAndThrow(reqdto);
                 // execute request
-                var responsedto = await this.rpcproxy.cancel_all_by_instrument_testnet
+                var responsedto = await this.jsonrpc.RpcProxy.cancel_all_by_instrument_testnet
                 (
                     instrument_name: reqdto.instrument_name,
                     type: reqdto.type,
@@ -359,7 +357,7 @@ namespace Deribit.S4KTNET.Core.Trading
                 // validate request dto
                 new CancelAllByInstrumentRequestDto.Validator().ValidateAndThrow(reqdto);
                 // execute request
-                var responsedto = await this.rpcproxy.cancel_all_by_instrument_livenet
+                var responsedto = await this.jsonrpc.RpcProxy.cancel_all_by_instrument_livenet
                 (
                     instrument_name: reqdto.instrument_name,
                     type: reqdto.type,
@@ -388,7 +386,7 @@ namespace Deribit.S4KTNET.Core.Trading
             ClosePositionResponseDto responsedto;
             try
             {
-                responsedto = await this.rpcproxy.close_position
+                responsedto = await this.jsonrpc.RpcProxy.close_position
                 (
                     instrument_name: reqdto.instrument_name,
                     type: reqdto.type,
@@ -422,7 +420,7 @@ namespace Deribit.S4KTNET.Core.Trading
             // map request
             var reqdto = this.mapper.Map<GetMarginsRequestDto>(request);
             // execute request
-            var responsedto = await this.rpcproxy.get_margins
+            var responsedto = await this.jsonrpc.RpcProxy.get_margins
             (
                 instrument_name: reqdto.instrument_name,
                 amount: reqdto.amount,
@@ -446,7 +444,7 @@ namespace Deribit.S4KTNET.Core.Trading
             // validate request
             new GetOpenOrdersByCurrencyRequestDto.Validator().ValidateAndThrow(reqdto);
             // execute request
-            var responsedto = await this.rpcproxy.get_open_orders_by_currency
+            var responsedto = await this.jsonrpc.RpcProxy.get_open_orders_by_currency
             (
                 currency: reqdto.currency,
                 kind: reqdto.kind,
@@ -471,7 +469,7 @@ namespace Deribit.S4KTNET.Core.Trading
             // map request
             var reqdto = this.mapper.Map<GetOpenOrdersByInstrumentRequestDto>(request);
             // execute request
-            var responsedto = await this.rpcproxy.get_open_orders_by_instrument
+            var responsedto = await this.jsonrpc.RpcProxy.get_open_orders_by_instrument
             (
                 instrument_name: reqdto.instrument_name,
                 type: reqdto.type,
@@ -497,7 +495,7 @@ namespace Deribit.S4KTNET.Core.Trading
             // validate request
             new GetOrderHistoryByCurrencyRequestDto.Validator().ValidateAndThrow(reqdto);
             // execute request
-            var responsedto = await this.rpcproxy.get_order_history_by_currency
+            var responsedto = await this.jsonrpc.RpcProxy.get_order_history_by_currency
             (
                 currency: reqdto.currency,
                 kind: reqdto.kind,
@@ -527,7 +525,7 @@ namespace Deribit.S4KTNET.Core.Trading
             // validate request
             new GetOrderHistoryByInstrumentRequestDto.Validator().ValidateAndThrow(reqdto);
             // execute request
-            var responsedto = await this.rpcproxy.get_order_history_by_instrument
+            var responsedto = await this.jsonrpc.RpcProxy.get_order_history_by_instrument
             (
                 instrument_name: reqdto.instrument_name,
                 count: reqdto.count,
@@ -554,7 +552,7 @@ namespace Deribit.S4KTNET.Core.Trading
             // map request
             var reqdto = this.mapper.Map<GetOrderStateRequestDto>(request);
             // execute request
-            var responsedto = await this.rpcproxy.get_order_state
+            var responsedto = await this.jsonrpc.RpcProxy.get_order_state
             (
                 order_id: reqdto.order_id,
                 ct
@@ -574,7 +572,7 @@ namespace Deribit.S4KTNET.Core.Trading
             // map request
             var reqdto = this.mapper.Map<GetUserTradesByInstrumentRequestDto>(request);
             // execute request
-            var responsedto = await this.rpcproxy.get_user_trades_by_instrument
+            var responsedto = await this.jsonrpc.RpcProxy.get_user_trades_by_instrument
             (
                 instrument_name: reqdto.instrument_name,
                 start_seq: reqdto.start_seq,
@@ -599,7 +597,7 @@ namespace Deribit.S4KTNET.Core.Trading
             // map request
             var reqdto = this.mapper.Map<GetUserTradesByOrderRequestDto>(request);
             // execute request
-            var responsedto = await this.rpcproxy.get_user_trades_by_order
+            var responsedto = await this.jsonrpc.RpcProxy.get_user_trades_by_order
             (
                 order_id: reqdto.order_id,
                 sorting: reqdto.sorting,

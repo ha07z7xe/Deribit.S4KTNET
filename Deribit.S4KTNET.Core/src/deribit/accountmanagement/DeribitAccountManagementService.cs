@@ -29,19 +29,17 @@ namespace Deribit.S4KTNET.Core.AccountManagement
 
         private readonly DeribitService deribit;
         private readonly IMapper mapper;
-        private readonly IDeribitJsonRpcProxy rpcproxy;
-        private readonly StreamJsonRpc.JsonRpc jsonrpc;
+        private readonly IDeribitJsonRpcService jsonrpc;
 
         //------------------------------------------------------------------------------------------------
         // construction
         //------------------------------------------------------------------------------------------------
 
         public DeribitAccountManagementService(DeribitService deribit, IMapper mapper,
-            IDeribitJsonRpcProxy rpcproxy, StreamJsonRpc.JsonRpc jsonrpc)
+            IDeribitJsonRpcService jsonrpc)
         {
             this.deribit = deribit;
             this.mapper = mapper;
-            this.rpcproxy = rpcproxy;
             this.jsonrpc = jsonrpc;
         }
 
@@ -80,7 +78,7 @@ namespace Deribit.S4KTNET.Core.AccountManagement
             // map request
             GetAccountSummaryRequestDto requestDto = mapper.Map<GetAccountSummaryRequestDto>(request);
             // execute request
-            var accountdto = await this.rpcproxy.get_account_summary(requestDto.currency, requestDto.extended, ct);
+            var accountdto = await this.jsonrpc.RpcProxy.get_account_summary(requestDto.currency, requestDto.extended, ct);
             // map response
             Account account = mapper.Map<Account>(accountdto);
             // validate response
@@ -96,7 +94,7 @@ namespace Deribit.S4KTNET.Core.AccountManagement
             // map request
             GetPositionRequestDto requestDto = mapper.Map<GetPositionRequestDto>(request);
             // execute request
-            var positiondto = await this.rpcproxy.get_position(requestDto.instrument_name, ct);
+            var positiondto = await this.jsonrpc.RpcProxy.get_position(requestDto.instrument_name, ct);
             // map response
             Position position = mapper.Map<Position>(positiondto);
             // return
@@ -110,7 +108,7 @@ namespace Deribit.S4KTNET.Core.AccountManagement
             // map request
             GetPositionsRequestDto requestDto = mapper.Map<GetPositionsRequestDto>(request);
             // execute request
-            var positiondtos = await this.rpcproxy.get_positions
+            var positiondtos = await this.jsonrpc.RpcProxy.get_positions
             (
                 requestDto.currency, 
                 requestDto.kind, 
@@ -131,7 +129,7 @@ namespace Deribit.S4KTNET.Core.AccountManagement
             // map request
             GetSubAccountsRequestDto requestDto = mapper.Map<GetSubAccountsRequestDto>(request);
             // execute request
-            var accountdtos = await this.rpcproxy.get_subaccounts
+            var accountdtos = await this.jsonrpc.RpcProxy.get_subaccounts
             (
                 with_portfolio: requestDto.with_portfolio,
                 ct: ct

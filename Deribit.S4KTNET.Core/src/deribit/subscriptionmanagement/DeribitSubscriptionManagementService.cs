@@ -80,8 +80,7 @@ namespace Deribit.S4KTNET.Core.SubscriptionManagement
 
         private readonly DeribitService deribit;
         private readonly IMapper mapper;
-        private readonly IDeribitJsonRpcProxy rpcproxy;
-        private readonly StreamJsonRpc.JsonRpc jsonrpc;
+        private readonly IDeribitJsonRpcService jsonrpc;
 
         //------------------------------------------------------------------------------------------------
         // fields
@@ -100,13 +99,12 @@ namespace Deribit.S4KTNET.Core.SubscriptionManagement
         //------------------------------------------------------------------------------------------------
 
         public DeribitSubscriptionManagementService(DeribitService deribit, IMapper mapper,
-            IDeribitJsonRpcProxy rpcproxy, StreamJsonRpc.JsonRpc jsonrpc)
+            IDeribitJsonRpcService jsonrpc)
         {
             this.deribit = deribit;
             this.mapper = mapper;
-            this.rpcproxy = rpcproxy;
             this.jsonrpc = jsonrpc;
-            this.rpcproxy.subscription += this.handle_notification;
+            this.jsonrpc.ReconnectionHappened += this.Jsonrpc_ReconnectionHappened;
         }
 
         //------------------------------------------------------------------------------------------------
@@ -130,7 +128,16 @@ namespace Deribit.S4KTNET.Core.SubscriptionManagement
 
         public void Dispose()
         {
-            this.rpcproxy.subscription -= this.handle_notification;
+            this.jsonrpc.RpcProxy.subscription -= this.handle_notification;
+        }
+
+        //------------------------------------------------------------------------------------------------
+        // reconnection
+        //------------------------------------------------------------------------------------------------
+
+        private void Jsonrpc_ReconnectionHappened(ReconnectionType obj)
+        {
+            this.jsonrpc.RpcProxy.subscription += this.handle_notification;
         }
 
         //------------------------------------------------------------------------------------------------
@@ -144,7 +151,7 @@ namespace Deribit.S4KTNET.Core.SubscriptionManagement
             // map request
             SubscribeRequestDto requestdto = mapper.Map<SubscribeRequestDto>(request);
             // execute request
-            var responsedto = await this.rpcproxy.subscribe_public
+            var responsedto = await this.jsonrpc.RpcProxy.subscribe_public
             (
                 channels: requestdto.channels,
                 ct
@@ -162,7 +169,7 @@ namespace Deribit.S4KTNET.Core.SubscriptionManagement
             // map request
             UnsubscribeRequestDto requestdto = mapper.Map<UnsubscribeRequestDto>(request);
             // execute request
-            var responsedto = await this.rpcproxy.unsubscribe_public
+            var responsedto = await this.jsonrpc.RpcProxy.unsubscribe_public
             (
                 channels: requestdto.channels,
                 ct
@@ -180,7 +187,7 @@ namespace Deribit.S4KTNET.Core.SubscriptionManagement
             // map request
             SubscribeRequestDto requestdto = mapper.Map<SubscribeRequestDto>(request);
             // execute request
-            var responsedto = await this.rpcproxy.subscribe_private
+            var responsedto = await this.jsonrpc.RpcProxy.subscribe_private
             (
                 channels: requestdto.channels,
                 ct
@@ -198,7 +205,7 @@ namespace Deribit.S4KTNET.Core.SubscriptionManagement
             // map request
             UnsubscribeRequestDto requestdto = mapper.Map<UnsubscribeRequestDto>(request);
             // execute request
-            var responsedto = await this.rpcproxy.unsubscribe_private
+            var responsedto = await this.jsonrpc.RpcProxy.unsubscribe_private
             (
                 channels: requestdto.channels,
                 ct

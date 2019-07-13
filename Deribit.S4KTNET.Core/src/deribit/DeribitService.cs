@@ -167,8 +167,8 @@ namespace Deribit.S4KTNET.Core
 
         public async Task Connect(CancellationToken ct)
         {
-            await this.WebSocket.Connect(ct);
-            await this.JsonRpc.Connect(ct);
+            await this.WebSocket.Reconnect(ReconnectionType.Initial, ct);
+            //await this.JsonRpc.Reconnect(ReconnectionType.Initial, ct);
         }
 
         //------------------------------------------------------------------------------------------------

@@ -33,12 +33,15 @@ namespace Deribit.S4KTNET.Sample
 
             // test supporting
             await TestSupportingApiAsync();
-
+            
             //// test subscription management
             await TestSubscriptionManagementApiAsync();
 
             // test heartbeats
             await TestHeartbeatsAsync();
+
+            // test reconnection
+            deribit.WebSocket.ClientWebSocket.Abort();
 
             // wait for input
             Console.ReadKey();

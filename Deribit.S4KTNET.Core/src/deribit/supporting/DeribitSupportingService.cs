@@ -25,19 +25,17 @@ namespace Deribit.S4KTNET.Core.Supporting
 
         private readonly DeribitService deribit;
         private readonly IMapper mapper;
-        private readonly IDeribitJsonRpcProxy rpcproxy;
-        private readonly StreamJsonRpc.JsonRpc jsonrpc;
+        private readonly IDeribitJsonRpcService jsonrpc;
 
         //------------------------------------------------------------------------------------------------
         // construction
         //------------------------------------------------------------------------------------------------
 
-        public DeribitSupportingService(DeribitService deribit, IMapper mapper, 
-            IDeribitJsonRpcProxy rpcproxy, StreamJsonRpc.JsonRpc jsonrpc)
+        public DeribitSupportingService(DeribitService deribit, IMapper mapper,
+            IDeribitJsonRpcService jsonrpc)
         {
             this.deribit = deribit;
             this.mapper = mapper;
-            this.rpcproxy = rpcproxy;
             this.jsonrpc = jsonrpc;
         }
 
@@ -65,7 +63,7 @@ namespace Deribit.S4KTNET.Core.Supporting
         public async Task<GetTimeResponse> GetTime(CancellationToken ct)
         {
             // execute request
-            var responsedto = await this.rpcproxy.get_time(ct);
+            var responsedto = await this.jsonrpc.RpcProxy.get_time(ct);
             // map response
             GetTimeResponse response = mapper.Map<GetTimeResponse>(responsedto);
             // return
@@ -79,7 +77,7 @@ namespace Deribit.S4KTNET.Core.Supporting
             // map request
             HelloRequestDto requestdto = mapper.Map<HelloRequestDto>(request);
             // execute request
-            var responsedto = await this.rpcproxy.hello
+            var responsedto = await this.jsonrpc.RpcProxy.hello
             (
                 client_name: requestdto.client_name,
                 client_version: requestdto.client_version,
@@ -98,7 +96,7 @@ namespace Deribit.S4KTNET.Core.Supporting
             // map request
             TestRequestDto requestdto = mapper.Map<TestRequestDto>(request);
             // execute request
-            var responsedto = await this.rpcproxy.test
+            var responsedto = await this.jsonrpc.RpcProxy.test
             (
                 expected_result: requestdto.expected_result,
                 ct

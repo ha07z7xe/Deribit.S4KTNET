@@ -17,7 +17,7 @@ namespace Deribit.S4KTNET.Core.WebSocket
     public interface IDeribitWebSocketService : IDisposable
     {
         ClientWebSocket ClientWebSocket { get; }
-        Task Connect(CancellationToken ct);
+        Task Reconnect(ReconnectionType reconnectionType, CancellationToken ct);
 
         event Action<ReconnectionType> ReconnectionHappened;
     }
@@ -43,7 +43,7 @@ namespace Deribit.S4KTNET.Core.WebSocket
         // fields
         //------------------------------------------------------------------------------------------------
 
-        public ClientWebSocket ClientWebSocket { get; }
+        public ClientWebSocket ClientWebSocket { get; private set; }
 
         //------------------------------------------------------------------------------------------------
         // components
@@ -97,7 +97,7 @@ namespace Deribit.S4KTNET.Core.WebSocket
         //------------------------------------------------------------------------------------------------
         // connection
         //------------------------------------------------------------------------------------------------
-        public async Task Connect(CancellationToken ct)
+        public async Task Reconnect(ReconnectionType reconnectionType, CancellationToken ct)
         {
             // determine url
             string wssurl;
@@ -113,9 +113,10 @@ namespace Deribit.S4KTNET.Core.WebSocket
                     throw new Exception();
             }
             // connect
-            this.logger.Information($"Connecting to {wssurl}");
+            this.ClientWebSocket = new ClientWebSocket();
+            this.logger.Information($"[{{ReconnectionType}}] Connecting to {wssurl}", reconnectionType);
             await this.ClientWebSocket.ConnectAsync(new Uri(wssurl), ct);
-            this.ReconnectionHappened?.Invoke(ReconnectionType.Initial);
+            this.ReconnectionHappened?.Invoke(reconnectionType);
         }
         //------------------------------------------------------------------------------------------------
     }

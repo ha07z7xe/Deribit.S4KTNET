@@ -39,21 +39,19 @@ namespace Deribit.S4KTNET.Core.SessionManagement
 
         private readonly DeribitService deribit;
         private readonly IMapper mapper;
-        private readonly IDeribitJsonRpcProxy rpcproxy;
-        private readonly StreamJsonRpc.JsonRpc jsonrpc;
+        private readonly IDeribitJsonRpcService jsonrpc;
 
         //------------------------------------------------------------------------------------------------
         // construction
         //------------------------------------------------------------------------------------------------
 
         public DeribitSessionManagementService(DeribitService deribit, IMapper mapper,
-            IDeribitJsonRpcProxy rpcproxy, StreamJsonRpc.JsonRpc jsonrpc)
+            IDeribitJsonRpcService jsonrpc)
         {
             this.deribit = deribit;
             this.mapper = mapper;
-            this.rpcproxy = rpcproxy;
             this.jsonrpc = jsonrpc;
-            this.rpcproxy.heartbeat += this.handle_heartbeat;
+            this.jsonrpc.ReconnectionHappened += this.Jsonrpc_ReconnectionHappened;
         }
 
         //------------------------------------------------------------------------------------------------
@@ -77,7 +75,16 @@ namespace Deribit.S4KTNET.Core.SessionManagement
 
         public void Dispose()
         {
-            this.rpcproxy.heartbeat -= this.handle_heartbeat;
+            this.jsonrpc.RpcProxy.heartbeat -= this.handle_heartbeat;
+        }
+
+        //------------------------------------------------------------------------------------------------
+        // reconnection
+        //------------------------------------------------------------------------------------------------
+
+        private void Jsonrpc_ReconnectionHappened(ReconnectionType obj)
+        {
+            this.jsonrpc.RpcProxy.heartbeat += this.handle_heartbeat;
         }
 
         //------------------------------------------------------------------------------------------------
@@ -91,7 +98,7 @@ namespace Deribit.S4KTNET.Core.SessionManagement
             // map request
             SetHeartbeatRequestDto requestDto = mapper.Map<SetHeartbeatRequestDto>(request);
             // execute request
-            var responsedto = await this.rpcproxy.set_heartbeat(requestDto.interval, ct);
+            var responsedto = await this.jsonrpc.RpcProxy.set_heartbeat(requestDto.interval, ct);
             // map response
             GenericResponse response = mapper.Map<GenericResponse>(responsedto);
             // return
@@ -105,7 +112,7 @@ namespace Deribit.S4KTNET.Core.SessionManagement
             // map request
             //DisableHeartbeatRequestDto requestDto = mapper.Map<DisableHeartbeatRequestDto>(request);
             // execute request
-            var responsedto = await this.rpcproxy.disable_heartbeat(ct);
+            var responsedto = await this.jsonrpc.RpcProxy.disable_heartbeat(ct);
             // map response
             GenericResponse response = mapper.Map<GenericResponse>(responsedto);
             // return
@@ -115,7 +122,7 @@ namespace Deribit.S4KTNET.Core.SessionManagement
         public async Task<GenericResponse> EnableCancelOnDisconnect(CancellationToken ct = default)
         {
             // execute request
-            var responsedto = await this.rpcproxy.enable_cancel_on_disconnect(ct);
+            var responsedto = await this.jsonrpc.RpcProxy.enable_cancel_on_disconnect(ct);
             // map response
             GenericResponse response = mapper.Map<GenericResponse>(responsedto);
             // return
@@ -125,7 +132,7 @@ namespace Deribit.S4KTNET.Core.SessionManagement
         public async Task<GenericResponse> DisableCancelOnDisconnect(CancellationToken ct = default)
         {
             // execute request
-            var responsedto = await this.rpcproxy.disable_cancel_on_disconnect(ct);
+            var responsedto = await this.jsonrpc.RpcProxy.disable_cancel_on_disconnect(ct);
             // map response
             GenericResponse response = mapper.Map<GenericResponse>(responsedto);
             // return

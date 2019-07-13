@@ -42,8 +42,7 @@ namespace Deribit.S4KTNET.Core.Authentication
 
         private readonly DeribitService deribit;
         private readonly IMapper mapper;
-        private readonly IDeribitJsonRpcProxy rpcproxy;
-        private readonly StreamJsonRpc.JsonRpc jsonrpc;
+        private readonly IDeribitJsonRpcService jsonrpc;
 
         //------------------------------------------------------------------------------------------------
         // credentials
@@ -56,11 +55,10 @@ namespace Deribit.S4KTNET.Core.Authentication
         //------------------------------------------------------------------------------------------------
 
         public DeribitAuthenticationService(DeribitService deribit, IMapper mapper,
-            IDeribitJsonRpcProxy rpcproxy, StreamJsonRpc.JsonRpc jsonrpc)
+            IDeribitJsonRpcService jsonrpc)
         {
             this.deribit = deribit;
             this.mapper = mapper;
-            this.rpcproxy = rpcproxy;
             this.jsonrpc = jsonrpc;
 
             //---------------------------------------------------------------------
@@ -134,7 +132,7 @@ namespace Deribit.S4KTNET.Core.Authentication
             // map request
             AuthRequestDto requestdto = mapper.Map<AuthRequestDto>(request);
             // execute request
-            var responsedto = await this.rpcproxy.auth
+            var responsedto = await this.jsonrpc.RpcProxy.auth
             (
                 grant_type: requestdto.grant_type,
                 username: requestdto.username,
@@ -167,7 +165,7 @@ namespace Deribit.S4KTNET.Core.Authentication
             // execute request
             try
             {
-                await this.rpcproxy.logout(ct);
+                await this.jsonrpc.RpcProxy.logout(ct);
             }
             // ignore expected exception
             catch (StreamJsonRpc.ConnectionLostException)

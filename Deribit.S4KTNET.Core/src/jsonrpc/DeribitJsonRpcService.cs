@@ -21,23 +21,44 @@ namespace Deribit.S4KTNET.Core.JsonRpc
     {
         IDeribitJsonRpcProxy RpcProxy { get; }
         StreamJsonRpc.JsonRpc JsonRpc { get; }
-        Task Connect(CancellationToken ct);
+        Task Reconnect(ReconnectionType reconnectionType, CancellationToken ct);
+        event Action<ReconnectionType> ReconnectionHappened;
     }
 
     internal class DeribitJsonRpcService : IDeribitJsonRpcService, IDisposable
     {
+        //------------------------------------------------------------------------------------------------
+        // events
+        //------------------------------------------------------------------------------------------------
+
+        public event Action<ReconnectionType> ReconnectionHappened;
+
         //------------------------------------------------------------------------------------------------
         // configuration
         //------------------------------------------------------------------------------------------------
 
         private readonly DeribitConfig deribitconfig;
 
+        private readonly int CheckConnectionLoopPeriodSecs = 30;
+
+        //------------------------------------------------------------------------------------------------
+        // loops
+        //------------------------------------------------------------------------------------------------
+
+        private System.Timers.Timer CheckConnectionLoopTimer;
+
+        //------------------------------------------------------------------------------------------------
+        // locks
+        //------------------------------------------------------------------------------------------------
+
+        private readonly object CheckConnectionLoopSyncLock = new object();
+
         //------------------------------------------------------------------------------------------------
         // fields
         //------------------------------------------------------------------------------------------------
 
-        public IDeribitJsonRpcProxy RpcProxy { get; }
-        public StreamJsonRpc.JsonRpc JsonRpc { get; }
+        public IDeribitJsonRpcProxy RpcProxy { get; private set; }
+        public StreamJsonRpc.JsonRpc JsonRpc { get; private set; }
 
         //------------------------------------------------------------------------------------------------
         // components
@@ -75,24 +96,25 @@ namespace Deribit.S4KTNET.Core.JsonRpc
                 Encoding = Encoding.UTF8,
                 ProtocolVersion = new Version(2, 0),
             };
-            // attach json rpc to websocket
-            WebSocketMessageHandler wsmh = new WebSocketMessageHandler(wsservice.ClientWebSocket);
-            this.JsonRpc = new StreamJsonRpc.JsonRpc(wsmh);
-            // build proxy // https://github.com/microsoft/vs-streamjsonrpc/blob/master/doc/dynamicproxy.md
-            this.RpcProxy = this.JsonRpc.Attach<IDeribitJsonRpcProxy>(new JsonRpcProxyOptions
+            // web socket connection
+            this.wsservice.ReconnectionHappened += this.Wsservice_ReconnectionHappened;
+            // check connection loop
             {
-                ServerRequiresNamedArguments = true,
-            });
-            // tracing
-            if (config.EnableJsonRpcTracing)
-            {
-                var listener = new global::SerilogTraceListener.SerilogTraceListener();
-                this.JsonRpc.TraceSource.Listeners.Add(listener);
-                this.JsonRpc.TraceSource.Switch.Level = System.Diagnostics.SourceLevels.Information;
-                this.logger.Verbose("JsonRpc tracing enabled");
+                this.CheckConnectionLoopTimer = new System.Timers.Timer()
+                {
+                    Interval = TimeSpan.FromSeconds(this.CheckConnectionLoopPeriodSecs).TotalMilliseconds,
+                    Enabled = false,
+                };
+                this.CheckConnectionLoopTimer.Elapsed += (sender, e) =>
+                {
+                    lock (this.CheckConnectionLoopSyncLock)
+                    {
+                        this.CheckConnection(default).Wait();
+                    }
+                };
             }
         }
-
+        
         //------------------------------------------------------------------------------------------------
         // module
         //------------------------------------------------------------------------------------------------
@@ -117,6 +139,7 @@ namespace Deribit.S4KTNET.Core.JsonRpc
 
         public void Dispose()
         {
+            this.CheckConnectionLoopTimer.Stop();
             this.JsonRpc.Dispose();
         }
 
@@ -124,12 +147,62 @@ namespace Deribit.S4KTNET.Core.JsonRpc
         // connection
         //------------------------------------------------------------------------------------------------
 
-        public Task Connect(CancellationToken ct)
+        private void Wsservice_ReconnectionHappened(ReconnectionType reconnectionType)
         {
-            return Task.Run(() =>
+            this.Reconnect(reconnectionType, default).Wait();
+        }
+
+        public async Task Reconnect(ReconnectionType reconnectionType, CancellationToken ct)
+        {
+            // attach json rpc to websocket
+            WebSocketMessageHandler wsmh = new WebSocketMessageHandler(wsservice.ClientWebSocket);
+            this.JsonRpc = new StreamJsonRpc.JsonRpc(wsmh);
+            // build proxy // https://github.com/microsoft/vs-streamjsonrpc/blob/master/doc/dynamicproxy.md
+            this.RpcProxy = this.JsonRpc.Attach<IDeribitJsonRpcProxy>(new JsonRpcProxyOptions
             {
-                this.JsonRpc.StartListening();
+                ServerRequiresNamedArguments = true,
             });
+            // tracing
+            if (this.deribitconfig.EnableJsonRpcTracing)
+            {
+                var listener = new global::SerilogTraceListener.SerilogTraceListener();
+                this.JsonRpc.TraceSource.Listeners.Add(listener);
+                this.JsonRpc.TraceSource.Switch.Level = System.Diagnostics.SourceLevels.Information;
+                this.logger.Verbose("JsonRpc tracing enabled");
+            }
+            this.JsonRpc.StartListening();
+            this.CheckConnectionLoopTimer.Start();
+            this.ReconnectionHappened?.Invoke(reconnectionType);
+        }
+
+        private async Task CheckConnection(CancellationToken ct)
+        {
+            // ping server
+            try
+            {
+                var testresponse = await this.RpcProxy.test("checkconnection", ct);
+            }
+            catch (System.Net.WebSockets.WebSocketException ex) 
+            when (ex.Message.Contains("The remote party closed the WebSocket connection"))
+            {
+                // reconnect
+                this.logger.Error(ex, $"WebSocket ping failed.");
+                if (this.deribitconfig.NoAutoReconnect)
+                    return;
+                await this.wsservice.Reconnect(ReconnectionType.Lost, ct);
+            }
+            catch (StreamJsonRpc.ConnectionLostException ex)
+            {
+                // reconnect
+                this.logger.Error(ex, $"WebSocket ping failed.");
+                if (this.deribitconfig.NoAutoReconnect)
+                    return;
+                await this.wsservice.Reconnect(ReconnectionType.Lost, ct);
+            }
+            catch (Exception ex)
+            {
+                this.logger.Error(ex, $"WebSocket ping failed.");
+            }
         }
 
         //------------------------------------------------------------------------------------------------
