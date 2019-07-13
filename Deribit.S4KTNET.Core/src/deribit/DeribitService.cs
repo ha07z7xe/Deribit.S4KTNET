@@ -47,12 +47,20 @@ namespace Deribit.S4KTNET.Core
         //------------------------------------------------------------------------------------------------
 
         Task Connect(CancellationToken ct = default);
-        
+
+        event Action<ReconnectionType> ReconnectionHappened;
+
         //------------------------------------------------------------------------------------------------
     }
 
     public class DeribitService : IDeribitService, IDisposable
     {
+        //------------------------------------------------------------------------------------------------
+        // events
+        //------------------------------------------------------------------------------------------------
+
+        public event Action<ReconnectionType> ReconnectionHappened;
+
         //------------------------------------------------------------------------------------------------
         // sub services
         //------------------------------------------------------------------------------------------------
@@ -114,6 +122,7 @@ namespace Deribit.S4KTNET.Core
             // core services
             this.WebSocket2 = container.Resolve<DeribitWebSocketService>();
             this.JsonRpc2 = container.Resolve<DeribitJsonRpcService>();
+            this.JsonRpc2.ReconnectionHappened += reconType => this.ReconnectionHappened?.Invoke(reconType);
             // sub services
             this.Authentication2 = container.Resolve<DeribitAuthenticationService>();
             this.AccountManagement2 = container.Resolve<DeribitAccountManagementService>();
