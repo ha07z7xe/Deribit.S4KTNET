@@ -26,6 +26,8 @@ namespace Deribit.S4KTNET.Core.MarketData
         Task<OrderBook> GetOrderBook(GetOrderBookRequest request, CancellationToken ct = default);
 
         Task<Ticker> Ticker(TickerRequest request, CancellationToken ct = default);
+        
+        Task<TradingViewChartData> GetTradingviewChartData(GetTradingViewChartData request, CancellationToken ct = default);
     }
 
     internal class DeribitMarketDataService : IDeribitMarketDataService
@@ -206,6 +208,28 @@ namespace Deribit.S4KTNET.Core.MarketData
             new Ticker.Validator().ValidateAndThrow(ticker);
             // return
             return ticker;
+        }
+
+        public async Task<TradingViewChartData> GetTradingviewChartData(GetTradingViewChartData request, CancellationToken ct)
+        {
+            // validate request
+            new GetTradingViewChartData.Validator().ValidateAndThrow(request);
+            // map request
+            var reqdto = this.mapper.Map<GetTradingviewChartDataRequestDto>(request);
+            // execute request
+            var responsedto = await this.jsonrpc.RpcProxy.get_tradingview_chart_data(reqdto.instrument_name,
+                reqdto.start_timestamp,
+                reqdto.end_timestamp,
+                reqdto.resolution,
+                ct);
+
+            Serilog.Log.Information("reqdto.resolution.ToString()");
+            // map response
+            TradingViewChartData chartdata = mapper.Map<TradingViewChartData>(responsedto);
+            // validate response
+            new TradingViewChartData.Validator().ValidateAndThrow(chartdata);
+            // return
+            return chartdata;
         }
 
         //------------------------------------------------------------------------------------------------
