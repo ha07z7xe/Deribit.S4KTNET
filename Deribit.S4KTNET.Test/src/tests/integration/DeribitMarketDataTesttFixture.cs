@@ -208,5 +208,31 @@ namespace Deribit.S4KTNET.Test.Integration
         }
 
         //----------------------------------------------------------------------------
+        // /public/get_tradingview_chart_data
+        //----------------------------------------------------------------------------
+
+        [Test]
+        [Description("/public/get_tradingview_chart_data")]
+        public async Task Test_TradingViewChartData_success()
+        {
+            var from = new DateTime(2021, 1, 1);
+            var to = new DateTime(2021, 1, 2);
+            // form request
+            var request = new GetTradingViewChartDataRequest
+            {
+                instrument_name = DeribitInstruments.Perpetual.BTCPERPETUAL,
+                start_timestamp = from,
+                end_timestamp = to,
+                resolution = 5
+            };
+            // execute
+            var tradingViewChartData = await deribit.MarketData.GetTradingviewChartData(request);
+            // assert
+            new TradingViewChartData.Validator().ValidateAndThrow(tradingViewChartData);
+            Assert.AreEqual(from, tradingViewChartData.timestamps[0]);
+            Assert.AreEqual(to, tradingViewChartData.timestamps[12*24]);
+        }
+
+        //----------------------------------------------------------------------------
     }
 }

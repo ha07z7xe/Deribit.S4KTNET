@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using AutoMapper;
 
 namespace Deribit.S4KTNET.Core.Mapping
@@ -13,6 +15,14 @@ namespace Deribit.S4KTNET.Core.Mapping
         public long Convert(DateTime sourceMember, ResolutionContext context)
         {
             return sourceMember.UnixTimeStampDateTimeUtcToMillis();
+        }
+    }
+
+    class ArrayUnixTimestampMillisValueConveter : IValueConverter<IList<long>, IList<DateTime>>
+    {
+        public IList<DateTime> Convert(IList<long> sourceMember, ResolutionContext context)
+        {
+            return sourceMember.Select(x => DeribitMappingExtensions.UnixTimeStampMillisToDateTimeUtc(x)).ToArray();
         }
     }
 }

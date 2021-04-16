@@ -53,5 +53,8 @@ namespace Deribit.S4KTNET.Core.JsonRpc
 
         [JsonRpcMethod("public/ticker")]
         Task<TickerDto> ticker(string instrument_name, CancellationToken ct);
+
+        [JsonRpcMethod("public/get_tradingview_chart_data")]
+        Task<TradingViewChartDataDto> get_tradingview_chart_data(string instrument_name, long start_timestamp, long end_timestamp, string resolution, CancellationToken ct);
     }
 }
