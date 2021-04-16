@@ -27,7 +27,7 @@ namespace Deribit.S4KTNET.Core.MarketData
 
         Task<Ticker> Ticker(TickerRequest request, CancellationToken ct = default);
         
-        Task<TradingViewChartData> GetTradingviewChartData(GetTradingViewChartData request, CancellationToken ct = default);
+        Task<TradingViewChartData> GetTradingviewChartData(GetTradingViewChartDataRequest request, CancellationToken ct = default);
     }
 
     internal class DeribitMarketDataService : IDeribitMarketDataService
@@ -210,10 +210,10 @@ namespace Deribit.S4KTNET.Core.MarketData
             return ticker;
         }
 
-        public async Task<TradingViewChartData> GetTradingviewChartData(GetTradingViewChartData request, CancellationToken ct)
+        public async Task<TradingViewChartData> GetTradingviewChartData(GetTradingViewChartDataRequest request, CancellationToken ct)
         {
             // validate request
-            new GetTradingViewChartData.Validator().ValidateAndThrow(request);
+            new GetTradingViewChartDataRequest.Validator().ValidateAndThrow(request);
             // map request
             var reqdto = this.mapper.Map<GetTradingviewChartDataRequestDto>(request);
             // execute request

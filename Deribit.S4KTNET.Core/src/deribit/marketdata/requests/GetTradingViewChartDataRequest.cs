@@ -6,7 +6,7 @@ namespace Deribit.S4KTNET.Core.MarketData
 {
     // https://docs.deribit.com/#public-get_tradingview_chart_data
 
-    public class GetTradingViewChartData : RequestBase
+    public class GetTradingViewChartDataRequest : RequestBase
     {
         public string instrument_name { get; set; }
         public DateTime start_timestamp { get; set; }
@@ -19,7 +19,7 @@ namespace Deribit.S4KTNET.Core.MarketData
         {
             public Profile()
             {
-                this.CreateMap<GetTradingViewChartData, GetTradingviewChartDataRequestDto>()
+                this.CreateMap<GetTradingViewChartDataRequest, GetTradingviewChartDataRequestDto>()
                     .ForMember(x => x.start_timestamp, o => o.ConvertUsing<UnixTimestampMillisValueConverter, DateTime>(s => s.start_timestamp))
                     .ForMember(x => x.end_timestamp, o => o.ConvertUsing<UnixTimestampMillisValueConverter, DateTime>(s => s.end_timestamp))
                     .ForMember(x => x.resolution, o => o.ToString());
@@ -27,7 +27,7 @@ namespace Deribit.S4KTNET.Core.MarketData
             }
         }
 
-        internal class Validator : FluentValidation.AbstractValidator<GetTradingViewChartData>
+        internal class Validator : FluentValidation.AbstractValidator<GetTradingViewChartDataRequest>
         {
             public Validator()
             {
